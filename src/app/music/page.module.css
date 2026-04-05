@@ -1,0 +1,235 @@
+.main {
+  min-height: 100vh;
+  position: relative;
+  padding-top: 60px; /* offset for navbar */
+  overflow: hidden;
+}
+
+.backgroundBlur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 70% 30%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 30% 70%, rgba(45, 45, 85, 0.2) 0%, transparent 50%);
+  filter: blur(60px);
+  z-index: -1;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.header h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.contentWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .contentWrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Player Panel --- */
+.playerPanel {
+  padding: 3rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.vinylContainer {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  margin-bottom: 2rem;
+}
+
+.vinyl {
+  width: 100%;
+  height: 100%;
+  background: #111;
+  border-radius: 50%;
+  border: 4px solid #222;
+  box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 0 10px #000;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Add repeating grooves */
+  background-image: repeating-radial-gradient(
+    #111 0,
+    #111 4px,
+    #1a1a1a 5px,
+    #1a1a1a 6px
+  );
+  animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+.vinylCenter {
+  width: 80px;
+  height: 80px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vinylHole {
+  width: 12px;
+  height: 12px;
+  background: #000;
+  border-radius: 50%;
+}
+
+.stylus {
+  position: absolute;
+  top: 10px;
+  right: -20px;
+  width: 100px;
+  height: 120px;
+  background-image: linear-gradient(135deg, #ddd 0%, #888 100%);
+  clip-path: polygon(80% 0, 100% 0, 100% 20%, 30% 90%, 10% 100%, 0 85%, 20% 70%);
+  transform-origin: top right;
+  transform: rotate(20deg);
+  filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));
+  transition: transform 0.3s ease;
+}
+
+/* Hovering the player moves stylus */
+.playerPanel:hover .stylus {
+  transform: rotate(35deg);
+}
+
+.trackInfo {
+  margin-bottom: 2rem;
+}
+
+.nowPlaying {
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 0.5rem;
+}
+
+.trackTitle {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.artist {
+  color: var(--text-muted);
+}
+
+.controls {
+  width: 100%;
+}
+
+.audioElement {
+  width: 100%;
+  outline: none;
+  border-radius: 30px;
+}
+
+/* Customizing basic audio player where possible */
+.audioElement::-webkit-media-controls-panel {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+.audioElement::-webkit-media-controls-play-button,
+.audioElement::-webkit-media-controls-mute-button {
+  filter: invert(1);
+}
+
+/* --- Playlist Panel --- */
+.playlistPanel {
+  display: flex;
+  flex-direction: column;
+}
+
+.panelTitle {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 1rem;
+}
+
+.posterGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.5rem;
+}
+
+.posterCard {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.posterCard:hover {
+  transform: scale(1.05);
+  border-color: var(--accent);
+}
+
+.posterImageOuter {
+  height: 150px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.posterImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.posterCard:hover .posterImage {
+  transform: scale(1.1);
+}
+
+.posterInfo {
+  padding: 1rem;
+  text-align: center;
+}
+
+.posterInfo h4 {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playBtn {
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-transform: uppercase;
+}

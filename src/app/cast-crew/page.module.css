@@ -1,0 +1,116 @@
+.main {
+  min-height: 100vh;
+  padding-top: 80px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 5rem;
+  animation: fadeIn 1s ease forwards;
+}
+
+.header h2 {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 3rem;
+  padding-bottom: 4rem;
+}
+
+.profileCard {
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  animation: fadeIn 1s ease forwards;
+}
+
+.profileCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  border-color: var(--accent);
+}
+
+.imageWrapper {
+  position: relative;
+  height: 350px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.profileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.profileCard:hover .profileImage {
+  transform: scale(1.05);
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 60%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.profileCard:hover .overlay {
+  opacity: 1;
+}
+
+.socials {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.socials span {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  color: var(--accent);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.socials span:hover {
+  color: #fff;
+}
+
+.info {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.name {
+  font-size: 1.5rem;
+  margin-bottom: 0.2rem;
+  letter-spacing: 1px;
+}
+
+.role {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
