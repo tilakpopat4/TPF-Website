@@ -156,7 +156,13 @@
 }
 
 .logoContainer {
-  margin-bottom: 1rem;
+  position: relative;
+  z-index: 10;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
 .mainLogo {
   width: 100%;
   max-width: 900px;
@@ -164,12 +170,6 @@
   object-fit: contain;
   filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.3));
   transition: filter 0.5s ease;
-}
-
-.logoContainer {
-  position: relative;
-  z-index: 10;
-  margin-bottom: 2rem;
 }
 
 .logoContainer::after {
