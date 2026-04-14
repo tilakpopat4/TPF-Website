@@ -184,6 +184,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 1.5rem;
+  align-items: start;
 }
 
 .posterCard {
@@ -199,20 +200,20 @@
 }
 
 .posterImageOuter {
-  height: 150px;
   width: 100%;
   overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .posterImage {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  display: block;
   transition: transform 0.5s ease;
 }
 
 .posterCard:hover .posterImage {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .posterInfo {

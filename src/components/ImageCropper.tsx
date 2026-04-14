@@ -17,6 +17,7 @@ export default function ImageCropper({ image, aspectRatio, onCropComplete, onSki
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
+  const [currentAspect, setCurrentAspect] = useState<number | undefined>(aspectRatio)
 
   const onCropChange = (crop: any) => {
     setCrop(crop)
@@ -47,7 +48,7 @@ export default function ImageCropper({ image, aspectRatio, onCropComplete, onSki
             image={image}
             crop={crop}
             zoom={zoom}
-            aspect={aspectRatio}
+            aspect={currentAspect}
             onCropChange={onCropChange}
             onCropComplete={onCropCompleteInternal}
             onZoomChange={onZoomChange}
@@ -55,6 +56,37 @@ export default function ImageCropper({ image, aspectRatio, onCropComplete, onSki
         </div>
         
         <div className={styles.cropperControls}>
+          <div className={styles.aspectSelector}>
+            <button 
+              type="button"
+              className={currentAspect === 3/2 ? styles.aspectBtnActive : styles.aspectBtn}
+              onClick={() => setCurrentAspect(3/2)}
+            >
+              Landscape
+            </button>
+            <button 
+              type="button"
+              className={currentAspect === 2/3 ? styles.aspectBtnActive : styles.aspectBtn}
+              onClick={() => setCurrentAspect(2/3)}
+            >
+              Portrait
+            </button>
+            <button 
+              type="button"
+              className={currentAspect === 1 ? styles.aspectBtnActive : styles.aspectBtn}
+              onClick={() => setCurrentAspect(1)}
+            >
+              Square
+            </button>
+            <button 
+              type="button"
+              className={currentAspect === undefined ? styles.aspectBtnActive : styles.aspectBtn}
+              onClick={() => setCurrentAspect(undefined)}
+            >
+              Free
+            </button>
+          </div>
+
           <div className={styles.zoomControl}>
             <label>Zoom</label>
             <input

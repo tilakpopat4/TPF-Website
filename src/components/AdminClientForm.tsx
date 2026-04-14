@@ -66,7 +66,7 @@ export default function AdminClientForm() {
           {bannerUrl ? (
             <div className={styles.formPreview}>
               <p style={{ color: "green", fontSize: "0.9rem", padding: "10px" }}>✓ Banner adjusted and uploaded</p>
-              <img src={bannerUrl} alt="Banner Preview" style={{ width: "100%", height: "200px", objectFit: "cover" }} />
+              <img src={bannerUrl} alt="Banner Preview" style={{ width: "100%", height: "auto", maxHeight: "300px", borderRadius: "8px" }} />
             </div>
           ) : (
             <CropUploadField

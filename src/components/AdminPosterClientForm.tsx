@@ -45,7 +45,7 @@ export default function AdminPosterClientForm() {
         {imageUrl ? (
           <div className={styles.formPreview}>
                <p style={{ color: "green", fontSize: "0.9rem", padding: "10px" }}>✓ Poster adjusted and uploaded</p>
-               <img src={imageUrl} alt="Poster Preview" style={{ width: "100%", maxHeight: "200px", objectFit: "cover" }} />
+               <img src={imageUrl} alt="Poster Preview" style={{ width: "100%", height: "auto", maxHeight: "300px", borderRadius: "8px" }} />
           </div>
         ) : (
           <CropUploadField

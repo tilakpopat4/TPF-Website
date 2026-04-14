@@ -8,15 +8,16 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
   padding: 2rem 0;
+  align-items: start; /* Prevents cards from stretching to the height of the tallest item in the row */
 }
 
 .posterCard {
   position: relative;
   overflow: hidden;
   border-radius: 12px;
-  box-shadow: 0 4px 6px -1px var(--border);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.05); /* Added subtle background for loading */
+  background: transparent; /* Removed background so aspect ratios are more natural */
 }
 
 .posterCard:hover {

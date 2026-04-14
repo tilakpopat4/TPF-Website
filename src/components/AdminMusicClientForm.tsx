@@ -68,7 +68,7 @@ export default function AdminMusicClientForm() {
         {posterUrl ? (
           <div className={styles.formPreview}>
             <p style={{ color: "green", fontSize: "0.9rem", padding: "10px" }}>✓ Poster adjusted and uploaded</p>
-            <img src={posterUrl} alt="Poster Preview" style={{ width: "100%", height: "200px", objectFit: "cover" }} />
+            <img src={posterUrl} alt="Poster Preview" style={{ width: "100%", height: "auto", maxHeight: "300px", borderRadius: "8px" }} />
           </div>
         ) : (
           <CropUploadField
