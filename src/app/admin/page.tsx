@@ -1,10 +1,11 @@
 import prisma from "@/lib/prisma"
-import { deleteProject, deleteMusic, addCastCrew, deleteCastCrew, deletePoster } from "./actions"
+import { deleteProject, deleteMusic, addCastCrew, deleteCastCrew, deletePoster, deleteAnnouncement } from "./actions"
 import styles from "./page.module.css"
 import AdminClientForm from "@/components/AdminClientForm"
 import AdminMusicClientForm from "@/components/AdminMusicClientForm"
 import AdminCastCrewClientForm from "@/components/AdminCastCrewClientForm"
 import AdminPosterClientForm from "@/components/AdminPosterClientForm"
+import AdminAnnouncementClientForm from "@/components/AdminAnnouncementClientForm"
 
 export const dynamic = 'force-dynamic';
 
@@ -13,6 +14,7 @@ export default async function AdminPage() {
   const music = await prisma.music.findMany({ orderBy: { createdAt: 'desc' } })
   const crew = await prisma.castCrew.findMany({ orderBy: { createdAt: 'desc' } })
   const posters = await prisma.poster.findMany({ orderBy: { createdAt: 'desc' } })
+  const announcements = await prisma.announcement.findMany({ orderBy: { createdAt: 'desc' } })
 
   return (
     <div className={`container ${styles.adminPanel}`}>
@@ -94,6 +96,25 @@ export default async function AdminPage() {
                   <strong>{post.title}</strong>
                 </div>
                 <form action={async () => { 'use server'; await deletePoster(post.id) }}>
+                  <button className={styles.deleteBtn}>Delete</button>
+                </form>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Announcements Section */}
+        <section className={`${styles.card} glass`}>
+          <h2>Manage Announcements</h2>
+          <AdminAnnouncementClientForm />
+
+          <div className={styles.list}>
+            {announcements.map((ann: any) => (
+              <div key={ann.id} className={styles.listItem}>
+                <div>
+                  <strong>{ann.title}</strong>
+                </div>
+                <form action={async () => { 'use server'; await deleteAnnouncement(ann.id) }}>
                   <button className={styles.deleteBtn}>Delete</button>
                 </form>
               </div>

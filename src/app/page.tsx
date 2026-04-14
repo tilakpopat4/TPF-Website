@@ -1,7 +1,6 @@
-import Image from "next/image";
-import styles from "./page.module.css";
 import prisma from "@/lib/prisma";
 import Hero from "@/components/Hero";
+import { getYouTubeEmbedUrl, isYouTubeUrl } from "@/utils/youtube";
 
 export const dynamic = 'force-dynamic';
 
@@ -64,14 +63,24 @@ export default async function Home() {
                 {trailerProjects.map((project: any) => (
                   <div key={project.id} className={styles.trailerItem}>
                     <div className={styles.playerWrapper}>
-                      <video 
-                        src={project.trailerUrl} 
-                        controls 
-                        controlsList="nodownload"
-                        className={styles.iframe}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', background: '#000' }}
-                        poster={project.bannerUrl || undefined}
-                      ></video>
+                      {isYouTubeUrl(project.youtubeUrl || project.trailerUrl) ? (
+                        <iframe
+                          src={getYouTubeEmbedUrl(project.youtubeUrl || project.trailerUrl)!}
+                          className={styles.iframe}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-view"
+                          allowFullScreen
+                        ></iframe>
+                      ) : (
+                        <video 
+                          src={project.trailerUrl} 
+                          controls 
+                          controlsList="nodownload"
+                          className={styles.iframe}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', background: '#000' }}
+                          poster={project.bannerUrl || undefined}
+                        ></video>
+                      )}
                     </div>
                     <div className={styles.trailerTitle}>
                         <h3>{project.title}</h3>

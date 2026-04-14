@@ -26,6 +26,12 @@ export default function AdminClientForm() {
       submitData.append('description', description);
       if (trailerUrl) submitData.append('trailerUrl', trailerUrl);
       if (bannerUrl) submitData.append('bannerUrl', bannerUrl);
+      
+      const youtubeUrl = (form.elements.namedItem('youtubeUrl') as HTMLInputElement).value;
+      const releaseDate = (form.elements.namedItem('releaseDate') as HTMLInputElement).value;
+      
+      if (youtubeUrl) submitData.append('youtubeUrl', youtubeUrl);
+      if (releaseDate) submitData.append('releaseDate', releaseDate);
 
       await addProject(submitData);
       form.reset();
@@ -44,6 +50,11 @@ export default function AdminClientForm() {
       <form onSubmit={handleSubmit} className={styles.form}>
         <input name="title" placeholder="Project Title" required className={styles.input} />
         <input name="description" placeholder="Description" required className={styles.input} />
+        <input name="youtubeUrl" placeholder="YouTube URL (Optional)" className={styles.input} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Release Date (Optional)</label>
+          <input name="releaseDate" type="date" className={styles.input} />
+        </div>
         
         <div style={{ marginBottom: "1rem" }}>
           <p style={{ color: "var(--foreground)", fontSize: "0.9rem", marginBottom: "0.5rem" }}>Trailer Video (Optional)</p>

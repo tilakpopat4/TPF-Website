@@ -11,6 +11,8 @@ export async function addProject(formData: FormData) {
   const description = formData.get('description') as string
   const trailerUrl = formData.get('trailerUrl') as string | null
   const bannerUrl = formData.get('bannerUrl') as string | null
+  const youtubeUrl = formData.get('youtubeUrl') as string | null
+  const releaseDateStr = formData.get('releaseDate') as string | null
   
   if (title && description) {
     await prisma.project.create({
@@ -18,11 +20,14 @@ export async function addProject(formData: FormData) {
         title, 
         description, 
         ...(trailerUrl && { trailerUrl }),
-        ...(bannerUrl && { bannerUrl })
+        ...(bannerUrl && { bannerUrl }),
+        ...(youtubeUrl && { youtubeUrl }),
+        ...(releaseDateStr && { releaseDate: new Date(releaseDateStr) })
       }
     })
     revalidatePath('/')
     revalidatePath('/admin')
+    revalidatePath('/announcements')
   }
 }
 
@@ -102,5 +107,30 @@ export async function addPoster(formData: FormData) {
 export async function deletePoster(id: string) {
   await prisma.poster.delete({ where: { id } })
   revalidatePath('/posters')
+  revalidatePath('/admin')
+}
+
+// Announcements
+export async function addAnnouncement(formData: FormData) {
+  const title = formData.get('title') as string
+  const content = formData.get('content') as string
+  const imageUrl = formData.get('imageUrl') as string | null
+  
+  if (title && content) {
+    await prisma.announcement.create({
+      data: { 
+        title, 
+        content, 
+        ...(imageUrl && { imageUrl }) 
+      }
+    })
+    revalidatePath('/announcements')
+    revalidatePath('/admin')
+  }
+}
+
+export async function deleteAnnouncement(id: string) {
+  await prisma.announcement.delete({ where: { id } })
+  revalidatePath('/announcements')
   revalidatePath('/admin')
 }

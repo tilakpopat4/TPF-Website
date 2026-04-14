@@ -32,6 +32,7 @@ export default function Navbar() {
 
         <div className={`${styles.links} ${isOpen ? styles.open : ''}`}>
           <Link href="/" className={styles.link} onClick={closeMenu}>Home</Link>
+          <Link href="/announcements" className={styles.link} onClick={closeMenu}>Announcements</Link>
           <Link href="/posters" className={styles.link} onClick={closeMenu}>Poster Work</Link>
           <Link href="/music" className={styles.link} onClick={closeMenu}>TPF Music</Link>
           <Link href="/cast-crew" className={styles.link} onClick={closeMenu}>Cast & Crew</Link>
