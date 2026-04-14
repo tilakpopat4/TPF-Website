@@ -78,6 +78,72 @@ export default function Hero() {
         <div className={styles.orb1}></div>
         <div className={styles.orb2}></div>
         <div className={styles.filmStripAnim}></div>
+        
+        {/* Floating Filmmaking Assets */}
+        <div className={styles.floatingAssets}>
+          {/* Clapperboard - Left */}
+          <motion.div 
+            className={`${styles.assetIcon} ${styles.clapperboardPos}`}
+            animate={{ 
+              y: [0, -40, 0],
+              rotate: [-15, -10, -15],
+              scale: [1, 1.05, 1]
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          >
+             <svg viewBox="0 0 24 24" width="100%" height="100%" fill="currentColor">
+                <path d="M20.2 6L3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5L13.5 3c1.1-.3 2.2.3 2.5 1.3L17 7h3.2c.4 0 .8.4.8.8V19c0 .6-.4 1-1 1H4c-.6 0-1-.4-1-1V9l17.2-5h1c.6 0 1 .4 1 1v1c0 .6-.4 1-1 1zM4 11v8h16v-8H4z" />
+             </svg>
+          </motion.div>
+
+          {/* Film Reel - Top Right */}
+          <motion.div 
+            className={`${styles.assetIcon} ${styles.reelPos}`}
+            animate={{ 
+              y: [0, 50, 0],
+              rotate: [0, 360],
+              scale: [0.9, 1.1, 0.9]
+            }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          >
+             <svg viewBox="0 0 24 24" width="100%" height="100%" fill="none" stroke="currentColor" strokeWidth="1">
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="12" r="2" fill="currentColor" />
+                <circle cx="12" cy="7" r="1.5" fill="currentColor" />
+                <circle cx="12" cy="17" r="1.5" fill="currentColor" />
+                <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+                <circle cx="17" cy="12" r="1.5" fill="currentColor" />
+             </svg>
+          </motion.div>
+
+          {/* Film Strip - Bottom Right */}
+          <motion.div 
+            className={`${styles.assetIcon} ${styles.filmStripPos}`}
+            animate={{ 
+              x: [0, -30, 0],
+              y: [0, -20, 0],
+              rotate: [10, 15, 10]
+            }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          >
+             <svg viewBox="0 0 24 24" width="100%" height="100%" fill="none" stroke="currentColor" strokeWidth="1">
+                <rect x="3" y="2" width="18" height="20" rx="2" />
+                <path d="M3 7h18" />
+                <path d="M3 12h18" />
+                <path d="M3 17h18" />
+                <path d="M7 2v20" />
+                <path d="M17 2v20" />
+                <circle cx="5" cy="4.5" r="1" fill="currentColor" />
+                <circle cx="5" cy="9.5" r="1" fill="currentColor" />
+                <circle cx="5" cy="14.5" r="1" fill="currentColor" />
+                <circle cx="5" cy="19.5" r="1" fill="currentColor" />
+                <circle cx="19" cy="4.5" r="1" fill="currentColor" />
+                <circle cx="19" cy="9.5" r="1" fill="currentColor" />
+                <circle cx="19" cy="14.5" r="1" fill="currentColor" />
+                <circle cx="19" cy="19.5" r="1" fill="currentColor" />
+             </svg>
+          </motion.div>
+        </div>
 
         {/* Floating Particles */}
         {particles.map((p) => (
