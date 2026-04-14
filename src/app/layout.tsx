@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   description: "Creative Production House - Tilak Popat Films. Explore our premium projects, music, and talented crew.",
   keywords: ["TPF", "Tilak Popat Films", "Production House", "Film Production", "Music", "Creative Portfolio"],
   icons: {
-    icon: "/tpf-logo.png",
-    apple: "/tpf-logo.png",
+    icon: "/tpf-logo-new.png",
+    apple: "/tpf-logo-new.png",
   },
 };
 
