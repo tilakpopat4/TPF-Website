@@ -1,8 +1,62 @@
-.main {
-  min-height: 100vh;
+.backgroundBlur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 70% 30%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 30% 70%, rgba(45, 45, 85, 0.2) 0%, transparent 50%);
+  filter: blur(60px);
+  z-index: -1;
 }
 
-/* --- Hero Section --- */
+.grain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, transparent 20%, rgba(0, 0, 0, 0.8) 120%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.lightRay {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    transparent 0deg,
+    rgba(212, 175, 55, 0.05) 20deg,
+    transparent 40deg,
+    rgba(45, 45, 85, 0.05) 160deg,
+    transparent 180deg
+  );
+  animation: rotateRays 40s linear infinite;
+  z-index: -1;
+  filter: blur(40px);
+}
+
+@keyframes rotateRays {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 .hero {
   position: relative;
   height: 100vh;
@@ -11,6 +65,7 @@
   justify-content: center;
   overflow: hidden;
   text-align: center;
+  background-color: #020202;
 }
 
 .heroBackground {
@@ -26,26 +81,32 @@
 .orb1, .orb2 {
   position: absolute;
   border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.4;
-  animation: float 20s infinite alternate linear;
+  filter: blur(120px);
+  opacity: 0.5;
+  animation: drift 20s infinite alternate ease-in-out;
 }
 
 .orb1 {
-  width: 40vw;
-  height: 40vw;
-  background: rgba(212, 175, 55, 0.15); /* Gold / Amber */
-  top: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
+  top: -20%;
   left: -10%;
 }
 
 .orb2 {
-  width: 30vw;
-  height: 30vw;
-  background: rgba(45, 45, 85, 0.3); /* Cinematic Blue */
-  bottom: -10%;
+  width: 40vw;
+  height: 40vw;
+  background: radial-gradient(circle, rgba(45, 45, 85, 0.3) 0%, transparent 70%);
+  bottom: -20%;
   right: -10%;
-  animation-delay: -5s;
+  animation-delay: -10s;
+}
+
+@keyframes drift {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate(10%, 10%) scale(1.1) rotate(5deg); }
+  100% { transform: translate(-5%, 15%) scale(0.9) rotate(-5deg); }
 }
 
 /* Film Strip Simulation */
@@ -96,16 +157,38 @@
 
 .logoContainer {
   margin-bottom: 1rem;
-  display: flex;
-  justify-content: center;
-}
-
 .mainLogo {
   width: 100%;
-  max-width: 800px;
-  max-height: 400px;
+  max-width: 900px;
+  max-height: 450px;
   object-fit: contain;
-  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.7));
+  filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.3));
+  transition: filter 0.5s ease;
+}
+
+.logoContainer {
+  position: relative;
+  z-index: 10;
+  margin-bottom: 2rem;
+}
+
+.logoContainer::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+  filter: blur(50px);
+  z-index: -1;
+  animation: pulseGlow 4s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+  50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.8; }
 }
 
 .heroTitle {

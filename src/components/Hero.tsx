@@ -19,18 +19,18 @@ export default function Hero() {
   const textOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   // Direct link to the locally downloaded TPF logo
-  const logoUrl = "/tpf-logo.png";
+  const logoUrl = "/tpf-logo-new.png";
 
   // Particle generator
   const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
-    setParticles(Array.from({ length: 20 }).map((_, i) => ({
+    setParticles(Array.from({ length: 60 }).map((_, i) => ({
       id: i,
-      y: Math.random() * 500 - 250,
-      x: Math.random() * 1000 - 500,
-      scale: Math.random() * 0.5 + 0.5,
-      dur: Math.random() * 5 + 5,
+      y: Math.random() * 800 - 400,
+      x: Math.random() * 1600 - 800,
+      scale: Math.random() * 0.4 + 0.2,
+      dur: Math.random() * 10 + 10,
       delay: Math.random() * 5
     })));
   }, []);
@@ -42,6 +42,9 @@ export default function Hero() {
         className={styles.heroBackground} 
         style={{ y: backgroundY }}
       >
+        <div className={styles.lightRay}></div>
+        <div className={styles.vignette}></div>
+        <div className={styles.grain}></div>
         <div className={styles.orb1}></div>
         <div className={styles.orb2}></div>
         <div className={styles.filmStripAnim}></div>
