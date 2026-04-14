@@ -14,9 +14,8 @@ export default function Navbar() {
     <nav className={`${styles.navbar} glass`}>
       <div className={styles.container}>
         <div className={styles.logo}>
-          <Link href="/" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <img src="/tpf-logo-new.png" alt="TPF Logo" style={{ height: '32px', width: 'auto' }} />
-            <span className="text-gradient">TPF v2</span>
+          <Link href="/" onClick={closeMenu}>
+            <span className="text-gradient">TPF</span>
           </Link>
         </div>
 
