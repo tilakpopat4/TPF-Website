@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     icon: "/tpf-logo-new.png",
     apple: "/tpf-logo-new.png",
   },
-};
+}; // Deployment Trigger: Sync v2
 
 export default function RootLayout({
   children,
