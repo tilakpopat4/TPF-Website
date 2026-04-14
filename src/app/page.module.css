@@ -381,7 +381,112 @@
   margin-top: 1rem;
 }
 
-/* --- Projects Section --- */
+/* --- Tabbed Interface --- */
+.tabsContainer {
+  margin-top: 2rem;
+}
+
+.tabSwitcher {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  justify-content: center;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 1rem;
+}
+
+.tabBtn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  padding: 0.5rem 1.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tabBtn:hover {
+  color: #fff;
+}
+
+.tabActive {
+  color: var(--accent) !important;
+}
+
+.tabActive::after {
+  content: '';
+  position: absolute;
+  bottom: -1rem;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.homeAnnGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.homeAnnCard {
+  display: flex;
+  gap: 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  align-items: center;
+}
+
+.homeAnnImg {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.homeAnnContent {
+  flex: 1;
+  text-align: left;
+}
+
+.homeAnnContent span {
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+
+.homeAnnContent h4 {
+  font-size: 1.3rem;
+  margin: 0.3rem 0;
+}
+
+.homeAnnContent p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.viewAllBtn {
+  text-align: center;
+  margin-top: 2rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.viewAllBtn:hover {
+  transform: translateX(10px);
+}
+
 .projectsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));

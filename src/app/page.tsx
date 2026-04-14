@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import Hero from "@/components/Hero";
+import HomeTabs from "@/components/HomeTabs";
 import { getYouTubeEmbedUrl, isYouTubeUrl } from "@/utils/youtube";
+import styles from "./page.module.css";
 
 export const dynamic = 'force-dynamic';
 
@@ -13,6 +15,8 @@ export default async function Home() {
       ]
     : await prisma.project.findMany({ take: 10, orderBy: { createdAt: 'desc' } });
 
+  const announcements = await prisma.announcement.findMany({ take: 3, orderBy: { createdAt: 'desc' } });
+
   // Filter projects that have a trailerUrl
   const trailerProjects = projects.filter((p: any) => p.trailerUrl);
 
@@ -24,29 +28,9 @@ export default async function Home() {
       {/* Dynamic Animated Hero Section */}
       <Hero />
 
-      {/* Projects Section */}
+      {/* Tabbed Content Section (Projects & Announcements) */}
       <section id="projects" className="section container">
-        <div className={styles.sectionHeader}>
-          <h2>Featured <span className="text-gradient">Projects</span></h2>
-          <div className={styles.line}></div>
-        </div>
-
-        <div className={styles.projectsGrid}>
-          {projects.map((project: any, idx: number) => (
-            <div key={project.id} className={`${styles.projectCard} glass`}>
-              <div 
-                className={styles.projectImagePlaceholder} 
-                style={project.bannerUrl ? { backgroundImage: `url(${project.bannerUrl})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' } : {}}
-              >
-                {!project.bannerUrl && <span className={styles.projectNumber}>0{idx + 1}</span>}
-              </div>
-              <div className={styles.projectInfo}>
-                <h3>{project.title}</h3>
-                <p>{project.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        <HomeTabs initialProjects={projects} announcements={announcements} />
       </section>
 
       {/* Video Player Section */}
