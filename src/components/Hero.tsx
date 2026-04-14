@@ -23,8 +23,19 @@ export default function Hero() {
 
   // Particle generator
   const [particles, setParticles] = useState<Particle[]>([]);
-
+  const [time, setTime] = useState("00:00:00:00");
+  
   useEffect(() => {
+    // Animate timecode (simulating 24fps)
+    const interval = setInterval(() => {
+      const date = new Date();
+      const h = String(date.getHours()).padStart(2, '0');
+      const m = String(date.getMinutes()).padStart(2, '0');
+      const s = String(date.getSeconds()).padStart(2, '0');
+      const f = String(Math.floor(Math.random() * 24)).padStart(2, '0');
+      setTime(`${h}:${m}:${s}:${f}`);
+    }, 41);
+
     setParticles(Array.from({ length: 60 }).map((_, i) => ({
       id: i,
       y: Math.random() * 800 - 400,
@@ -33,6 +44,8 @@ export default function Hero() {
       dur: Math.random() * 10 + 10,
       delay: Math.random() * 5
     })));
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -42,9 +55,26 @@ export default function Hero() {
         className={styles.heroBackground} 
         style={{ y: backgroundY }}
       >
+        <div className={styles.lightLeak}></div>
         <div className={styles.lightRay}></div>
         <div className={styles.vignette}></div>
         <div className={styles.grain}></div>
+        
+        {/* Viewfinder Elements */}
+        <div className={styles.viewfinder}>
+          <div className={`${styles.bracket} ${styles.topLeft}`}></div>
+          <div className={`${styles.bracket} ${styles.topRight}`}></div>
+          <div className={`${styles.bracket} ${styles.bottomLeft}`}></div>
+          <div className={`${styles.bracket} ${styles.bottomRight}`}></div>
+        </div>
+
+        <div className={styles.recIndicator}>
+            <div className={styles.recDot}></div>
+            <span>REC</span>
+        </div>
+
+        <div className={styles.timecode}>{time}</div>
+
         <div className={styles.orb1}></div>
         <div className={styles.orb2}></div>
         <div className={styles.filmStripAnim}></div>
