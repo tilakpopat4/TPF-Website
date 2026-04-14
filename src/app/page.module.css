@@ -263,9 +263,43 @@
   border-top: 1px solid var(--glass-border);
 }
 
-.playerContainer {
-  max-width: 1000px;
-  margin: 0 auto;
+.scrollWrapper {
+  width: 100%;
+  padding-bottom: 2rem;
+}
+
+.trailerScroll {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  padding: 1rem 0 3rem 0;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.trailerScroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.trailerScroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.trailerScroll::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+
+.trailerItem {
+  flex: 0 0 80%; /* Takes 80% of width on mobile */
+  max-width: 800px;
+  scroll-snap-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .playerWrapper {
@@ -276,6 +310,7 @@
   border-radius: 12px;
   border: 1px solid var(--glass-border);
   box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  background: #000;
 }
 
 .iframe {
@@ -284,6 +319,37 @@
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.trailerTitle {
+  text-align: left;
+}
+
+.trailerTitle h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-serif);
+}
+
+.trailerTitle p {
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.noTrailers {
+  text-align: center;
+  padding: 4rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 1px dashed var(--glass-border);
+}
+
+@media (min-width: 1024px) {
+  .trailerItem {
+    flex: 0 0 700px;
+  }
 }
 
 @media (max-width: 1024px) {

@@ -12,7 +12,10 @@ export default async function Home() {
         { id: '1', title: 'The Echoes of Silence', description: 'A gripping thriller by TPF.', trailerUrl: '', bannerUrl: '' },
         { id: '2', title: 'Neon Nights', description: 'Cyberpunk short film.', trailerUrl: '', bannerUrl: '' }
       ]
-    : await prisma.project.findMany({ take: 2, orderBy: { createdAt: 'desc' } });
+    : await prisma.project.findMany({ take: 10, orderBy: { createdAt: 'desc' } });
+
+  // Filter projects that have a trailerUrl
+  const trailerProjects = projects.filter((p: any) => p.trailerUrl);
 
   // Main Trailer to display
   const mainTrailer = projects[0]?.trailerUrl || "";
@@ -51,27 +54,37 @@ export default async function Home() {
       <section className={styles.trailerSection}>
         <div className="container">
           <div className={styles.sectionHeader}>
-            <h2>Latest <span className="text-gradient">Trailer</span></h2>
+            <h2>Watch our <span className="text-gradient">Trailers</span></h2>
             <div className={styles.line}></div>
           </div>
           
-          <div className={styles.playerContainer}>
-            <div className={styles.playerWrapper}>
-              {mainTrailer ? (
-                <video 
-                  src={mainTrailer} 
-                  controls 
-                  controlsList="nodownload"
-                  className={styles.iframe}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', background: '#000' }}
-                  poster={projects[0]?.bannerUrl || undefined}
-                ></video>
-              ) : (
-                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111' }}>
-                  <p>No trailer uploaded yet.</p>
-                </div>
-              )}
-            </div>
+          <div className={styles.scrollWrapper}>
+            {trailerProjects.length > 0 ? (
+              <div className={styles.trailerScroll}>
+                {trailerProjects.map((project: any) => (
+                  <div key={project.id} className={styles.trailerItem}>
+                    <div className={styles.playerWrapper}>
+                      <video 
+                        src={project.trailerUrl} 
+                        controls 
+                        controlsList="nodownload"
+                        className={styles.iframe}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', background: '#000' }}
+                        poster={project.bannerUrl || undefined}
+                      ></video>
+                    </div>
+                    <div className={styles.trailerTitle}>
+                        <h3>{project.title}</h3>
+                        <p>Watch Trailer</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className={styles.noTrailers}>
+                <p>No trailers uploaded yet. Stay tuned!</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
