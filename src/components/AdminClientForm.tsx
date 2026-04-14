@@ -1,8 +1,8 @@
 'use client';
 
-import { addProject } from '@/app/admin/actions';
+import { addProject, fetchYouTubeInfo } from '@/app/admin/actions';
 import styles from '@/app/admin/page.module.css';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { UploadDropzone } from '@/utils/uploadthing';
 import CropUploadField from './CropUploadField';
 
@@ -10,6 +10,25 @@ export default function AdminClientForm() {
   const [isPending, setIsPending] = useState(false);
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
   const [bannerUrl, setBannerUrl] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleFetchYouTube = async () => {
+    const url = (formRef.current?.elements.namedItem('youtubeUrl') as HTMLInputElement).value;
+    if (!url) return alert("Please enter a YouTube URL first.");
+    
+    setIsPending(true);
+    const info = await fetchYouTubeInfo(url);
+    setIsPending(false);
+
+    if (info) {
+      if (formRef.current) {
+        (formRef.current.elements.namedItem('title') as HTMLInputElement).value = info.title;
+        (formRef.current.elements.namedItem('description') as HTMLTextAreaElement).value = info.description;
+      }
+    } else {
+      alert("Failed to fetch YouTube info. Please enter manually.");
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,10 +66,15 @@ export default function AdminClientForm() {
 
   return (
     <div className={styles.formWrapper}>
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
         <input name="title" placeholder="Project Title" required className={styles.input} />
-        <input name="description" placeholder="Description" required className={styles.input} />
-        <input name="youtubeUrl" placeholder="YouTube URL (Optional)" className={styles.input} />
+        <textarea name="description" placeholder="Description" required className={styles.input} style={{ minHeight: '100px' }} />
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <input name="youtubeUrl" placeholder="YouTube URL" className={styles.input} style={{ flex: 1 }} />
+          <button type="button" onClick={handleFetchYouTube} className={styles.btn} style={{ width: 'auto', padding: '0 1rem' }}>
+            Fetch Info
+          </button>
+        </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Release Date (Optional)</label>
           <input name="releaseDate" type="date" className={styles.input} />

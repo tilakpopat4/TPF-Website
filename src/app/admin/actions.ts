@@ -134,3 +134,24 @@ export async function deleteAnnouncement(id: string) {
   revalidatePath('/announcements')
   revalidatePath('/admin')
 }
+
+// YouTube Metadata Fetcher
+export async function fetchYouTubeInfo(url: string) {
+  try {
+    const response = await fetch(url);
+    const html = await response.text();
+    
+    // Simple regex to extract meta tags
+    const titleMatch = html.match(/<title>(.*?)<\/title>/);
+    const descMatch = html.match(/meta name="description" content="(.*?)"/);
+    const ogDescMatch = html.match(/property="og:description" content="(.*?)"/);
+    
+    let title = titleMatch ? titleMatch[1].replace(" - YouTube", "") : "";
+    let description = (ogDescMatch ? ogDescMatch[1] : (descMatch ? descMatch[1] : ""));
+    
+    return { title, description };
+  } catch (error) {
+    console.error("Fetch YouTube Error:", error);
+    return null;
+  }
+}
