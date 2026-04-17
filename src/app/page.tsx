@@ -17,12 +17,7 @@ export default async function Home() {
     : await prisma.project.findMany({ take: 10, orderBy: { createdAt: 'desc' } });
 
   const announcements = await prisma.announcement.findMany({ take: 3, orderBy: { createdAt: 'desc' } });
-
-  // Filter projects that have a trailerUrl
-  const trailerProjects = projects.filter((p: any) => p.trailerUrl);
-
-  // Main Trailer to display
-  const mainTrailer = projects[0]?.trailerUrl || "";
+  const btsItems = await prisma.behindTheScene.findMany({ take: 5, orderBy: { createdAt: 'desc' } });
 
   return (
     <div className={styles.main}>
@@ -43,7 +38,7 @@ export default async function Home() {
           </div>
           
           <div className={styles.scrollWrapper}>
-            <TrailerSection trailerProjects={trailerProjects} />
+            <TrailerSection btsItems={btsItems} />
           </div>
         </div>
       </section>

@@ -6,6 +6,7 @@ import AdminMusicClientForm from "@/components/AdminMusicClientForm"
 import AdminCastCrewClientForm from "@/components/AdminCastCrewClientForm"
 import AdminPosterClientForm from "@/components/AdminPosterClientForm"
 import AdminAnnouncementClientForm from "@/components/AdminAnnouncementClientForm"
+import AdminBTSClientForm from "@/components/AdminBTSClientForm"
 
 export const dynamic = 'force-dynamic';
 
@@ -15,6 +16,7 @@ export default async function AdminPage() {
   const crew = await prisma.castCrew.findMany({ orderBy: { createdAt: 'desc' } })
   const posters = await prisma.poster.findMany({ orderBy: { createdAt: 'desc' } })
   const announcements = await prisma.announcement.findMany({ orderBy: { createdAt: 'desc' } })
+  const bts = await prisma.behindTheScene.findMany({ orderBy: { createdAt: 'desc' } })
 
   return (
     <div className={`container ${styles.adminPanel}`}>
@@ -120,6 +122,12 @@ export default async function AdminPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* BTS Section */}
+        <section className={`${styles.card} glass`}>
+          <h2>Manage Behind The Scenes</h2>
+          <AdminBTSClientForm btsItems={bts} />
         </section>
       </div>
     </div>

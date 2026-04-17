@@ -8,7 +8,6 @@ import CropUploadField from './CropUploadField';
 
 export default function AdminClientForm() {
   const [isPending, setIsPending] = useState(false);
-  const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
   const [bannerUrl, setBannerUrl] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -43,7 +42,6 @@ export default function AdminClientForm() {
       const submitData = new FormData();
       submitData.append('title', title);
       submitData.append('description', description);
-      if (trailerUrl) submitData.append('trailerUrl', trailerUrl);
       if (bannerUrl) submitData.append('bannerUrl', bannerUrl);
       
       const youtubeUrl = (form.elements.namedItem('youtubeUrl') as HTMLInputElement).value;
@@ -54,7 +52,6 @@ export default function AdminClientForm() {
 
       await addProject(submitData);
       form.reset();
-      setTrailerUrl(null);
       setBannerUrl(null);
     } catch (err) {
       console.error(err);
@@ -80,21 +77,7 @@ export default function AdminClientForm() {
           <input name="releaseDate" type="date" className={styles.input} />
         </div>
         
-        <div style={{ marginBottom: "1rem" }}>
-          <p style={{ color: "var(--foreground)", fontSize: "0.9rem", marginBottom: "0.5rem" }}>Trailer Video (Optional)</p>
-          {trailerUrl ? (
-            <p style={{ color: "green", fontSize: "0.9rem" }}>✓ Trailer uploaded</p>
-          ) : (
-            <UploadDropzone
-              endpoint="videoUploader"
-              onClientUploadComplete={(res) => {
-                if (res && res.length > 0) setTrailerUrl(res[0].url);
-                alert("Trailer uploaded successfully");
-              }}
-              onUploadError={(error: Error) => alert(`Upload failed: ${error.message}`)}
-            />
-          )}
-        </div>
+        {/* Trailer upload removed - now in BTS section */}
 
         <div style={{ marginBottom: "1rem" }}>
           <p style={{ color: "var(--foreground)", fontSize: "0.9rem", marginBottom: "0.5rem" }}>Banner Image (Optional)</p>

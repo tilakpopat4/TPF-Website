@@ -9,7 +9,6 @@ import path from "path"
 export async function addProject(formData: FormData) {
   const title = formData.get('title') as string
   const description = formData.get('description') as string
-  const trailerUrl = formData.get('trailerUrl') as string | null
   const bannerUrl = formData.get('bannerUrl') as string | null
   const youtubeUrl = formData.get('youtubeUrl') as string | null
   const releaseDateStr = formData.get('releaseDate') as string | null
@@ -19,7 +18,6 @@ export async function addProject(formData: FormData) {
       data: { 
         title, 
         description, 
-        ...(trailerUrl && { trailerUrl }),
         ...(bannerUrl && { bannerUrl }),
         ...(youtubeUrl && { youtubeUrl }),
         ...(releaseDateStr && { releaseDate: new Date(releaseDateStr) })
@@ -29,6 +27,31 @@ export async function addProject(formData: FormData) {
     revalidatePath('/admin')
     revalidatePath('/announcements')
   }
+}
+
+// Behind The Scenes
+export async function addBTS(formData: FormData) {
+  const title = formData.get('title') as string
+  const videoUrl = formData.get('videoUrl') as string | null
+  const thumbnail = formData.get('thumbnail') as string | null
+  
+  if (title && (videoUrl || thumbnail)) {
+    await prisma.behindTheScene.create({
+      data: { 
+        title, 
+        ...(videoUrl && { videoUrl }),
+        ...(thumbnail && { thumbnail })
+      }
+    })
+    revalidatePath('/')
+    revalidatePath('/admin')
+  }
+}
+
+export async function deleteBTS(id: string) {
+  await prisma.behindTheScene.delete({ where: { id } })
+  revalidatePath('/')
+  revalidatePath('/admin')
 }
 
 export async function deleteProject(id: string) {

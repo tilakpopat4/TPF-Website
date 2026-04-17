@@ -4,10 +4,10 @@ import { useState } from 'react';
 import styles from '@/app/page.module.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function TrailerSection({ trailerProjects }: { trailerProjects: any[] }) {
-  const [activeProject, setActiveProject] = useState(trailerProjects[0] || null);
+export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
+  const [activeItem, setActiveItem] = useState(btsItems[0] || null);
 
-  const getEmbedUrl = (url: string) => {
+  const getEmbedUrl = (url: string | null) => {
     if (!url) return '';
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
@@ -19,11 +19,11 @@ export default function TrailerSection({ trailerProjects }: { trailerProjects: a
     return url;
   };
 
-  const isYouTubeUrl = (url: string) => {
+  const isYouTubeUrl = (url: string | null) => {
     return url?.includes('youtube.com') || url?.includes('youtu.be');
   };
 
-  if (trailerProjects.length === 0) {
+  if (btsItems.length === 0) {
     return (
       <div className={styles.noTrailers}>
         <p>No content uploaded yet. Stay tuned!</p>
@@ -37,7 +37,7 @@ export default function TrailerSection({ trailerProjects }: { trailerProjects: a
       <div className={styles.mainPlayerWrapper}>
         <AnimatePresence mode="wait">
           <motion.div 
-            key={activeProject.id}
+            key={activeItem.id}
             className={styles.playerContent}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -45,27 +45,32 @@ export default function TrailerSection({ trailerProjects }: { trailerProjects: a
             transition={{ duration: 0.4 }}
           >
             <div className={styles.playerFrame}>
-              {isYouTubeUrl(activeProject.youtubeUrl || activeProject.trailerUrl) ? (
+              {activeItem.videoUrl && isYouTubeUrl(activeItem.videoUrl) ? (
                 <iframe
-                  src={getEmbedUrl(activeProject.youtubeUrl || activeProject.trailerUrl)}
-                  title={activeProject.title}
+                  src={getEmbedUrl(activeItem.videoUrl)}
+                  title={activeItem.title}
                   className={styles.iframe}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                 ></iframe>
-              ) : (
+              ) : activeItem.videoUrl ? (
                 <video 
-                  src={activeProject.trailerUrl} 
-                  poster={activeProject.bannerUrl}
+                  src={activeItem.videoUrl} 
+                  poster={activeItem.thumbnail || undefined}
                   controls 
                   className={styles.iframe}
                   style={{ background: '#000', borderRadius: '24px' }}
                 ></video>
+              ) : (
+                <div className={styles.iframe} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111', borderRadius: '24px' }}>
+                    {activeItem.thumbnail && <img src={activeItem.thumbnail} alt={activeItem.title} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5 }} />}
+                    <p style={{ position: 'absolute', color: '#fff', fontSize: '1.2rem' }}>Exclusive Image Content</p>
+                </div>
               )}
             </div>
             <div className={styles.activeTitle}>
-              <h3>{activeProject.title}</h3>
+              <h3>{activeItem.title}</h3>
               <p>NOW WATCHING</p>
             </div>
           </motion.div>
@@ -76,19 +81,19 @@ export default function TrailerSection({ trailerProjects }: { trailerProjects: a
       <div className={styles.thumbnailList}>
         <p className={styles.listLabel}>More Experiences</p>
         <div className={styles.thumbnailGrid}>
-          {trailerProjects.map((project: any) => (
+          {btsItems.map((item: any) => (
             <motion.div 
-              key={project.id}
-              className={`${styles.miniThumbnail} ${activeProject.id === project.id ? styles.activeMini : ''}`}
-              onClick={() => setActiveProject(project)}
+              key={item.id}
+              className={`${styles.miniThumbnail} ${activeItem.id === item.id ? styles.activeMini : ''}`}
+              onClick={() => setActiveItem(item)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <div 
                 className={styles.miniImg} 
-                style={project.bannerUrl ? { backgroundImage: `url(${project.bannerUrl})` } : { backgroundColor: '#222' }}
+                style={item.thumbnail ? { backgroundImage: `url(${item.thumbnail})` } : { backgroundColor: '#222' }}
               >
-                {activeProject.id === project.id && (
+                {activeItem.id === item.id && (
                   <div className={styles.playingIndicator}>
                     <div className={styles.wave}></div>
                     <div className={styles.wave}></div>
@@ -96,7 +101,7 @@ export default function TrailerSection({ trailerProjects }: { trailerProjects: a
                   </div>
                 )}
               </div>
-              <p className={styles.miniTitle}>{project.title}</p>
+              <p className={styles.miniTitle}>{item.title}</p>
             </motion.div>
           ))}
         </div>
