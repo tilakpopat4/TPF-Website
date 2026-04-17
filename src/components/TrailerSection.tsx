@@ -26,7 +26,7 @@ export default function TrailerSection({ trailerProjects }: { trailerProjects: a
   if (trailerProjects.length === 0) {
     return (
       <div className={styles.noTrailers}>
-        <p>No trailers uploaded yet. Stay tuned!</p>
+        <p>No content uploaded yet. Stay tuned!</p>
       </div>
     );
   }
@@ -74,7 +74,7 @@ export default function TrailerSection({ trailerProjects }: { trailerProjects: a
 
       {/* Thumbnail Selection */}
       <div className={styles.thumbnailList}>
-        <p className={styles.listLabel}>More Trailers</p>
+        <p className={styles.listLabel}>More Experiences</p>
         <div className={styles.thumbnailGrid}>
           {trailerProjects.map((project: any) => (
             <motion.div 

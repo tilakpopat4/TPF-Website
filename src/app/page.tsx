@@ -38,7 +38,7 @@ export default async function Home() {
       <section className={styles.trailerSection}>
         <div className="container">
           <div className={styles.sectionHeader}>
-            <h2>Watch our <span className="text-gradient">Trailers</span></h2>
+            <h2>Explore <span className="text-gradient">Behind The Scenes</span></h2>
             <div className={styles.line}></div>
           </div>
           
