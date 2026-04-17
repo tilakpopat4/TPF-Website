@@ -64,6 +64,18 @@
   display: block;
 }
 
+.noSpotify {
+  height: 352px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
 /* --- Additional Tracks --- */
 .tracksSection {
   max-width: 860px;

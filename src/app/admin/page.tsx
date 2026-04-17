@@ -8,6 +8,7 @@ import AdminCastCrewClientForm from "@/components/AdminCastCrewClientForm"
 import AdminPosterClientForm from "@/components/AdminPosterClientForm"
 import AdminAnnouncementClientForm from "@/components/AdminAnnouncementClientForm"
 import AdminBTSClientForm from "@/components/AdminBTSClientForm"
+import AdminSpotifyForm from "@/components/AdminSpotifyForm"
 
 export const dynamic = 'force-dynamic';
 
@@ -24,6 +25,14 @@ export default async function AdminPage() {
     bts = await prisma.behindTheScene.findMany({ orderBy: { createdAt: 'desc' } });
   } catch (e) {
     console.error('BehindTheScene table not yet created:', e);
+  }
+
+  let spotifyUrl = '';
+  try {
+    const setting = await prisma.settings.findUnique({ where: { key: 'spotifyUrl' } });
+    spotifyUrl = setting?.value || '';
+  } catch (e) {
+    console.error('Settings table not yet available:', e);
   }
 
   return (
@@ -52,6 +61,12 @@ export default async function AdminPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* Spotify Settings Section */}
+        <section className={`${styles.card} glass`}>
+          <h2>🎵 Spotify Player</h2>
+          <AdminSpotifyForm currentUrl={spotifyUrl} />
         </section>
 
         {/* Behind The Scenes Section */}

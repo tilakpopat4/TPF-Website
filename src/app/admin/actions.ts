@@ -164,10 +164,9 @@ export async function fetchYouTubeInfo(url: string) {
     const response = await fetch(url);
     const html = await response.text();
     
-    // Simple regex to extract meta tags
     const titleMatch = html.match(/<title>(.*?)<\/title>/);
-    const descMatch = html.match(/meta name="description" content="(.*?)"/);
     const ogDescMatch = html.match(/property="og:description" content="(.*?)"/);
+    const descMatch = html.match(/meta name="description" content="(.*?)"/);
     
     let title = titleMatch ? titleMatch[1].replace(" - YouTube", "") : "";
     let description = (ogDescMatch ? ogDescMatch[1] : (descMatch ? descMatch[1] : ""));
@@ -177,4 +176,16 @@ export async function fetchYouTubeInfo(url: string) {
     console.error("Fetch YouTube Error:", error);
     return null;
   }
+}
+
+// Site Settings
+export async function updateSetting(key: string, value: string) {
+  await prisma.settings.upsert({
+    where: { key },
+    update: { value, updatedAt: new Date() },
+    create: { key, value },
+  })
+  revalidatePath('/')
+  revalidatePath('/music')
+  revalidatePath('/admin')
 }
