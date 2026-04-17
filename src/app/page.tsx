@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import Hero from "@/components/Hero";
 import HomeTabs from "@/components/HomeTabs";
+import TrailerSection from "@/components/TrailerSection";
 import { getYouTubeEmbedUrl, isYouTubeUrl } from "@/utils/youtube";
 import styles from "./page.module.css";
 
@@ -42,42 +43,7 @@ export default async function Home() {
           </div>
           
           <div className={styles.scrollWrapper}>
-            {trailerProjects.length > 0 ? (
-              <div className={styles.trailerScroll}>
-                {trailerProjects.map((project: any) => (
-                  <div key={project.id} className={styles.trailerItem}>
-                    <div className={styles.playerWrapper}>
-                      {isYouTubeUrl(project.youtubeUrl || project.trailerUrl) ? (
-                        <iframe
-                          src={getYouTubeEmbedUrl(project.youtubeUrl || project.trailerUrl)!}
-                          className={styles.iframe}
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-view"
-                          allowFullScreen
-                        ></iframe>
-                      ) : (
-                        <video 
-                          src={project.trailerUrl} 
-                          controls 
-                          controlsList="nodownload"
-                          className={styles.iframe}
-                          style={{ width: '100%', height: '100%', objectFit: 'cover', background: '#000' }}
-                          poster={project.bannerUrl || undefined}
-                        ></video>
-                      )}
-                    </div>
-                    <div className={styles.trailerTitle}>
-                        <h3>{project.title}</h3>
-                        <p>Watch Trailer</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className={styles.noTrailers}>
-                <p>No trailers uploaded yet. Stay tuned!</p>
-              </div>
-            )}
+            <TrailerSection trailerProjects={trailerProjects} />
           </div>
         </div>
       </section>

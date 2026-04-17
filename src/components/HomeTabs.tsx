@@ -4,9 +4,20 @@ import { useState } from 'react';
 import styles from '@/app/page.module.css';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import VideoModal from './VideoModal';
 
 export default function HomeTabs({ initialProjects, announcements }: any) {
   const [activeTab, setActiveTab] = useState('projects');
+  const [selectedVideo, setSelectedVideo] = useState<{ url: string, title: string } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleProjectClick = (project: any) => {
+    const videoUrl = project.youtubeUrl || project.trailerUrl;
+    if (videoUrl) {
+      setSelectedVideo({ url: videoUrl, title: project.title });
+      setIsModalOpen(true);
+    }
+  };
 
   return (
     <div className={styles.tabsContainer}>
@@ -37,12 +48,27 @@ export default function HomeTabs({ initialProjects, announcements }: any) {
             className={styles.projectsGrid}
           >
             {initialProjects.map((project: any, idx: number) => (
-              <div key={project.id} className={`${styles.projectCard} glass`}>
+              <div 
+                key={project.id} 
+                className={`${styles.projectCard} glass`} 
+                onClick={() => handleProjectClick(project)}
+                style={{ cursor: project.youtubeUrl || project.trailerUrl ? 'pointer' : 'default' }}
+              >
                 <div 
                   className={styles.projectImagePlaceholder} 
                   style={project.bannerUrl ? { backgroundImage: `url(${project.bannerUrl})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' } : {}}
                 >
                   {!project.bannerUrl && <span className={styles.projectNumber}>0{idx + 1}</span>}
+                  
+                  {(project.youtubeUrl || project.trailerUrl) && (
+                    <div className={styles.playOverlay}>
+                      <div className={styles.playIconBox}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M8 5v14l11-7z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
+                        </svg>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className={styles.projectInfo}>
                   <h3>{project.title}</h3>
@@ -84,6 +110,13 @@ export default function HomeTabs({ initialProjects, announcements }: any) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <VideoModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        videoUrl={selectedVideo?.url || null}
+        title={selectedVideo?.title}
+      />
     </div>
   );
 }

@@ -6,6 +6,9 @@
   z-index: 1000;
   padding: 1rem 0;
   border-bottom: 1px solid var(--glass-border);
+  background: rgba(5, 5, 5, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .container {
