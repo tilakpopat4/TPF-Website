@@ -17,7 +17,13 @@ export default async function Home() {
     : await prisma.project.findMany({ take: 10, orderBy: { createdAt: 'desc' } });
 
   const announcements = await prisma.announcement.findMany({ take: 3, orderBy: { createdAt: 'desc' } });
-  const btsItems = await prisma.behindTheScene.findMany({ take: 5, orderBy: { createdAt: 'desc' } });
+  
+  let btsItems: any[] = [];
+  try {
+    btsItems = await prisma.behindTheScene.findMany({ take: 5, orderBy: { createdAt: 'desc' } });
+  } catch (e) {
+    console.error('BehindTheScene table not yet available:', e);
+  }
 
   return (
     <div className={styles.main}>

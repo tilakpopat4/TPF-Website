@@ -17,7 +17,14 @@ export default async function AdminPage() {
   const crew = await prisma.castCrew.findMany({ orderBy: { createdAt: 'desc' } })
   const posters = await prisma.poster.findMany({ orderBy: { createdAt: 'desc' } })
   const announcements = await prisma.announcement.findMany({ orderBy: { createdAt: 'desc' } })
-  const bts = await prisma.behindTheScene.findMany({ orderBy: { createdAt: 'desc' } })
+  
+  // Wrapped in try-catch: table may not exist yet on first deploy
+  let bts: any[] = [];
+  try {
+    bts = await prisma.behindTheScene.findMany({ orderBy: { createdAt: 'desc' } });
+  } catch (e) {
+    console.error('BehindTheScene table not yet created:', e);
+  }
 
   return (
     <div className={`container ${styles.adminPanel}`}>

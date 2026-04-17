@@ -2,7 +2,7 @@
 
 import { addBTS, deleteBTS } from '@/app/admin/actions';
 import styles from '@/app/admin/page.module.css';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { UploadDropzone } from '@/utils/uploadthing';
 import CropUploadField from './CropUploadField';
 
@@ -10,6 +10,8 @@ export default function AdminBTSClientForm({ btsItems }: { btsItems: any[] }) {
   const [isPending, setIsPending] = useState(false);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [thumbnail, setThumbnail] = useState<string | null>(null);
+  const [items, setItems] = useState(btsItems);
+  const [isDeleting, startDelete] = useTransition();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,6 +20,8 @@ export default function AdminBTSClientForm({ btsItems }: { btsItems: any[] }) {
 
     try {
       const title = (form.elements.namedItem('title') as HTMLInputElement).value;
+      if (!title) { alert('Please enter a title.'); return; }
+
       const submitData = new FormData();
       submitData.append('title', title);
       if (videoUrl) submitData.append('videoUrl', videoUrl);
@@ -27,13 +31,20 @@ export default function AdminBTSClientForm({ btsItems }: { btsItems: any[] }) {
       form.reset();
       setVideoUrl(null);
       setThumbnail(null);
-      alert('BTS content added successfully!');
+      alert('BTS content added! Refresh the page to see the new entry.');
     } catch (err) {
       console.error(err);
       alert('An error occurred during submission.');
     } finally {
       setIsPending(false);
     }
+  };
+
+  const handleDelete = (id: string) => {
+    startDelete(async () => {
+      await deleteBTS(id);
+      setItems((prev) => prev.filter((item) => item.id !== id));
+    });
   };
 
   return (
@@ -43,13 +54,18 @@ export default function AdminBTSClientForm({ btsItems }: { btsItems: any[] }) {
 
         <div style={{ marginBottom: '1rem' }}>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>
-            Video (YouTube URL or upload)
+            YouTube URL (paste link here)
           </p>
           <input
             name="videoUrlInput"
-            placeholder="Paste YouTube URL..."
+            placeholder="https://youtube.com/watch?v=..."
             className={styles.input}
-            onChange={(e) => setVideoUrl(e.target.value || null)}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val && (val.includes('youtube') || val.includes('youtu.be'))) {
+                setVideoUrl(val);
+              }
+            }}
           />
         </div>
 
@@ -90,12 +106,12 @@ export default function AdminBTSClientForm({ btsItems }: { btsItems: any[] }) {
 
       {/* Existing BTS List */}
       <div className={styles.list} style={{ marginTop: '1.5rem' }}>
-        {btsItems.length === 0 && (
+        {items.length === 0 && (
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', textAlign: 'center', padding: '1rem' }}>
             No BTS content yet.
           </p>
         )}
-        {btsItems.map((item) => (
+        {items.map((item) => (
           <div key={item.id} className={styles.listItem}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               {item.thumbnail && (
@@ -110,9 +126,13 @@ export default function AdminBTSClientForm({ btsItems }: { btsItems: any[] }) {
                 <p className={styles.itemMeta}>{new Date(item.createdAt).toLocaleDateString()}</p>
               </div>
             </div>
-            <form action={async () => { 'use server'; await deleteBTS(item.id) }}>
-              <button className={styles.deleteBtn}>Delete</button>
-            </form>
+            <button
+              onClick={() => handleDelete(item.id)}
+              className={styles.deleteBtn}
+              disabled={isDeleting}
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
