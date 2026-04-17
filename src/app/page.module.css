@@ -621,103 +621,141 @@
   border-top: 1px solid var(--glass-border);
 }
 
-.scrollWrapper {
-  width: 100%;
-  padding-bottom: 2rem;
-}
-
-.trailerScroll {
-  display: flex;
-  gap: 2rem;
-  overflow-x: auto;
-  padding: 1rem 0 3rem 0;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent) transparent;
-  -webkit-overflow-scrolling: touch;
-}
-
-.trailerScroll::-webkit-scrollbar {
-  height: 6px;
-}
-
-.trailerScroll::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-}
-
-.trailerScroll::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 10px;
-}
-
-.trailerItem {
-  flex: 0 0 80%; /* Takes 80% of width on mobile */
-  max-width: 800px;
-  scroll-snap-align: center;
+.featuredPlayerContainer {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 3rem;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.playerWrapper {
+.mainPlayerWrapper {
+  width: 100%;
+}
+
+.playerFrame {
   position: relative;
   padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
   height: 0;
+  border-radius: 24px;
   overflow: hidden;
-  border-radius: 12px;
-  border: 1px solid var(--glass-border);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.8),
+              0 0 0 1px rgba(255, 255, 255, 0.05);
   background: #000;
 }
 
-.trailerThumbnail {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: transform 0.5s ease;
-}
-
-.playerWrapper:hover .trailerThumbnail {
-  transform: scale(1.05);
-}
-
-.iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.trailerTitle {
+.activeTitle {
+  margin-top: 1.5rem;
   text-align: left;
 }
 
-.trailerTitle h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.3rem;
-  font-family: var(--font-serif);
+.activeTitle h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+  color: #fff;
+  letter-spacing: -0.5px;
 }
 
-.trailerTitle p {
-  font-size: 0.8rem;
+.activeTitle p {
   color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.thumbnailList {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 2rem;
+}
+
+.listLabel {
+  font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 2px;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  font-weight: 500;
 }
 
-.noTrailers {
-  text-align: center;
-  padding: 4rem;
-  background: rgba(255, 255, 255, 0.02);
+.thumbnailGrid {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+
+.miniThumbnail {
+  flex: 0 0 200px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.miniImg {
+  width: 200px;
+  height: 112px;
   border-radius: 12px;
-  border: 1px dashed var(--glass-border);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.activeMini .miniImg {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.miniTitle {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activeMini .miniTitle {
+  color: #fff;
+}
+
+.playingIndicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.wave {
+  width: 4px;
+  height: 10px;
+  background: var(--accent);
+  animation: waveAnim 1s ease-in-out infinite;
+}
+
+.wave:nth-child(2) { animation-delay: 0.2s; height: 15px; }
+.wave:nth-child(3) { animation-delay: 0.4s; height: 8px; }
+
+@keyframes waveAnim {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(2); }
+}
+
+@media (max-width: 768px) {
+  .playerFrame { border-radius: 12px; }
+  .activeTitle h3 { font-size: 1.5rem; }
+  .thumbnailGrid { gap: 1rem; }
+  .miniThumbnail { flex: 0 0 150px; }
+  .miniImg { width: 150px; height: 84px; }
 }
 
 @media (min-width: 1024px) {

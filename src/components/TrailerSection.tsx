@@ -2,19 +2,25 @@
 
 import { useState } from 'react';
 import styles from '@/app/page.module.css';
-import VideoModal from './VideoModal';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function TrailerSection({ trailerProjects }: { trailerProjects: any[] }) {
-  const [selectedVideo, setSelectedVideo] = useState<{ url: string, title: string } | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeProject, setActiveProject] = useState(trailerProjects[0] || null);
 
-  const handlePlay = (project: any) => {
-    setSelectedVideo({ 
-      url: project.youtubeUrl || project.trailerUrl, 
-      title: project.title 
-    });
-    setIsModalOpen(true);
+  const getEmbedUrl = (url: string) => {
+    if (!url) return '';
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    const videoId = (match && match[2].length === 11) ? match[2] : null;
+    
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&color=red`;
+    }
+    return url;
+  };
+
+  const isYouTubeUrl = (url: string) => {
+    return url?.includes('youtube.com') || url?.includes('youtu.be');
   };
 
   if (trailerProjects.length === 0) {
@@ -26,50 +32,75 @@ export default function TrailerSection({ trailerProjects }: { trailerProjects: a
   }
 
   return (
-    <>
-      <div className={styles.trailerScroll}>
-        {trailerProjects.map((project: any) => (
+    <div className={styles.featuredPlayerContainer}>
+      {/* Main Player Display */}
+      <div className={styles.mainPlayerWrapper}>
+        <AnimatePresence mode="wait">
           <motion.div 
-            key={project.id} 
-            className={styles.trailerItem}
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            key={activeProject.id}
+            className={styles.playerContent}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4 }}
           >
-            <div 
-              className={styles.playerWrapper} 
-              style={{ cursor: 'pointer' }}
-              onClick={() => handlePlay(project)}
-            >
-              {/* Thumbnail Overlay */}
-              <div 
-                className={styles.trailerThumbnail}
-                style={project.bannerUrl ? { backgroundImage: `url(${project.bannerUrl})` } : {}}
-              >
-                <div className={styles.playOverlay}>
-                  <div className={styles.playIconBox}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                </div>
-              </div>
+            <div className={styles.playerFrame}>
+              {isYouTubeUrl(activeProject.youtubeUrl || activeProject.trailerUrl) ? (
+                <iframe
+                  src={getEmbedUrl(activeProject.youtubeUrl || activeProject.trailerUrl)}
+                  title={activeProject.title}
+                  className={styles.iframe}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                ></iframe>
+              ) : (
+                <video 
+                  src={activeProject.trailerUrl} 
+                  poster={activeProject.bannerUrl}
+                  controls 
+                  className={styles.iframe}
+                  style={{ background: '#000', borderRadius: '24px' }}
+                ></video>
+              )}
             </div>
-            <div className={styles.trailerTitle}>
-              <h3>{project.title}</h3>
-              <p>Watch Trailer</p>
+            <div className={styles.activeTitle}>
+              <h3>{activeProject.title}</h3>
+              <p>NOW WATCHING</p>
             </div>
           </motion.div>
-        ))}
+        </AnimatePresence>
       </div>
 
-      <VideoModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        videoUrl={selectedVideo?.url || null}
-        title={selectedVideo?.title}
-      />
-    </>
+      {/* Thumbnail Selection */}
+      <div className={styles.thumbnailList}>
+        <p className={styles.listLabel}>More Trailers</p>
+        <div className={styles.thumbnailGrid}>
+          {trailerProjects.map((project: any) => (
+            <motion.div 
+              key={project.id}
+              className={`${styles.miniThumbnail} ${activeProject.id === project.id ? styles.activeMini : ''}`}
+              onClick={() => setActiveProject(project)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <div 
+                className={styles.miniImg} 
+                style={project.bannerUrl ? { backgroundImage: `url(${project.bannerUrl})` } : { backgroundColor: '#222' }}
+              >
+                {activeProject.id === project.id && (
+                  <div className={styles.playingIndicator}>
+                    <div className={styles.wave}></div>
+                    <div className={styles.wave}></div>
+                    <div className={styles.wave}></div>
+                  </div>
+                )}
+              </div>
+              <p className={styles.miniTitle}>{project.title}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
