@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
   const [activeItem, setActiveItem] = useState(btsItems[0] || null);
+  // isPlaying = false by default → shows thumbnail with play button
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const getVideoId = (url: string | null): string | null => {
     if (!url) return null;
@@ -23,16 +25,22 @@ export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
     return url;
   };
 
-  // Returns YT thumbnail CDN URL if no manual thumbnail uploaded
+  // Returns the best available thumbnail for a BTS item
   const getDisplayThumbnail = (item: any): string | null => {
     if (item.thumbnail) return item.thumbnail;
     const videoId = getVideoId(item.videoUrl);
-    if (videoId) return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    if (videoId) return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
     return null;
   };
 
   const isYouTubeUrl = (url: string | null) => {
     return url?.includes('youtube.com') || url?.includes('youtu.be');
+  };
+
+  // Switch items → reset to thumbnail state
+  const handleSelectItem = (item: any) => {
+    setActiveItem(item);
+    setIsPlaying(false);
   };
 
   if (btsItems.length === 0) {
@@ -43,12 +51,14 @@ export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
     );
   }
 
+  const thumbnail = getDisplayThumbnail(activeItem);
+
   return (
     <div className={styles.featuredPlayerContainer}>
       {/* Main Player Display */}
       <div className={styles.mainPlayerWrapper}>
         <AnimatePresence mode="wait">
-          <motion.div 
+          <motion.div
             key={activeItem.id}
             className={styles.playerContent}
             initial={{ opacity: 0, y: 10 }}
@@ -57,34 +67,52 @@ export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
             transition={{ duration: 0.4 }}
           >
             <div className={styles.playerFrame}>
-              {activeItem.videoUrl && isYouTubeUrl(activeItem.videoUrl) ? (
-                <iframe
-                  key={activeItem.id}
-                  src={getEmbedUrl(activeItem.videoUrl)}
-                  title={activeItem.title}
-                  className={styles.iframe}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                ></iframe>
-              ) : activeItem.videoUrl ? (
-                <video 
-                  src={activeItem.videoUrl} 
-                  poster={activeItem.thumbnail || undefined}
-                  controls 
-                  className={styles.iframe}
-                  style={{ background: '#000', borderRadius: '24px' }}
-                ></video>
+              {isPlaying ? (
+                // --- PLAYING STATE: show iframe/video ---
+                activeItem.videoUrl && isYouTubeUrl(activeItem.videoUrl) ? (
+                  <iframe
+                    key={activeItem.id + '-playing'}
+                    src={getEmbedUrl(activeItem.videoUrl)}
+                    title={activeItem.title}
+                    className={styles.iframe}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  ></iframe>
+                ) : activeItem.videoUrl ? (
+                  <video
+                    src={activeItem.videoUrl}
+                    poster={thumbnail || undefined}
+                    controls
+                    autoPlay
+                    className={styles.iframe}
+                    style={{ background: '#000', borderRadius: '24px' }}
+                  ></video>
+                ) : null
               ) : (
-                <div className={styles.iframe} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111', borderRadius: '24px' }}>
-                    {activeItem.thumbnail && <img src={activeItem.thumbnail} alt={activeItem.title} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5 }} />}
-                    <p style={{ position: 'absolute', color: '#fff', fontSize: '1.2rem' }}>Exclusive Image Content</p>
+                // --- IDLE STATE: show thumbnail + play button ---
+                <div
+                  className={styles.btsThumbOverlay}
+                  style={thumbnail ? { backgroundImage: `url(${thumbnail})` } : { background: '#111' }}
+                  onClick={() => setIsPlaying(true)}
+                >
+                  {/* Play button circle */}
+                  <motion.div
+                    className={styles.bigPlayBtn}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </motion.div>
                 </div>
               )}
             </div>
+
             <div className={styles.activeTitle}>
               <h3>{activeItem.title}</h3>
-              <p>NOW WATCHING</p>
+              <p>{isPlaying ? 'NOW WATCHING' : 'CLICK TO PLAY'}</p>
             </div>
           </motion.div>
         </AnimatePresence>
@@ -95,25 +123,31 @@ export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
         <p className={styles.listLabel}>More Experiences</p>
         <div className={styles.thumbnailGrid}>
           {btsItems.map((item: any) => (
-            <motion.div 
+            <motion.div
               key={item.id}
               className={`${styles.miniThumbnail} ${activeItem.id === item.id ? styles.activeMini : ''}`}
-              onClick={() => setActiveItem(item)}
+              onClick={() => handleSelectItem(item)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <div 
-                className={styles.miniImg} 
+              <div
+                className={styles.miniImg}
                 style={getDisplayThumbnail(item)
                   ? { backgroundImage: `url(${getDisplayThumbnail(item)})`, backgroundSize: 'cover', backgroundPosition: 'center' }
                   : { backgroundColor: '#222' }
                 }
               >
-                {activeItem.id === item.id && (
+                {activeItem.id === item.id && isPlaying ? (
                   <div className={styles.playingIndicator}>
                     <div className={styles.wave}></div>
                     <div className={styles.wave}></div>
                     <div className={styles.wave}></div>
+                  </div>
+                ) : (
+                  <div className={styles.miniPlayOverlay}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
                   </div>
                 )}
               </div>
