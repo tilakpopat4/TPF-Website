@@ -47,6 +47,7 @@ export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
             <div className={styles.playerFrame}>
               {activeItem.videoUrl && isYouTubeUrl(activeItem.videoUrl) ? (
                 <iframe
+                  key={activeItem.id}
                   src={getEmbedUrl(activeItem.videoUrl)}
                   title={activeItem.title}
                   className={styles.iframe}

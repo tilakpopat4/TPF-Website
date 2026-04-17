@@ -69,6 +69,7 @@ export default function VideoModal({ isOpen, onClose, videoUrl, title }: VideoMo
             
             <div className={styles.videoWrapper}>
               <iframe
+                key={embedUrl}
                 src={embedUrl}
                 title={title || "YouTube video player"}
                 frameBorder="0"
