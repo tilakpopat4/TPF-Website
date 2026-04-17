@@ -7,16 +7,28 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
   const [activeItem, setActiveItem] = useState(btsItems[0] || null);
 
-  const getEmbedUrl = (url: string | null) => {
-    if (!url) return '';
+  const getVideoId = (url: string | null): string | null => {
+    if (!url) return null;
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
-    const videoId = (match && match[2].length === 11) ? match[2] : null;
-    
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+
+  const getEmbedUrl = (url: string | null) => {
+    if (!url) return '';
+    const videoId = getVideoId(url);
     if (videoId) {
       return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&color=red`;
     }
     return url;
+  };
+
+  // Returns YT thumbnail CDN URL if no manual thumbnail uploaded
+  const getDisplayThumbnail = (item: any): string | null => {
+    if (item.thumbnail) return item.thumbnail;
+    const videoId = getVideoId(item.videoUrl);
+    if (videoId) return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    return null;
   };
 
   const isYouTubeUrl = (url: string | null) => {
@@ -92,7 +104,10 @@ export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
             >
               <div 
                 className={styles.miniImg} 
-                style={item.thumbnail ? { backgroundImage: `url(${item.thumbnail})` } : { backgroundColor: '#222' }}
+                style={getDisplayThumbnail(item)
+                  ? { backgroundImage: `url(${getDisplayThumbnail(item)})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+                  : { backgroundColor: '#222' }
+                }
               >
                 {activeItem.id === item.id && (
                   <div className={styles.playingIndicator}>
