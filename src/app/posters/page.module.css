@@ -4,11 +4,9 @@
 }
 
 .posterGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
+  columns: 4 280px;        /* Up to 4 columns, min 280px each */
+  column-gap: 1.25rem;
   padding: 2rem 0;
-  align-items: start; /* Prevents cards from stretching to the height of the tallest item in the row */
 }
 
 .posterCard {
@@ -17,23 +15,27 @@
   border-radius: 12px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
-  background: transparent; /* Removed background so aspect ratios are more natural */
+  background: transparent;
+  break-inside: avoid;          /* Never split a card across columns */
+  margin-bottom: 1.25rem;       /* Vertical gap between stacked cards */
+  display: block;
 }
 
 .posterCard:hover {
-  transform: translateY(-10px);
+  transform: translateY(-6px);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
 }
 
 .posterImage {
   width: 100%;
   height: auto;
-  display: block; /* Removed height: 100% to follow original ratio */
+  display: block;
   transition: transform 0.5s ease;
+  border-radius: 12px;
 }
 
 .posterCard:hover .posterImage {
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 
 .posterOverlay {
@@ -41,14 +43,15 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 2rem 1rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+  padding: 2rem 1rem 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.92), transparent);
   color: white;
   opacity: 0;
   transition: opacity 0.3s ease;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  border-radius: 0 0 12px 12px;
 }
 
 .posterCard:hover .posterOverlay {
@@ -56,19 +59,19 @@
 }
 
 .posterOverlay h3 {
-  font-size: 1.25rem;
-  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  margin: 0 0 0.75rem 0;
   font-weight: 600;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .downloadBtn {
   display: inline-block;
-  padding: 0.8rem 1.5rem;
+  padding: 0.65rem 1.2rem;
   background: var(--accent);
   color: var(--bg);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -79,42 +82,44 @@
 }
 
 .downloadBtn:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
   filter: brightness(1.1);
 }
 
-/* Responsive Poster Grid */
+/* Responsive */
 @media (max-width: 1024px) {
   .posterGrid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+    columns: 3 240px;
+    column-gap: 1rem;
   }
+  .posterCard { margin-bottom: 1rem; }
 }
 
 @media (max-width: 768px) {
   .posterGrid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-    padding: 1rem 0;
+    columns: 2 200px;
+    column-gap: 0.85rem;
   }
+  .posterCard { margin-bottom: 0.85rem; }
 }
 
 @media (max-width: 480px) {
   .posterGrid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    columns: 2 140px;
+    column-gap: 0.6rem;
   }
+  .posterCard { margin-bottom: 0.6rem; }
 
   .posterOverlay {
-    padding: 1.5rem 1rem;
-    opacity: 1; /* Always visible on mobile to help accessibility */
+    padding: 1.5rem 0.75rem 0.75rem;
+    opacity: 1;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
   }
 
   .downloadBtn {
     width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
+    padding: 0.75rem;
+    font-size: 0.8rem;
   }
 }
