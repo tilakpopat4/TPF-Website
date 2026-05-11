@@ -8,6 +8,8 @@ export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
   const [activeItem, setActiveItem] = useState(btsItems[0] || null);
   // isPlaying = false by default → shows thumbnail with play button
   const [isPlaying, setIsPlaying] = useState(false);
+  // Tracks current fallback index for active thumbnail
+  const [thumbFallbackIdx, setThumbFallbackIdx] = useState(0);
 
   const getVideoId = (url: string | null): string | null => {
     if (!url) return null;
@@ -25,11 +27,26 @@ export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
     return url;
   };
 
-  // Returns the best available thumbnail for a BTS item
+  // Returns the ordered list of thumbnail URLs to try (best → lowest quality)
+  const getThumbnailFallbacks = (item: any): string[] => {
+    const urls: string[] = [];
+    if (item.thumbnail) urls.push(item.thumbnail);
+    const videoId = getVideoId(item.videoUrl);
+    if (videoId) {
+      urls.push(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`);
+      urls.push(`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`);
+      urls.push(`https://img.youtube.com/vi/${videoId}/mqdefault.jpg`);
+      urls.push(`https://img.youtube.com/vi/${videoId}/sddefault.jpg`);
+      urls.push(`https://img.youtube.com/vi/${videoId}/default.jpg`);
+    }
+    return urls;
+  };
+
+  // Legacy helper kept for mini-thumbnails
   const getDisplayThumbnail = (item: any): string | null => {
     if (item.thumbnail) return item.thumbnail;
     const videoId = getVideoId(item.videoUrl);
-    if (videoId) return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+    if (videoId) return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
     return null;
   };
 
@@ -41,6 +58,7 @@ export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
   const handleSelectItem = (item: any) => {
     setActiveItem(item);
     setIsPlaying(false);
+    setThumbFallbackIdx(0);
   };
 
   if (btsItems.length === 0) {
@@ -51,7 +69,8 @@ export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
     );
   }
 
-  const thumbnail = getDisplayThumbnail(activeItem);
+  const thumbnail = getDisplayThumbnail(activeItem); // still used for mini-thumbnails
+
 
   return (
     <div className={styles.featuredPlayerContainer}>
@@ -91,22 +110,49 @@ export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
                 ) : null
               ) : (
                 // --- IDLE STATE: show thumbnail + play button ---
-                <div
-                  className={styles.btsThumbOverlay}
-                  style={thumbnail ? { backgroundImage: `url(${thumbnail})` } : { background: '#111' }}
-                  onClick={() => setIsPlaying(true)}
-                >
-                  {/* Play button circle */}
-                  <motion.div
-                    className={styles.bigPlayBtn}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                  </motion.div>
-                </div>
+                (() => {
+                  const fallbacks = getThumbnailFallbacks(activeItem);
+                  const currentThumb = fallbacks[thumbFallbackIdx] ?? null;
+                  return (
+                    <div
+                      className={styles.btsThumbOverlay}
+                      style={{ background: '#111', position: 'relative', overflow: 'hidden' }}
+                      onClick={() => setIsPlaying(true)}
+                    >
+                      {currentThumb && (
+                        <img
+                          key={currentThumb}
+                          src={currentThumb}
+                          alt={activeItem.title}
+                          onError={() => {
+                            if (thumbFallbackIdx < fallbacks.length - 1) {
+                              setThumbFallbackIdx(thumbFallbackIdx + 1);
+                            }
+                          }}
+                          style={{
+                            position: 'absolute',
+                            inset: 0,
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            borderRadius: '24px',
+                          }}
+                        />
+                      )}
+                      {/* Play button circle */}
+                      <motion.div
+                        className={styles.bigPlayBtn}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        style={{ position: 'relative', zIndex: 2 }}
+                      >
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </motion.div>
+                    </div>
+                  );
+                })()
               )}
             </div>
 
