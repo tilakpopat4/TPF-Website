@@ -114,3 +114,50 @@
   text-transform: uppercase;
   letter-spacing: 2px;
 }
+
+@media (max-width: 768px) {
+  .header {
+    margin-bottom: 3rem;
+  }
+
+  .header h2 {
+    font-size: 2.2rem;
+  }
+
+  .header p {
+    font-size: 1rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2rem;
+  }
+
+  .imageWrapper {
+    height: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header h2 {
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .imageWrapper {
+    height: 220px;
+  }
+
+  .name {
+    font-size: 1.2rem;
+  }
+
+  .info {
+    padding: 1rem;
+  }
+}

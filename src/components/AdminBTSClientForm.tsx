@@ -61,9 +61,18 @@ export default function AdminBTSClientForm({ btsItems }: { btsItems: any[] }) {
             placeholder="https://youtube.com/watch?v=..."
             className={styles.input}
             onChange={(e) => {
-              const val = e.target.value;
+              const val = e.target.value.trim();
               if (val && (val.includes('youtube') || val.includes('youtu.be'))) {
                 setVideoUrl(val);
+                // Auto-populate thumbnail from YouTube if not already set
+                if (!thumbnail) {
+                  const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                  const match = val.match(regExp);
+                  const videoId = match && match[2].length === 11 ? match[2] : null;
+                  if (videoId) setThumbnail(`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`);
+                }
+              } else {
+                setVideoUrl(null);
               }
             }}
           />
