@@ -210,6 +210,7 @@ export default function Hero() {
               src={logoUrl} 
               alt="TPF Logo" 
               className={styles.mainLogo}
+              style={{ transform: mounted && theme === 'light' ? 'scale(1.33)' : 'scale(1)' }}
             />
           </motion.div>
         </motion.div>
