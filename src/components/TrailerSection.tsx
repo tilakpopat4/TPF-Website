@@ -70,7 +70,8 @@ export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
   }
 
   const thumbnail = getDisplayThumbnail(activeItem); // still used for mini-thumbnails
-
+  const thumbFallbacks = getThumbnailFallbacks(activeItem);
+  const currentThumb = thumbFallbacks[thumbFallbackIdx] ?? null;
 
   return (
     <div className={styles.featuredPlayerContainer}>
@@ -110,49 +111,43 @@ export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
                 ) : null
               ) : (
                 // --- IDLE STATE: show thumbnail + play button ---
-                (() => {
-                  const fallbacks = getThumbnailFallbacks(activeItem);
-                  const currentThumb = fallbacks[thumbFallbackIdx] ?? null;
-                  return (
-                    <div
-                      className={styles.btsThumbOverlay}
-                      style={{ background: '#111', position: 'relative', overflow: 'hidden' }}
-                      onClick={() => setIsPlaying(true)}
-                    >
-                      {currentThumb && (
-                        <img
-                          key={currentThumb}
-                          src={currentThumb}
-                          alt={activeItem.title}
-                          onError={() => {
-                            if (thumbFallbackIdx < fallbacks.length - 1) {
-                              setThumbFallbackIdx(thumbFallbackIdx + 1);
-                            }
-                          }}
-                          style={{
-                            position: 'absolute',
-                            inset: 0,
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            borderRadius: '24px',
-                          }}
-                        />
-                      )}
-                      {/* Play button circle */}
-                      <motion.div
-                        className={styles.bigPlayBtn}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        style={{ position: 'relative', zIndex: 2 }}
-                      >
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M8 5v14l11-7z"/>
-                        </svg>
-                      </motion.div>
-                    </div>
-                  );
-                })()
+                <div
+                  className={styles.btsThumbOverlay}
+                  style={{ backgroundColor: '#111' }}
+                  onClick={() => setIsPlaying(true)}
+                >
+                  {currentThumb && (
+                    <img
+                      key={currentThumb}
+                      src={currentThumb}
+                      alt={activeItem.title}
+                      onError={() => {
+                        if (thumbFallbackIdx < thumbFallbacks.length - 1) {
+                          setThumbFallbackIdx(thumbFallbackIdx + 1);
+                        }
+                      }}
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        borderRadius: '24px',
+                      }}
+                    />
+                  )}
+                  {/* Play button circle */}
+                  <motion.div
+                    className={styles.bigPlayBtn}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    style={{ position: 'relative', zIndex: 2 }}
+                  >
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </motion.div>
+                </div>
               )}
             </div>
 
