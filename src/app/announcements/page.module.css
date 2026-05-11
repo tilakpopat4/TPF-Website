@@ -3,134 +3,107 @@
   padding-bottom: 5rem;
 }
 
-.contentGrid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 4rem;
-}
-
-@media (max-width: 1024px) {
-  .contentGrid {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-}
-
-.sectionTitle {
-  font-size: 1.8rem;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid var(--accent);
-  display: inline-block;
-  padding-bottom: 0.5rem;
-}
-
-.newsList {
+/* Single-column feed */
+.feed {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.newsCard {
-  border-radius: 12px;
+/* Card */
+.card {
+  border-radius: 16px;
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.newsCard:hover {
-  transform: translateY(-5px);
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
 }
 
-.newsImageWrapper {
+/* Image */
+.imageWrapper {
   width: 100%;
-  max-height: 400px;
+  max-height: 420px;
   overflow: hidden;
 }
 
-.newsImage {
+.cardImage {
   width: 100%;
   height: auto;
   object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
 }
 
-.newsContent {
-  padding: 2rem;
+.card:hover .cardImage {
+  transform: scale(1.03);
+}
+
+/* Card body */
+.cardBody {
+  padding: 1.75rem 2rem;
+}
+
+/* Meta row: tag + date */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: var(--accent);
+  color: var(--bg);
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.tagUpcoming {
+  background: transparent;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
 }
 
 .date {
-  font-size: 0.8rem;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.newsContent h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.newsContent p {
-  line-height: 1.6;
+  font-size: 0.78rem;
   color: var(--text-muted);
-}
-
-.upcomingList {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.upcomingCard {
-  padding: 1.5rem;
-  border-radius: 12px;
-}
-
-.projectHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.projectHeader h4 {
-  font-size: 1.2rem;
-  margin: 0;
-}
-
-.releaseTag {
-  font-size: 0.7rem;
-  background: var(--accent);
-  color: var(--bg);
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: 700;
-}
-
-.upcomingCard p {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  margin-bottom: 1.5rem;
-}
-
-.countdown {
-  display: flex;
-  flex-direction: column;
-}
-
-.countdown span {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  color: var(--accent);
   letter-spacing: 1px;
 }
 
-.countdown strong {
-  font-size: 1.1rem;
-  margin-top: 0.2rem;
+.cardTitle {
+  font-size: 1.5rem;
+  margin: 0 0 0.75rem;
+  line-height: 1.3;
+}
+
+.cardText {
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin: 0;
 }
 
 .emptyMsg {
   color: var(--text-muted);
   font-style: italic;
+  text-align: center;
+  padding: 3rem 0;
+}
+
+@media (max-width: 600px) {
+  .cardBody {
+    padding: 1.25rem 1.25rem;
+  }
+
+  .cardTitle {
+    font-size: 1.25rem;
+  }
 }
