@@ -28,7 +28,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, transparent 20%, rgba(0, 0, 0, 0.8) 120%);
+  background: radial-gradient(circle, transparent 20%, rgba(0, 0, 0, 0.4) 120%);
   pointer-events: none;
   z-index: 5;
 }
@@ -84,7 +84,7 @@
   justify-content: center;
   overflow: hidden;
   text-align: center;
-  background-color: #020202;
+  background-color: var(--bg);
 }
 
 .heroBackground {
@@ -94,7 +94,7 @@
   width: 100%;
   height: 100%;
   z-index: -1;
-  background: radial-gradient(circle at center, #111 0%, var(--bg) 100%);
+  background: radial-gradient(circle at center, var(--bg-secondary) 0%, var(--bg) 100%);
 }
 
 .orb1, .orb2 {
@@ -224,7 +224,8 @@
   left: 50%;
   transform: translateX(-50%);
   font-family: 'Courier New', Courier, monospace;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-muted);
+  opacity: 0.5;
   font-size: 0.9rem;
   letter-spacing: 4px;
   z-index: 21;
@@ -411,7 +412,7 @@
 }
 
 .tabBtn:hover {
-  color: #fff;
+  color: var(--text);
 }
 
 .tabActive {
@@ -556,7 +557,7 @@
   height: 8px;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--glass-border);
   cursor: pointer;
   transition: background 0.3s ease, transform 0.3s ease, width 0.3s ease;
   padding: 0;
@@ -739,7 +740,7 @@
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.2rem;
-  color: #fff;
+  color: var(--text);
   letter-spacing: -0.5px;
 }
 
@@ -752,7 +753,7 @@
 }
 
 .thumbnailList {
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--glass-border);
   padding-top: 2rem;
 }
 
@@ -785,7 +786,7 @@
   background-size: cover;
   background-position: center;
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
   overflow: hidden;
 }
 
@@ -805,7 +806,7 @@
 }
 
 .activeMini .miniTitle {
-  color: #fff;
+  color: var(--text);
 }
 
 .playingIndicator {
@@ -845,7 +846,7 @@
   height: 100%;
   background-size: cover;
   background-position: center;
-  background-color: #0a0a0a;
+  background-color: var(--bg-secondary);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -7,8 +7,8 @@
   padding: 1rem 0;
   border-bottom: 1px solid var(--glass-border);
   background: var(--surface);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   transition: var(--theme-transition);
 }
 
@@ -21,6 +21,75 @@
   padding: 0 2rem;
 }
 
+/* ──────────────────────────────
+   Theme Toggle — pill/track style
+────────────────────────────── */
+.themeToggle {
+  /* Reset button */
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  order: -1; /* Always first child visually */
+}
+
+.themeTrack {
+  display: flex;
+  align-items: center;
+  width: 52px;
+  height: 28px;
+  border-radius: 14px;
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--glass-border);
+  position: relative;
+  transition: background 0.35s ease, border-color 0.35s ease;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+}
+
+[data-theme="dark"] .themeTrack {
+  background: #1e1c17;
+  border-color: rgba(212, 175, 55, 0.25);
+}
+
+[data-theme="light"] .themeTrack {
+  background: #e8dfc8;
+  border-color: rgba(160, 120, 40, 0.3);
+}
+
+.themeThumb {
+  position: absolute;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.35s ease, color 0.35s ease;
+}
+
+[data-theme="dark"] .themeThumb {
+  transform: translateX(0px);
+  background: #3a3520;
+  color: #d4af37;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+[data-theme="light"] .themeThumb {
+  transform: translateX(24px);
+  background: #d4af37;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(160, 120, 40, 0.4);
+}
+
+.themeToggle:hover .themeTrack {
+  border-color: var(--accent);
+}
+
+/* ──────────────────────────────
+   Logo
+────────────────────────────── */
 .logo {
   font-family: var(--font-serif);
   font-size: 1.8rem;
@@ -28,39 +97,13 @@
   letter-spacing: 2px;
 }
 
+/* ──────────────────────────────
+   Nav Links
+────────────────────────────── */
 .links {
   display: flex;
   gap: 2rem;
   align-items: center;
-}
-
-.rightControls {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-left: auto;
-}
-
-.themeToggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.2rem;
-  height: 2.2rem;
-  border-radius: 50%;
-  background: var(--surface);
-  border: 1px solid var(--glass-border);
-  color: var(--text);
-  cursor: pointer;
-  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-  flex-shrink: 0;
-}
-
-.themeToggle:hover {
-  background: var(--accent);
-  color: #fff;
-  transform: rotate(20deg) scale(1.1);
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.45);
 }
 
 .link {
@@ -72,21 +115,31 @@
 }
 
 .link:hover {
-  color: var(--primary);
+  color: var(--accent);
 }
 
 .cta {
-  background: var(--primary-gradient);
+  background: var(--primary-gradient, linear-gradient(135deg, #d4af37, #a07828));
   padding: 0.6rem 1.2rem;
   border-radius: 8px;
-  color: white !important;
+  color: #fff !important;
   font-weight: 600;
   margin-left: 1rem;
   text-transform: none;
   font-size: 0.9rem;
-  box-shadow: 0 4px 15px rgba(255, 61, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
+.cta:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  color: #fff !important;
+}
+
+/* ──────────────────────────────
+   Hamburger (mobile)
+────────────────────────────── */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -122,13 +175,12 @@
   transform: rotate(-45deg);
 }
 
+/* ──────────────────────────────
+   Mobile Responsive
+────────────────────────────── */
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
-  }
-
-  .rightControls {
-    margin-left: auto;
   }
 
   .links {
@@ -160,5 +212,10 @@
     margin-left: 0;
     font-size: 1.2rem;
     padding: 1rem 2rem;
+  }
+
+  /* Keep toggle visible on mobile, hamburger still on the right */
+  .themeToggle {
+    order: -1;
   }
 }
