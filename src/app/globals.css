@@ -12,6 +12,20 @@
   
   --font-sans: 'Inter', sans-serif;
   --font-serif: 'Playfair Display', serif;
+
+  /* Theme transition */
+  --theme-transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+[data-theme="light"] {
+  --bg: #f5f3ef;
+  --bg-secondary: #eceae4;
+  --surface: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --accent: #b8943f;
+  --accent-hover: #d4af37;
+  --text: #1a1a1a;
+  --text-muted: #555555;
 }
 
 html {
@@ -28,6 +42,7 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: var(--theme-transition);
 }
 
 * {
