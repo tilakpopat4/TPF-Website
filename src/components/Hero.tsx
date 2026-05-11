@@ -20,8 +20,14 @@ export default function Hero() {
   const textOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Provide correct logo based on theme
-  const logoUrl = theme === 'light' ? '/tpf-logo-light.png' : '/tpf-logo-new.png';
+  const logoUrl = mounted && theme === 'light' ? '/tpf-logo-light.png' : '/tpf-logo-new.png';
 
   // Particle generator
   const [particles, setParticles] = useState<Particle[]>([]);
