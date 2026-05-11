@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import Hero from "@/components/Hero";
 import HomeTabs from "@/components/HomeTabs";
 import TrailerSection from "@/components/TrailerSection";
+import LatestCreation from "@/components/LatestCreation";
 import { getYouTubeEmbedUrl, isYouTubeUrl } from "@/utils/youtube";
 import styles from "./page.module.css";
 
@@ -25,11 +26,26 @@ export default async function Home() {
     console.error('BehindTheScene table not yet available:', e);
   }
 
+  let latestCreationUrl = '';
+  let latestCreationTitle = '';
+  try {
+    const urlSetting = await prisma.settings.findUnique({ where: { key: 'latestCreationUrl' } });
+    const titleSetting = await prisma.settings.findUnique({ where: { key: 'latestCreationTitle' } });
+    latestCreationUrl = urlSetting?.value || '';
+    latestCreationTitle = titleSetting?.value || '';
+  } catch (e) {
+    console.error('Settings table not yet available:', e);
+  }
+
   return (
     <div className={styles.main}>
       {/* Dynamic Animated Hero Section */}
       <Hero />
 
+      {/* Latest Creation — big YouTube player (shown only when set) */}
+      {latestCreationUrl && (
+        <LatestCreation youtubeUrl={latestCreationUrl} title={latestCreationTitle} />
+      )}
       {/* Tabbed Content Section (Projects & Announcements) */}
       <section id="projects" className="section container">
         <HomeTabs initialProjects={projects} announcements={announcements} />

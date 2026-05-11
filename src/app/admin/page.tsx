@@ -9,6 +9,7 @@ import AdminPosterClientForm from "@/components/AdminPosterClientForm"
 import AdminAnnouncementClientForm from "@/components/AdminAnnouncementClientForm"
 import AdminBTSClientForm from "@/components/AdminBTSClientForm"
 import AdminSpotifyForm from "@/components/AdminSpotifyForm"
+import AdminLatestCreationForm from "@/components/AdminLatestCreationForm"
 
 export const dynamic = 'force-dynamic';
 
@@ -35,6 +36,17 @@ export default async function AdminPage() {
     console.error('Settings table not yet available:', e);
   }
 
+  let latestCreationUrl = '';
+  let latestCreationTitle = '';
+  try {
+    const urlS = await prisma.settings.findUnique({ where: { key: 'latestCreationUrl' } });
+    const titleS = await prisma.settings.findUnique({ where: { key: 'latestCreationTitle' } });
+    latestCreationUrl = urlS?.value || '';
+    latestCreationTitle = titleS?.value || '';
+  } catch (e) {
+    console.error('Settings table not yet available:', e);
+  }
+
   return (
     <div className={`container ${styles.adminPanel}`}>
       <div className={styles.header}>
@@ -43,6 +55,15 @@ export default async function AdminPage() {
       </div>
 
       <div className={styles.grid}>
+
+        {/* Latest Creation Section */}
+        <section className={`${styles.card} glass`}>
+          <h2>🎬 Latest Creation (Homepage Feature)</h2>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+            Set a YouTube video to show as a big featured player on the homepage, right below the logo.
+          </p>
+          <AdminLatestCreationForm currentUrl={latestCreationUrl} currentTitle={latestCreationTitle} />
+        </section>
 
         {/* Projects Section */}
         <section className={`${styles.card} glass`}>
