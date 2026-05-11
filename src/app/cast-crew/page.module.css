@@ -94,7 +94,7 @@
 }
 
 .socials span:hover {
-  color: #fff;
+  color: var(--text);
 }
 
 .info {

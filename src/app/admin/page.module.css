@@ -55,8 +55,8 @@
 }
 
 .tabLink:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  background: var(--surface);
+  color: var(--text);
 }
 
 .activeTabLink {
@@ -144,7 +144,7 @@
 }
 
 .list::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface);
   border-radius: 4px;
 }
 
@@ -254,7 +254,7 @@
 }
 
 .aspectBtn:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface);
   color: var(--text);
 }
 
@@ -293,21 +293,21 @@
   flex: 1;
   padding: 12px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--glass-border);
   color: var(--text);
   font-weight: 600;
   transition: all 0.3s ease;
 }
 
 .cancelBtn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--surface);
 }
 
 .skipBtn {
   flex: 1;
   padding: 12px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface);
   border: 1px solid var(--glass-border);
   color: var(--text);
   font-weight: 500;
@@ -315,7 +315,7 @@
 }
 
 .skipBtn:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--glass-border);
   border-color: var(--accent);
 }
 
@@ -341,7 +341,7 @@
 
 .fileInputWrapper:hover {
   border-color: var(--accent);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface);
 }
 
 .fileInput {

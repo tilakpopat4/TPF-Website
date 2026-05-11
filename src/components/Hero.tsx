@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import styles from '@/app/page.module.css';
+import { useTheme } from './ThemeProvider';
 
 // Type for particle
 type Particle = { id: number; y: number; x: number; scale: number; dur: number; delay: number };
@@ -18,8 +19,9 @@ export default function Hero() {
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "80%"]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  // Direct link to the locally downloaded TPF logo
-  const logoUrl = "/tpf-logo-new.png";
+  const { theme } = useTheme();
+  // Provide correct logo based on theme
+  const logoUrl = theme === 'light' ? '/tpf-logo-light.png' : '/tpf-logo-new.png';
 
   // Particle generator
   const [particles, setParticles] = useState<Particle[]>([]);

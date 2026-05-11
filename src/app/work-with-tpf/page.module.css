@@ -29,42 +29,42 @@
 }
 
 .input, .select, .textarea {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface);
   border: 1px solid var(--glass-border);
   border-radius: 10px;
   padding: 0.8rem 1rem;
-  color: var(--foreground);
+  color: var(--text);
   font-size: 1rem;
   transition: all 0.3s ease;
 }
 
 .input:focus, .select:focus, .textarea:focus {
   outline: none;
-  border-color: var(--primary);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 10px rgba(255, 61, 0, 0.2);
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
 }
 
 .select option {
-  background: #1a1a1a;
-  color: white;
+  background: var(--bg-secondary);
+  color: var(--text);
 }
 
 .btn {
-  background: var(--primary-gradient);
-  color: white;
+  background: var(--accent);
+  color: var(--bg);
   padding: 1rem;
   border-radius: 12px;
   font-weight: 600;
   font-size: 1.1rem;
   margin-top: 1rem;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 61, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
 }
 
 .btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 61, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
 }
 
 .btn:disabled {

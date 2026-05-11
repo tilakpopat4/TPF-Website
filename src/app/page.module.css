@@ -678,7 +678,7 @@
 .projectInfo h3 {
   font-size: 1.8rem;
   margin-bottom: 0.5rem;
-  color: #fff;
+  color: #fff; /* Ensure this stays white as it's over a dark overlay */
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
   font-weight: 600;
   letter-spacing: 0.5px;

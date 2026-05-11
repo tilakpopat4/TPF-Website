@@ -131,10 +131,13 @@
   transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
+[data-theme="light"] .cta {
+  color: #fff !important; /* Button background is gold, needs white text */
+}
+
 .cta:hover {
   opacity: 0.9;
   transform: translateY(-1px);
-  color: #fff !important;
 }
 
 /* ──────────────────────────────
