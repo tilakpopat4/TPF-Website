@@ -1,0 +1,109 @@
+.footer {
+  background: #050505;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  padding: 2.5rem 0 2rem;
+}
+
+/* Gold glow line at the very top */
+.divider {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #d4af37, transparent);
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.5);
+  border-radius: 2px;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Brand */
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.brandName {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #d4af37;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.brandTag {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* Socials */
+.socials {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.socialLink:hover {
+  color: #d4af37;
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.07);
+  transform: translateY(-2px);
+}
+
+.socialLabel {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Copyright */
+.copy {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.5px;
+  margin: 0;
+  text-align: center;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .socials {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .socialLink {
+    padding: 0.5rem 0.9rem;
+  }
+
+  .brandName { font-size: 1.4rem; }
+}

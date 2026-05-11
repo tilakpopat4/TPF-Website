@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "@uploadthing/react/styles.css";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "TPF | Tilak Popat Films",
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body>
         <Navbar />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );
