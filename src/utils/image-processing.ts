@@ -22,9 +22,20 @@ export async function getCroppedImg(
     return null
   }
 
+  const MAX_WIDTH = 1920
+  const MAX_HEIGHT = 1920
+  let targetWidth = pixelCrop.width
+  let targetHeight = pixelCrop.height
+
+  if (targetWidth > MAX_WIDTH || targetHeight > MAX_HEIGHT) {
+    const ratio = Math.min(MAX_WIDTH / targetWidth, MAX_HEIGHT / targetHeight)
+    targetWidth = targetWidth * ratio
+    targetHeight = targetHeight * ratio
+  }
+
   // set canvas size to match the desired crop size
-  canvas.width = pixelCrop.width
-  canvas.height = pixelCrop.height
+  canvas.width = targetWidth
+  canvas.height = targetHeight
 
   // draw cropped image onto canvas
   ctx.drawImage(
@@ -35,14 +46,14 @@ export async function getCroppedImg(
     pixelCrop.height,
     0,
     0,
-    pixelCrop.width,
-    pixelCrop.height
+    targetWidth,
+    targetHeight
   )
 
   // As a blob
   return new Promise((resolve) => {
     canvas.toBlob((blob) => {
       resolve(blob)
-    }, 'image/jpeg')
+    }, 'image/jpeg', 0.85)
   })
 }
