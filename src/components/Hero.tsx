@@ -26,8 +26,7 @@ export default function Hero() {
     setMounted(true);
   }, []);
 
-  // Provide correct logo based on theme
-  const logoUrl = mounted && theme === 'light' ? '/tpf-logo-light.png' : '/tpf-logo-new.png';
+
 
   // Particle generator
   const [particles, setParticles] = useState<Particle[]>([]);
@@ -205,13 +204,34 @@ export default function Hero() {
               ease: "easeInOut"
             }}
           >
-            {/* Main Logo Image */}
-            <img 
-              src={logoUrl} 
-              alt="TPF Logo" 
-              className={styles.mainLogo}
-              style={{ transform: mounted && theme === 'light' ? 'scale(1.33)' : 'scale(1)' }}
-            />
+            {/* Stacked Logos for instant zero-delay theme switching */}
+            <div style={{ display: 'grid', placeItems: 'center' }}>
+              {/* Dark Theme Logo (White) */}
+              <img 
+                src="/tpf-logo-new.png" 
+                alt="TPF Logo" 
+                className={styles.mainLogo}
+                style={{ 
+                  gridArea: '1 / 1',
+                  opacity: mounted && theme === 'light' ? 0 : 1,
+                  transition: 'opacity 0.4s ease',
+                  pointerEvents: mounted && theme === 'light' ? 'none' : 'auto'
+                }}
+              />
+              {/* Light Theme Logo (Black) */}
+              <img 
+                src="/tpf-logo-light.png" 
+                alt="TPF Logo Light" 
+                className={styles.mainLogo}
+                style={{ 
+                  gridArea: '1 / 1',
+                  opacity: mounted && theme === 'light' ? 1 : 0,
+                  transition: 'opacity 0.4s ease',
+                  transform: 'scale(1.33)',
+                  pointerEvents: mounted && theme === 'light' ? 'auto' : 'none'
+                }}
+              />
+            </div>
           </motion.div>
         </motion.div>
 
