@@ -82,6 +82,7 @@ button {
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
   will-change: transform;
+  transition: var(--theme-transition);
 }
 
 .cinematic-glow {
