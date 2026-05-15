@@ -1000,6 +1000,12 @@
     filter: none !important;
     display: none !important;
   }
+  
+  /* Instant theme shift to prevent backdrop-filter lag */
+  .heroBackground::after,
+  .trailerSection {
+    transition: none !important;
+  }
 }
 
 @media (max-width: 1024px) {
