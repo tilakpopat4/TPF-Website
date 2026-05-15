@@ -1,9 +1,18 @@
-import type { Metadata } from "next";
+
 import "./globals.css";
 import "@uploadthing/react/styles.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+
+import type { Metadata, Viewport } from "next";
+
+export const viewport: Viewport = {
+  themeColor: '#000000',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
 
 export const metadata: Metadata = {
   title: "TPF | Tilak Popat Films",
@@ -12,6 +21,11 @@ export const metadata: Metadata = {
   icons: {
     icon: "/tpf-logo-new.png",
     apple: "/tpf-logo-new.png",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "TPF Admin",
   },
 };
 
