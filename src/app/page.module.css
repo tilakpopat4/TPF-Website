@@ -692,7 +692,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 4rem 2rem 2rem 2rem;
+  padding: 3rem 1.5rem 1.5rem 1.5rem;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 40%, transparent 100%);
   display: flex;
   flex-direction: column;
@@ -701,8 +701,8 @@
 }
 
 .projectInfo h3 {
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.6rem;
+  margin-bottom: 0.4rem;
   color: #fff; /* Ensure this stays white as it's over a dark overlay */
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
   font-weight: 600;
@@ -711,9 +711,15 @@
 
 .projectInfo p {
   color: #e0e0e0;
-  line-height: 1.5;
+  line-height: 1.45;
   margin-bottom: 0;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 1);
+  font-size: 0.88rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* --- Trailer Section --- */
