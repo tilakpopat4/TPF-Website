@@ -12,7 +12,7 @@ function getSpotifyEmbedUrl(rawUrl: string | null): string | null {
 }
 
 export default async function MusicPage() {
-  const musicTracks = await prisma.music.findMany({ orderBy: { createdAt: 'desc' } });
+  const musicTracks = await prisma.music.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
 
   let spotifyUrl = 'https://open.spotify.com/episode/5H3x5h6Vxghl6VA0Dcu3uN'; // fallback
   try {

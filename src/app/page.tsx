@@ -15,13 +15,13 @@ export default async function Home() {
         { id: '1', title: 'The Echoes of Silence', description: 'A gripping thriller by TPF.', trailerUrl: '', bannerUrl: '' },
         { id: '2', title: 'Neon Nights', description: 'Cyberpunk short film.', trailerUrl: '', bannerUrl: '' }
       ]
-    : await prisma.project.findMany({ take: 10, orderBy: { createdAt: 'desc' } });
+    : await prisma.project.findMany({ take: 10, orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
 
-  const announcements = await prisma.announcement.findMany({ take: 3, orderBy: { createdAt: 'desc' } });
+  const announcements = await prisma.announcement.findMany({ take: 3, orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
   
   let btsItems: any[] = [];
   try {
-    btsItems = await prisma.behindTheScene.findMany({ take: 5, orderBy: { createdAt: 'desc' } });
+    btsItems = await prisma.behindTheScene.findMany({ take: 5, orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
   } catch (e) {
     console.error('BehindTheScene table not yet available:', e);
   }

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 }
 
 export default async function AnnouncementsPage() {
-  const announcements = await prisma.announcement.findMany({ orderBy: { createdAt: 'desc' } })
+  const announcements = await prisma.announcement.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] })
   const upcomingProjects = await prisma.project.findMany({
     where: { releaseDate: { gte: new Date() } },
     orderBy: { releaseDate: 'asc' }

@@ -13,7 +13,7 @@ export default async function CastCrewPage() {
         { id: '3', name: 'Jane Smith', role: 'Lead Actress', imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400' },
         { id: '4', name: 'Alex Johnson', role: 'Music Composer', imageUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=400' }
       ]
-    : await prisma.castCrew.findMany({ orderBy: { createdAt: 'desc' } });
+    : await prisma.castCrew.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
 
   return (
     <div className={styles.main}>

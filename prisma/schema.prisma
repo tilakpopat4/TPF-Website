@@ -18,6 +18,7 @@ model Project {
   bannerUrl   String?
   youtubeUrl  String?
   releaseDate DateTime?
+  order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -27,6 +28,7 @@ model BehindTheScene {
   title     String
   videoUrl  String?
   thumbnail String?
+  order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -36,6 +38,7 @@ model Music {
   title     String
   audioUrl  String
   posterUrl String?
+  order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -45,6 +48,7 @@ model CastCrew {
   name      String
   role      String
   imageUrl  String?
+  order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -53,6 +57,7 @@ model Poster {
   id        String   @id @default(cuid())
   title     String
   imageUrl  String
+  order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -62,6 +67,7 @@ model Announcement {
   title     String
   content   String
   imageUrl  String?
+  order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

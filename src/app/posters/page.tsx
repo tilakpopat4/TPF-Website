@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 export default async function PostersPage() {
-  const posters = await prisma.poster.findMany({ orderBy: { createdAt: 'desc' } })
+  const posters = await prisma.poster.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] })
 
   return (
     <main className={styles.main}>
