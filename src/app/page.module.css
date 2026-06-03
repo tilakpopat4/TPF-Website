@@ -193,13 +193,17 @@
 /* Viewfinder Elements */
 .viewfinder {
   position: absolute;
-  top: 40px;
+  top: calc(8vh + 25px);
+  bottom: calc(8vh + 25px);
   left: 40px;
   right: 40px;
-  bottom: 40px;
   pointer-events: none;
   z-index: 20;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+:global([data-theme="light"]) .viewfinder {
+  border-color: rgba(0, 0, 0, 0.03);
 }
 
 .bracket {
@@ -209,6 +213,10 @@
   border: 2px solid rgba(212, 175, 55, 0.4);
 }
 
+:global([data-theme="light"]) .bracket {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
 .topLeft { top: 0; left: 0; border-right: 0; border-bottom: 0; }
 .topRight { top: 0; right: 0; border-left: 0; border-bottom: 0; }
 .bottomLeft { bottom: 0; left: 0; border-right: 0; border-top: 0; }
@@ -216,7 +224,7 @@
 
 .recIndicator {
   position: absolute;
-  top: 2rem;
+  top: calc(8vh + 2rem);
   right: 2rem;
   display: flex;
   align-items: center;
@@ -245,7 +253,7 @@
 
 .timecode {
   position: absolute;
-  bottom: 2rem;
+  bottom: calc(8vh + 2rem);
   left: 50%;
   transform: translateX(-50%);
   font-family: 'Courier New', Courier, monospace;
@@ -256,44 +264,29 @@
   z-index: 21;
 }
 
-/* Floating Assets */
-.floatingAssets {
+/* Widescreen Cinematic Letterbox */
+.letterboxTop, .letterboxBottom {
   position: absolute;
-  top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 8vh;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 25;
   pointer-events: none;
-  z-index: 10;
-  overflow: hidden;
+  transition: all 0.5s ease;
 }
-
-.assetIcon {
-  position: absolute;
-  color: var(--accent);
-  opacity: 0.15;
-  filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.3));
+.letterboxTop {
+  top: 0;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
 }
-
-.clapperboardPos {
-  top: 40%;
-  left: 10%;
-  width: 120px;
-  height: auto;
+.letterboxBottom {
+  bottom: 0;
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
 }
-
-.reelPos {
-  top: 15%;
-  right: 15%;
-  width: 150px;
-  height: auto;
-}
-
-.filmStripPos {
-  bottom: 15%;
-  right: 10%;
-  width: 180px;
-  height: auto;
+:global([data-theme="light"]) .letterboxTop,
+:global([data-theme="light"]) .letterboxBottom {
+  background: rgba(247, 244, 239, 0.96);
+  border-color: rgba(0, 0, 0, 0.05);
 }
 
 .heroContent {
@@ -318,8 +311,25 @@
   max-width: 900px;
   max-height: 450px;
   object-fit: contain;
-  filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.3));
+  filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.2));
   transition: filter 0.5s ease;
+}
+
+.shimmerSweep {
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(212, 175, 55, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  pointer-events: none;
+  z-index: 12;
 }
 
 .logoContainer::after {
@@ -328,17 +338,17 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
-  filter: blur(50px);
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, transparent 70%);
+  filter: blur(60px);
   z-index: -1;
-  animation: pulseGlow 4s infinite ease-in-out;
+  animation: pulseGlow 5s infinite ease-in-out;
 }
 
 @keyframes pulseGlow {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-  50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.8; }
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+  50% { transform: translate(-50%, -50%) scale(1.4); opacity: 0.7; }
 }
 
 .heroTitle {
@@ -368,21 +378,61 @@
 
 .ctaButton {
   margin-top: 2rem;
-  padding: 1rem 2.5rem;
-  font-size: 1.1rem;
-  font-weight: 500;
+  padding: 1.1rem 3rem;
+  font-size: 1rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--bg);
-  background-color: var(--accent);
+  letter-spacing: 3px;
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.5);
   border-radius: 4px;
-  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+:global([data-theme="light"]) .ctaButton {
+  color: #000;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.ctaButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 175, 55, 0.2),
+    transparent
+  );
+  transition: all 0.6s ease;
+  z-index: -1;
+}
+
+.ctaButton:hover::before {
+  left: 100%;
 }
 
 .ctaButton:hover {
-  background-color: var(--accent-hover);
-  color: var(--bg);
+  color: #000;
+  background-color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
   transform: translateY(-2px);
+}
+
+:global([data-theme="light"]) .ctaButton:hover {
+  color: #fff;
+  background-color: #000;
+  border-color: #000;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* --- Shared Sections --- */
@@ -447,12 +497,12 @@
 .tabActive::after {
   content: '';
   position: absolute;
-  bottom: -1rem;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--accent);
-  box-shadow: 0 0 10px var(--accent);
+  bottom: -1.05rem;
+  left: 10%;
+  width: 80%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  box-shadow: 0 0 15px var(--accent);
 }
 
 .homeAnnGrid {
@@ -463,6 +513,7 @@
   margin: 0 auto;
 }
 
+/* Home Announcement Cards */
 .homeAnnCard {
   display: flex;
   gap: 2rem;
@@ -470,6 +521,30 @@
   border-radius: 12px;
   align-items: center;
   flex-wrap: wrap;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(15, 15, 15, 0.4);
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+:global([data-theme="light"]) .homeAnnCard {
+  border-color: rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
+}
+
+.homeAnnCard:hover {
+  border-color: rgba(212, 175, 55, 0.3);
+  background: rgba(20, 20, 20, 0.5);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  transform: translateY(-3px);
+}
+
+:global([data-theme="light"]) .homeAnnCard:hover {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(247, 244, 239, 0.6);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .homeAnnImg {
@@ -598,16 +673,31 @@
 .projectCard {
   border-radius: 12px;
   overflow: hidden;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
   position: relative;
   min-height: 400px;
   display: flex; /* Kept for fallback alignment */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(10, 10, 10, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+:global([data-theme="light"]) .projectCard {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .projectCard:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+  transform: translateY(-10px) scale(1.01);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(212, 175, 55, 0.3);
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+:global([data-theme="light"]) .projectCard:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 .projectCard:hover .projectImagePlaceholder {
@@ -748,9 +838,16 @@
   height: 0;
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.8),
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9),
+              0 0 80px rgba(212, 175, 55, 0.06),
               0 0 0 1px rgba(255, 255, 255, 0.05);
   background: #000;
+  transition: all 0.5s ease;
+}
+
+:global([data-theme="light"]) .playerFrame {
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15),
+              0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .iframe {

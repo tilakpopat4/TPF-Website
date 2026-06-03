@@ -86,71 +86,9 @@ export default function Hero() {
         <div className={styles.orb2}></div>
         <div className={styles.filmStripAnim}></div>
         
-        {/* Floating Filmmaking Assets */}
-        <div className={styles.floatingAssets}>
-          {/* Clapperboard - Left */}
-          <motion.div 
-            className={`${styles.assetIcon} ${styles.clapperboardPos}`}
-            animate={{ 
-              y: [0, -40, 0],
-              rotate: [-15, -10, -15],
-              scale: [1, 1.05, 1]
-            }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          >
-             <svg viewBox="0 0 24 24" width="100%" height="100%" fill="currentColor">
-                <path d="M20.2 6L3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5L13.5 3c1.1-.3 2.2.3 2.5 1.3L17 7h3.2c.4 0 .8.4.8.8V19c0 .6-.4 1-1 1H4c-.6 0-1-.4-1-1V9l17.2-5h1c.6 0 1 .4 1 1v1c0 .6-.4 1-1 1zM4 11v8h16v-8H4z" />
-             </svg>
-          </motion.div>
-
-          {/* Film Reel - Top Right */}
-          <motion.div 
-            className={`${styles.assetIcon} ${styles.reelPos}`}
-            animate={{ 
-              y: [0, 50, 0],
-              rotate: [0, 360],
-              scale: [0.9, 1.1, 0.9]
-            }}
-            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          >
-             <svg viewBox="0 0 24 24" width="100%" height="100%" fill="none" stroke="currentColor" strokeWidth="1">
-                <circle cx="12" cy="12" r="10" />
-                <circle cx="12" cy="12" r="2" fill="currentColor" />
-                <circle cx="12" cy="7" r="1.5" fill="currentColor" />
-                <circle cx="12" cy="17" r="1.5" fill="currentColor" />
-                <circle cx="7" cy="12" r="1.5" fill="currentColor" />
-                <circle cx="17" cy="12" r="1.5" fill="currentColor" />
-             </svg>
-          </motion.div>
-
-          {/* Film Strip - Bottom Right */}
-          <motion.div 
-            className={`${styles.assetIcon} ${styles.filmStripPos}`}
-            animate={{ 
-              x: [0, -30, 0],
-              y: [0, -20, 0],
-              rotate: [10, 15, 10]
-            }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          >
-             <svg viewBox="0 0 24 24" width="100%" height="100%" fill="none" stroke="currentColor" strokeWidth="1">
-                <rect x="3" y="2" width="18" height="20" rx="2" />
-                <path d="M3 7h18" />
-                <path d="M3 12h18" />
-                <path d="M3 17h18" />
-                <path d="M7 2v20" />
-                <path d="M17 2v20" />
-                <circle cx="5" cy="4.5" r="1" fill="currentColor" />
-                <circle cx="5" cy="9.5" r="1" fill="currentColor" />
-                <circle cx="5" cy="14.5" r="1" fill="currentColor" />
-                <circle cx="5" cy="19.5" r="1" fill="currentColor" />
-                <circle cx="19" cy="4.5" r="1" fill="currentColor" />
-                <circle cx="19" cy="9.5" r="1" fill="currentColor" />
-                <circle cx="19" cy="14.5" r="1" fill="currentColor" />
-                <circle cx="19" cy="19.5" r="1" fill="currentColor" />
-             </svg>
-          </motion.div>
-        </div>
+        {/* Widescreen borders */}
+        <div className={styles.letterboxTop}></div>
+        <div className={styles.letterboxBottom}></div>
 
         {/* Floating Particles */}
         {particles.map((p) => (
@@ -184,28 +122,26 @@ export default function Hero() {
         style={{ y: textY, opacity: textOpacity }}
       >
         <motion.div
-          initial={{ scale: 0.5, opacity: 0, rotateY: 90 }}
-          whileInView={{ scale: 1, opacity: 1, rotateY: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.5, type: "spring", bounce: 0.5, delay: 0.3 }}
-          style={{ transformStyle: "preserve-3d" }}
+          initial={{ filter: "blur(25px)", opacity: 0, scale: 0.85 }}
+          animate={{ filter: "blur(0px)", opacity: 1, scale: 1 }}
+          transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
           className={styles.logoContainer}
         >
           {/* Continuous Floating Motion */}
           <motion.div
             animate={{
-              y: [0, -20, 0],
-              rotateX: [0, 5, -5, 0],
-              rotateY: [0, 5, -5, 0]
+              y: [0, -12, 0],
+              rotate: [0, 0.5, -0.5, 0]
             }}
             transition={{
-              duration: 6,
+              duration: 8,
               repeat: Infinity,
               ease: "easeInOut"
             }}
+            style={{ position: 'relative', overflow: 'hidden' }}
           >
             {/* Stacked Logos for instant zero-delay theme switching */}
-            <div style={{ display: 'grid', placeItems: 'center' }}>
+            <div style={{ display: 'grid', placeItems: 'center', position: 'relative' }}>
               {/* Dark Theme Logo (White) */}
               <img 
                 src="/tpf-logo-new.png" 
@@ -230,6 +166,20 @@ export default function Hero() {
                   transform: 'scale(1.33)',
                   pointerEvents: mounted && theme === 'light' ? 'auto' : 'none'
                 }}
+              />
+              
+              {/* Lens Shimmer Sweep Animation Overlay */}
+              <motion.div
+                initial={{ left: '-150%' }}
+                animate={{ left: '150%' }}
+                transition={{
+                  duration: 2.5,
+                  ease: "easeInOut",
+                  delay: 2.0, // Sweep starting when focus resolves
+                  repeat: Infinity,
+                  repeatDelay: 6 // Sweeps periodically
+                }}
+                className={styles.shimmerSweep}
               />
             </div>
           </motion.div>
