@@ -102,19 +102,6 @@ export default function Hero() {
                 }}
               />
               
-              {/* Lens Shimmer Sweep Animation Overlay */}
-              <motion.div
-                initial={{ left: '-150%' }}
-                animate={{ left: '150%' }}
-                transition={{
-                  duration: 2.5,
-                  ease: "easeInOut",
-                  delay: 2.0, // Sweep starting when focus resolves
-                  repeat: Infinity,
-                  repeatDelay: 6 // Sweeps periodically
-                }}
-                className={styles.shimmerSweep}
-              />
             </div>
           </motion.div>
         </motion.div>
