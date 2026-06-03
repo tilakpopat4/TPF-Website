@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import Hero from "@/components/Hero";
 import ProjectsGrid from "@/components/ProjectsGrid";
 import TrailerSection from "@/components/TrailerSection";
+import LatestCreation from "@/components/LatestCreation";
 import styles from "./page.module.css";
 
 export const dynamic = 'force-dynamic';
@@ -24,10 +25,26 @@ export default async function Home() {
     console.error('BehindTheScene table not yet available:', e);
   }
 
+  let latestCreationUrl = '';
+  let latestCreationTitle = '';
+  try {
+    const urlSetting = await prisma.settings.findUnique({ where: { key: 'latestCreationUrl' } });
+    const titleSetting = await prisma.settings.findUnique({ where: { key: 'latestCreationTitle' } });
+    latestCreationUrl = urlSetting?.value || '';
+    latestCreationTitle = titleSetting?.value || '';
+  } catch (e) {
+    console.error('Settings table not yet available:', e);
+  }
+
   return (
     <div className={styles.main}>
       {/* Dynamic Animated Widescreen Hero Section with filmstrip background */}
       <Hero projects={projects} />
+
+      {/* Latest Creation — big YouTube player (shown only when set) */}
+      {latestCreationUrl && (
+        <LatestCreation youtubeUrl={latestCreationUrl} title={latestCreationTitle} />
+      )}
 
       {/* Featured Projects horizontal grid section */}
       <section id="projects" className="section container" style={{ padding: '6rem 0 8rem 0' }}>
@@ -55,3 +72,4 @@ export default async function Home() {
     </div>
   );
 }
+
