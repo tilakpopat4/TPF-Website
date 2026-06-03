@@ -1,8 +1,14 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import prisma from "@/lib/prisma";
+import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Our Cast & Crew | The Creative Team',
+  description: 'Meet the talented directors, cinematographers, editors, and actors behind the camera at Tilak Popat Films (TPF).',
+};
 
 export default async function CastCrewPage() {
   const crewCount = await prisma.castCrew.count();
