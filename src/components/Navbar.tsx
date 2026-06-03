@@ -31,7 +31,7 @@ export default function Navbar() {
               src="/tpf-logo-light.png" 
               alt="TPF Logo" 
               className={styles.logoImg}
-              style={{ display: theme === 'light' ? 'block' : 'none', transform: 'scale(1.2)' }}
+              style={{ display: theme === 'light' ? 'block' : 'none' }}
             />
           </Link>
         </div>
