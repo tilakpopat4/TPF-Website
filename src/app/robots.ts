@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/admin/', '/admin'],
     },
-    sitemap: 'https://tilakpopatfilms.in/sitemap.xml',
+    sitemap: 'https://tilakpopatfilms.online/sitemap.xml',
   }
 }

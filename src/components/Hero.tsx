@@ -94,6 +94,7 @@ export default function Hero({ projects = [] }: HeroProps) {
           transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
           className={styles.logoContainer}
         >
+          <h1 className="sr-only">Tilak Popat Films (TPF) | Premier Film & Video Production House India</h1>
           {/* Continuous Floating Motion */}
           <motion.div
             animate={{

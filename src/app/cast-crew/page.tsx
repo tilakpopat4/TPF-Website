@@ -25,7 +25,7 @@ export default async function CastCrewPage() {
     <div className={styles.main}>
       <section className="container section">
         <div className={styles.header}>
-          <h2>Meet The <span className="text-gradient">Team</span></h2>
+          <h1>Meet The <span className="text-gradient">Team</span></h1>
           <p>The visionaries behind the lens and on the screen.</p>
           <div className="line" style={{ margin: '1rem auto 0' }}></div>
         </div>

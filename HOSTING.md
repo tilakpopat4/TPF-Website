@@ -1,11 +1,11 @@
 # Production Deployment & Hosting Guide for Tilak Popat Films (TPF)
 
-This document provides a step-by-step guide to hosting your website on your custom domain **`tilakpopatfilms.in`** for 1 year.
+This document provides a step-by-step guide to hosting your website on your custom domain **`tilakpopatfilms.online`** for 1 year.
 
 ---
 
 ## 1. Domain Registration
-Before starting, purchase the domain `tilakpopatfilms.in` from a registrar.
+Before starting, purchase the domain `tilakpopatfilms.online` from a registrar.
 - **Recommended Registrars**: Hostinger, GoDaddy, or Namecheap.
 - **Duration**: Choose the **1-year** option.
 - **Tip**: Make sure to enable DNS management access (provided by default with all registrars).
@@ -45,11 +45,11 @@ Vercel is the official platform for hosting Next.js projects. It offers a free *
 
 ---
 
-## 4. Map Your Custom Domain (`tilakpopatfilms.in`)
+## 4. Map Your Custom Domain (`tilakpopatfilms.online`)
 Once the site is deployed:
 1. In your Vercel project, go to **Settings** -> **Domains**.
-2. Type `tilakpopatfilms.in` and click **Add**.
-3. Vercel will prompt you to select redirect options (it's recommended to map both `tilakpopatfilms.in` and `www.tilakpopatfilms.in`, redirecting `www` to the root domain).
+2. Type `tilakpopatfilms.online` and click **Add**.
+3. Vercel will prompt you to select redirect options (it's recommended to map both `tilakpopatfilms.online` and `www.tilakpopatfilms.online`, redirecting `www` to the root domain).
 4. Vercel will show two DNS records that you must add to your domain registrar's DNS panel (e.g. GoDaddy or Hostinger DNS Settings):
    - **For root domain (`@` or empty)**:
      - Type: `A`
@@ -59,13 +59,13 @@ Once the site is deployed:
      - Type: `CNAME`
      - Name: `www`
      - Value: `cname.vercel-dns.com`
-5. Save the DNS settings at your registrar. Within 10-60 minutes, Vercel will generate an SSL certificate, and your site will be live at `https://tilakpopatfilms.in`.
+5. Save the DNS settings at your registrar. Within 10-60 minutes, Vercel will generate an SSL certificate, and your site will be live at `https://tilakpopatfilms.online`.
 
 ---
 
 ## 5. Security Warning: Admin Dashboard Authorization
 > [!WARNING]
-> Currently, the `/admin` dashboard has no password validation (anyone visiting `tilakpopatfilms.in/admin` can edit or delete projects).
+> Currently, the `/admin` dashboard has no password validation (anyone visiting `tilakpopatfilms.online/admin` can edit or delete projects).
 >
 > We strongly recommend adding a password lock to the `/admin` route before making it live. If you would like, we can implement:
 > 1. A simple admin password check (via a `ADMIN_PASSWORD` environment variable set in Vercel).
@@ -79,6 +79,6 @@ Currently, applications submitted on your recruitment page (`/work-with-tpf`) ar
 To make this professional and prevent emails from landing in spam:
 1. Log in to [Resend.com](https://resend.com) (using the account linked to your Resend API Key).
 2. Go to **Domains** -> **Add Domain**.
-3. Type `tilakpopatfilms.in` and select your region.
+3. Type `tilakpopatfilms.online` and select your region.
 4. Add the generated DNS TXT/MX records to your domain registrar (similar to the Vercel DNS steps).
-5. Once verified, we can change the sender in `src/app/work-with-tpf/actions.ts` from `onboarding@resend.dev` to `recruitment@tilakpopatfilms.in`.
+5. Once verified, we can change the sender in `src/app/work-with-tpf/actions.ts` from `onboarding@resend.dev` to `recruitment@tilakpopatfilms.online`.

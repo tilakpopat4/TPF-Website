@@ -15,7 +15,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://tilakpopatfilms.in"),
+  metadataBase: new URL("https://tilakpopatfilms.online"),
   title: {
     default: "TPF | Tilak Popat Films",
     template: "%s | Tilak Popat Films",
@@ -23,12 +23,18 @@ export const metadata: Metadata = {
   description: "Tilak Popat Films (TPF) is a premier film production house in India creating cinematic films, music videos, behind the scenes, and digital design media.",
   keywords: [
     "Tilak Popat Films",
+    "tilakpopatfilms.online",
+    "tilakpopatfilms",
+    "tilak popat films website",
+    "tilak popat films online",
     "TPF",
+    "TPF Films",
+    "TPF Online",
     "Tilak Popat",
+    "Tilak Popat Director",
     "Film Production House India",
     "Music Video Director India",
     "Independent filmmaker Mumbai",
-    "TPF Films",
     "Behind the scenes filmmaking",
     "Cinematic video production"
   ],
@@ -38,7 +44,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "TPF | Tilak Popat Films",
     description: "Tilak Popat Films (TPF) is a premier film production house in India creating cinematic films, music videos, and visual media.",
-    url: "https://tilakpopatfilms.in",
+    url: "https://tilakpopatfilms.online",
     siteName: "Tilak Popat Films",
     images: [
       {
@@ -76,6 +82,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google AdSense Verification */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3956092062491313"
+          crossOrigin="anonymous"
+        />
         {/* Prevent flash of wrong theme on initial load */}
         <script
           dangerouslySetInnerHTML={{
@@ -98,8 +110,8 @@ export default function RootLayout({
               "@type": "Organization",
               "name": "Tilak Popat Films",
               "alternateName": "TPF",
-              "url": "https://tilakpopatfilms.in",
-              "logo": "https://tilakpopatfilms.in/tpf-logo-new.png",
+              "url": "https://tilakpopatfilms.online",
+              "logo": "https://tilakpopatfilms.online/tpf-logo-new.png",
               "description": "Tilak Popat Films (TPF) is a premier film production house in India creating cinematic films, music videos, behind the scenes, and digital design media.",
               "contactPoint": {
                 "@type": "ContactPoint",
