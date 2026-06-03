@@ -16,7 +16,7 @@ export default async function AnnouncementsPage() {
 
   return (
     <main className={styles.main}>
-      <div className="container" style={{ paddingTop: '120px' }}>
+      <div className="container" style={{ paddingTop: 'calc(var(--navbar-height) + 2rem)' }}>
         <h1 className="text-gradient" style={{ textAlign: 'center', marginBottom: '0.75rem' }}>
           Announcements
         </h1>

@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar"
 import styles from "./page.module.css"
 import RecruitmentForm from "@/components/RecruitmentForm"
 
@@ -12,8 +11,7 @@ export const metadata: Metadata = {
 export default function WorkWithTPFPage() {
   return (
     <main className={styles.main}>
-      <Navbar />
-      <div className="container" style={{ paddingTop: '100px', maxWidth: '800px' }}>
+      <div className="container" style={{ paddingTop: 'calc(var(--navbar-height) + 2rem)', maxWidth: '800px' }}>
         <h1 className="text-gradient" style={{ textAlign: 'center', marginBottom: '1rem' }}>Work with TPF</h1>
         <p style={{ textAlign: 'center', color: 'var(--foreground-muted)', marginBottom: '3rem' }}>
           We are always looking for talented editors and designers to join our cinematic journey. 

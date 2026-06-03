@@ -1,6 +1,6 @@
 .main {
   min-height: 100vh;
-  padding-top: 80px;
+  padding-top: calc(var(--navbar-height) + 2rem);
 }
 
 .header {

@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma"
 import styles from "./page.module.css"
-import Navbar from "@/components/Navbar"
 import DownloadButton from "@/components/DownloadButton"
 import { Metadata } from 'next'
 
@@ -14,8 +13,7 @@ export default async function PostersPage() {
 
   return (
     <main className={styles.main}>
-      <Navbar />
-      <div className="container" style={{ paddingTop: '100px' }}>
+      <div className="container" style={{ paddingTop: 'calc(var(--navbar-height) + 2rem)' }}>
         <h1 className="text-gradient" style={{ textAlign: 'center', marginBottom: '2rem' }}>Poster Work</h1>
         <p style={{ textAlign: 'center', color: 'var(--foreground-muted)', marginBottom: '3rem' }}>
           Visual identity and cinematic poster designs for our productions.
