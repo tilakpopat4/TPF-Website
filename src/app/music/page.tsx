@@ -1,7 +1,13 @@
 import styles from "./page.module.css";
 import prisma from "@/lib/prisma";
+import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: "Cinematic Music & Tracks",
+  description: "Listen to original soundtracks, background scores, and music video playlists produced by Tilak Popat Films (TPF).",
+};
 
 // Converts any Spotify share URL to its embed URL
 function getSpotifyEmbedUrl(rawUrl: string | null): string | null {

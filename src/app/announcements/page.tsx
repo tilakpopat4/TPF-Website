@@ -3,8 +3,8 @@ import styles from "./page.module.css"
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Announcements | Tilak Popat Films',
-  description: 'Latest news, upcoming projects, and studio updates from TPF.',
+  title: 'News & Announcements',
+  description: 'Stay updated with the latest studio news, upcoming project schedules, and movie updates from Tilak Popat Films (TPF).',
 }
 
 export default async function AnnouncementsPage() {

@@ -4,8 +4,8 @@ import Navbar from "@/components/Navbar"
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Poster Work | Tilak Popat Films',
-  description: 'Cinematic posters and marketing material by TPF.',
+  title: 'Cinematic Poster Work & Visual Designs',
+  description: 'Explore custom poster designs, visual key-art, and cinematic marketing assets created by Tilak Popat Films (TPF).',
 }
 
 export default async function PostersPage() {

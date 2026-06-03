@@ -2,9 +2,11 @@ import Navbar from "@/components/Navbar"
 import styles from "./page.module.css"
 import RecruitmentForm from "@/components/RecruitmentForm"
 
-export const metadata = {
-  title: 'Work with TPF | Recruitment',
-  description: 'Join the Tilak Popat Films team as an editor or designer.',
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Careers & Recruitment | Join TPF',
+  description: 'Join the Tilak Popat Films (TPF) creative team. We are actively hiring talented film editors, graphic designers, and crew members.',
 }
 
 export default function WorkWithTPFPage() {

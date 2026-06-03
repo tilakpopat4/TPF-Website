@@ -15,9 +15,48 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "TPF | Tilak Popat Films",
-  description: "Creative Production House - Tilak Popat Films. Explore our premium projects, music, and talented crew.",
-  keywords: ["TPF", "Tilak Popat Films", "Production House", "Film Production", "Music", "Creative Portfolio"],
+  metadataBase: new URL("https://tilakpopatfilms.in"),
+  title: {
+    default: "TPF | Tilak Popat Films",
+    template: "%s | Tilak Popat Films",
+  },
+  description: "Tilak Popat Films (TPF) is a premier film production house in India creating cinematic films, music videos, behind the scenes, and digital design media.",
+  keywords: [
+    "Tilak Popat Films",
+    "TPF",
+    "Tilak Popat",
+    "Film Production House India",
+    "Music Video Director India",
+    "Independent filmmaker Mumbai",
+    "TPF Films",
+    "Behind the scenes filmmaking",
+    "Cinematic video production"
+  ],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "TPF | Tilak Popat Films",
+    description: "Tilak Popat Films (TPF) is a premier film production house in India creating cinematic films, music videos, and visual media.",
+    url: "https://tilakpopatfilms.in",
+    siteName: "Tilak Popat Films",
+    images: [
+      {
+        url: "/tpf-logo-new.png",
+        width: 800,
+        height: 800,
+        alt: "Tilak Popat Films Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TPF | Tilak Popat Films",
+    description: "Creative Film Production House - Tilak Popat Films (TPF). Explore our premium projects, music videos, and crew.",
+    images: ["/tpf-logo-new.png"],
+  },
   icons: {
     icon: "/tpf-logo-new.png",
     apple: "/tpf-logo-new.png",
@@ -48,6 +87,30 @@ export default function RootLayout({
                 } catch(e) {}
               })();
             `,
+          }}
+        />
+        {/* Google Schema (JSON-LD) for Search Rich Results */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Tilak Popat Films",
+              "alternateName": "TPF",
+              "url": "https://tilakpopatfilms.in",
+              "logo": "https://tilakpopatfilms.in/tpf-logo-new.png",
+              "description": "Tilak Popat Films (TPF) is a premier film production house in India creating cinematic films, music videos, behind the scenes, and digital design media.",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "work.tilakpopatfilms@gmail.com",
+                "contactType": "production inquiries"
+              },
+              "sameAs": [
+                "https://www.instagram.com/tilak_popat_films",
+                "https://www.youtube.com/@tilakpopatfilms"
+              ]
+            })
           }}
         />
       </head>
