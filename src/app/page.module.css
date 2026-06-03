@@ -1162,7 +1162,7 @@
 /* Filmstrip background container */
 .filmstripWrapper {
   position: absolute;
-  top: 52%;
+  top: 50%;
   left: 0;
   width: 100vw;
   overflow: hidden;
@@ -1170,6 +1170,7 @@
   opacity: 0.35; /* Subtle background presence */
   transition: opacity 0.5s ease;
   pointer-events: none;
+  transform: translateY(-50%);
 }
 
 .filmstripTrack {
