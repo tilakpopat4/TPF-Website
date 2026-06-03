@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import Hero from "@/components/Hero";
 import ProjectsGrid from "@/components/ProjectsGrid";
+import TrailerSection from "@/components/TrailerSection";
 import styles from "./page.module.css";
 
 export const dynamic = 'force-dynamic';
@@ -16,6 +17,13 @@ export default async function Home() {
       ]
     : await prisma.project.findMany({ take: 4, orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
 
+  let btsItems: any[] = [];
+  try {
+    btsItems = await prisma.behindTheScene.findMany({ take: 5, orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
+  } catch (e) {
+    console.error('BehindTheScene table not yet available:', e);
+  }
+
   return (
     <div className={styles.main}>
       {/* Dynamic Animated Widescreen Hero Section with filmstrip background */}
@@ -29,6 +37,20 @@ export default async function Home() {
         </div>
         
         <ProjectsGrid projects={projects} />
+      </section>
+
+      {/* Behind the Scenes Section */}
+      <section className={styles.trailerSection}>
+        <div className="container">
+          <div className={styles.sectionHeader}>
+            <h2>Explore <span className="text-gradient">Behind The Scenes</span></h2>
+            <div className={styles.line}></div>
+          </div>
+          
+          <div className={styles.scrollWrapper}>
+            <TrailerSection btsItems={btsItems} />
+          </div>
+        </div>
       </section>
     </div>
   );

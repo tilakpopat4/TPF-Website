@@ -1171,10 +1171,6 @@
   pointer-events: none;
 }
 
-:global([data-theme="light"]) .filmstripWrapper {
-  opacity: 0.22;
-}
-
 .filmstripTrack {
   display: flex;
   gap: 2rem;
@@ -1202,11 +1198,6 @@
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
   position: relative;
   overflow: hidden;
-}
-
-:global([data-theme="light"]) .filmstripFrame {
-  border-color: rgba(0, 0, 0, 0.05);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
 .filmstripFrame::after {
