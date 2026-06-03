@@ -308,8 +308,8 @@
 
 .mainLogo {
   width: 100%;
-  max-width: 420px;
-  max-height: 220px;
+  max-width: 630px;
+  max-height: 330px;
   object-fit: contain;
   filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.2));
   transition: filter 0.5s ease;
@@ -1101,7 +1101,7 @@
 
 @media (max-width: 1024px) {
   .heroTitle { font-size: 5rem; }
-  .mainLogo { max-width: 380px; }
+  .mainLogo { max-width: 570px; }
   .projectsGrid { gap: 2rem; }
 }
 
@@ -1116,7 +1116,7 @@
   
   .filmStripAnim { left: 5%; width: 90%; }
   
-  .mainLogo { max-width: 320px; }
+  .mainLogo { max-width: 480px; }
   
   .projectsGrid {
     grid-template-columns: 1fr;
@@ -1146,7 +1146,7 @@
   .hero { height: 85vh; }
   .heroTitle { font-size: 2.5rem; }
   .heroAccent { letter-spacing: 4px; font-size: 1.2rem; }
-  .mainLogo { max-width: 240px; }
+  .mainLogo { max-width: 360px; }
   
   .ctaButton {
     padding: 0.8rem 1.5rem;
