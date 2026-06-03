@@ -116,6 +116,7 @@
   background-image: radial-gradient(circle at center, #ede9e1 0%, #f7f4ef 100%);
   opacity: 0;
   transition: opacity 0.3s ease;
+  z-index: -2;
 }
 
 :global([data-theme="light"]) .heroBackground::after {
