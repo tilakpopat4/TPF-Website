@@ -315,6 +315,10 @@
   transition: filter 0.5s ease;
 }
 
+:global([data-theme="light"]) .mainLogo {
+  filter: brightness(0) drop-shadow(0 0 30px rgba(0, 0, 0, 0.05));
+}
+
 
 .logoContainer::after {
   content: '';

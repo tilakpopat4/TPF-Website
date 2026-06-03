@@ -105,6 +105,10 @@
   transition: transform 0.3s ease;
 }
 
+:global([data-theme="light"]) .logoImg {
+  filter: brightness(0) drop-shadow(0 0 10px rgba(0, 0, 0, 0.05));
+}
+
 .logoImg:hover {
   transform: scale(1.05);
 }
