@@ -197,7 +197,17 @@
 /* ──────────────────────────────
    Mobile Responsive
 ────────────────────────────── */
+@media (max-width: 1024px) {
+  .logoImg {
+    height: 56px;
+  }
+}
+
 @media (max-width: 768px) {
+  .logoImg {
+    height: 42px;
+  }
+
   .hamburger {
     display: flex;
   }
