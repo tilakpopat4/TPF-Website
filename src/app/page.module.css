@@ -127,7 +127,6 @@
   border-radius: 50%;
   filter: blur(120px);
   opacity: 0.7; /* Increased visibility */
-  animation: drift 20s infinite alternate ease-in-out;
 }
 
 .orb1 {
