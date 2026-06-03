@@ -27,8 +27,11 @@ export default function Hero({ projects = [] }: HeroProps) {
     setMounted(true);
   }, []);
 
-  // Use top 3 projects for background filmstrip
-  const filmstripItems = projects.slice(0, 3);
+  // Use top 3 projects, or 3 mock objects if empty
+  const filmstripItems = projects.length > 0 
+    ? projects.slice(0, 3) 
+    : [null, null, null];
+  const loopedItems = [...filmstripItems, ...filmstripItems];
   
   // High-quality cinematic backup images in case database is empty
   const defaultFrames = [
@@ -46,9 +49,9 @@ export default function Hero({ projects = [] }: HeroProps) {
       >
         <div className={styles.filmstripWrapper}>
           <div className={styles.filmstripTrack}>
-            {[0, 1, 2].map((index) => {
-              const project = filmstripItems[index];
-              const imageUrl = project?.bannerUrl || defaultFrames[index];
+            {loopedItems.map((project, index) => {
+              const defaultIndex = index % 3;
+              const imageUrl = project?.bannerUrl || defaultFrames[defaultIndex];
               return (
                 <div 
                   key={index} 
