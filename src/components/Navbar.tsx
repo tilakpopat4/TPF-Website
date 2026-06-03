@@ -50,8 +50,21 @@ export default function Navbar() {
 
         {/* Logo — centre */}
         <div className={styles.logo}>
-          <Link href="/" onClick={closeMenu}>
-            <span className="text-gradient">TPF</span>
+          <Link href="/" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {/* Dark mode logo (White) */}
+            <img 
+              src="/tpf-logo-new.png" 
+              alt="TPF Logo" 
+              className={styles.logoImg}
+              style={{ display: theme === 'dark' ? 'block' : 'none' }}
+            />
+            {/* Light mode logo (Black) */}
+            <img 
+              src="/tpf-logo-light.png" 
+              alt="TPF Logo" 
+              className={styles.logoImg}
+              style={{ display: theme === 'light' ? 'block' : 'none', transform: 'scale(1.2)' }}
+            />
           </Link>
         </div>
 

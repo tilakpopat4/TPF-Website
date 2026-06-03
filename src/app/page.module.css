@@ -1157,3 +1157,138 @@
     padding: 2rem 1.5rem 1.5rem 1.5rem;
   }
 }
+
+/* Filmstrip background container */
+.filmstripWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 2rem;
+  z-index: -1;
+  opacity: 0.35; /* Subtle background presence */
+  transition: opacity 0.5s ease;
+}
+
+:global([data-theme="light"]) .filmstripWrapper {
+  opacity: 0.2;
+}
+
+.filmstripTrack {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.filmstripFrame {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  height: 0;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+:global([data-theme="light"]) .filmstripFrame {
+  border-color: rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.filmstripFrame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.4), transparent 40%, transparent 60%, rgba(0,0,0,0.4));
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .filmstripTrack {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .filmstripFrame:nth-child(3) {
+    display: none;
+  }
+}
+
+/* Projects Horizontal Grid (Screenshot Style) */
+.projectsHorizontalGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.projectCardHorizontal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.projectCardHorizontal:hover {
+  transform: translateY(-8px);
+}
+
+.projectCardHorizontalFrame {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 widescreen frame */
+  height: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-color: #111;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s ease;
+}
+
+:global([data-theme="light"]) .projectCardHorizontalFrame {
+  border-color: rgba(0, 0, 0, 0.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.projectCardHorizontal:hover .projectCardHorizontalFrame {
+  border-color: var(--accent);
+  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.25);
+}
+
+.projectCardHorizontalTitle {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: center;
+  color: var(--text);
+  letter-spacing: 0.5px;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.projectCardHorizontal:hover .projectCardHorizontalTitle {
+  color: var(--accent);
+}
+
+@media (max-width: 1024px) {
+  .projectsHorizontalGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .projectsHorizontalGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+

@@ -5,15 +5,19 @@ import { useRef, useEffect, useState } from 'react';
 import styles from '@/app/page.module.css';
 import { useTheme } from './ThemeProvider';
 
-export default function Hero() {
-  const ref = useRef(null);
+interface HeroProps {
+  projects?: any[];
+}
+
+export default function Hero({ projects = [] }: HeroProps) {
+  const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"]
   });
 
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "80%"]);
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   const { theme } = useTheme();
@@ -23,13 +27,39 @@ export default function Hero() {
     setMounted(true);
   }, []);
 
+  // Use top 3 projects for background filmstrip
+  const filmstripItems = projects.slice(0, 3);
+  
+  // High-quality cinematic backup images in case database is empty
+  const defaultFrames = [
+    "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=800&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1542204172-e70528091b50?q=80&w=800&auto=format&fit=crop"
+  ];
+
   return (
     <section ref={ref} className={styles.hero} style={{ perspective: "1000px" }}>
-      {/* Heavy Motion Background */}
+      {/* Cinematic Filmstrip Background */}
       <motion.div 
         className={styles.heroBackground} 
         style={{ y: backgroundY }}
       >
+        <div className={styles.filmstripWrapper}>
+          <div className={styles.filmstripTrack}>
+            {[0, 1, 2].map((index) => {
+              const project = filmstripItems[index];
+              const imageUrl = project?.bannerUrl || defaultFrames[index];
+              return (
+                <div 
+                  key={index} 
+                  className={styles.filmstripFrame}
+                  style={{ backgroundImage: `url(${imageUrl})` }}
+                />
+              );
+            })}
+          </div>
+        </div>
+        
         <div className={styles.vignette}></div>
         <div className={styles.grain}></div>
         
@@ -101,7 +131,6 @@ export default function Hero() {
                   pointerEvents: mounted && theme === 'light' ? 'auto' : 'none'
                 }}
               />
-              
             </div>
           </motion.div>
         </motion.div>
@@ -124,7 +153,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
         >
-          Explore Work
+          View Our Portfolio
         </motion.a>
       </motion.div>
     </section>
