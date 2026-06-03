@@ -15,8 +15,38 @@ export default function Navbar() {
   return (
     <nav className={`${styles.navbar} glass`}>
       <div className={styles.container}>
+        
+        {/* Logo — left */}
+        <div className={styles.logo}>
+          <Link href="/" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center' }}>
+            {/* Dark mode logo (White) */}
+            <img 
+              src="/tpf-logo-new.png" 
+              alt="TPF Logo" 
+              className={styles.logoImg}
+              style={{ display: theme === 'dark' ? 'block' : 'none' }}
+            />
+            {/* Light mode logo (Black) */}
+            <img 
+              src="/tpf-logo-light.png" 
+              alt="TPF Logo" 
+              className={styles.logoImg}
+              style={{ display: theme === 'light' ? 'block' : 'none', transform: 'scale(1.2)' }}
+            />
+          </Link>
+        </div>
 
-        {/* Theme Toggle — far left */}
+        {/* Nav Links */}
+        <div className={`${styles.links} ${isOpen ? styles.open : ''}`}>
+          <Link href="/" className={styles.link} onClick={closeMenu}>Home</Link>
+          <Link href="/announcements" className={styles.link} onClick={closeMenu}>Announcements</Link>
+          <Link href="/posters" className={styles.link} onClick={closeMenu}>Poster Work</Link>
+          <Link href="/music" className={styles.link} onClick={closeMenu}>TPF Music</Link>
+          <Link href="/cast-crew" className={styles.link} onClick={closeMenu}>Cast &amp; Crew</Link>
+          <Link href="/work-with-tpf" className={`${styles.link} ${styles.cta}`} onClick={closeMenu}>Work with TPF</Link>
+        </div>
+
+        {/* Theme Toggle */}
         <button
           className={styles.themeToggle}
           onClick={toggleTheme}
@@ -48,26 +78,6 @@ export default function Navbar() {
           </span>
         </button>
 
-        {/* Logo — centre */}
-        <div className={styles.logo}>
-          <Link href="/" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {/* Dark mode logo (White) */}
-            <img 
-              src="/tpf-logo-new.png" 
-              alt="TPF Logo" 
-              className={styles.logoImg}
-              style={{ display: theme === 'dark' ? 'block' : 'none' }}
-            />
-            {/* Light mode logo (Black) */}
-            <img 
-              src="/tpf-logo-light.png" 
-              alt="TPF Logo" 
-              className={styles.logoImg}
-              style={{ display: theme === 'light' ? 'block' : 'none', transform: 'scale(1.2)' }}
-            />
-          </Link>
-        </div>
-
         {/* Hamburger — right (mobile only) */}
         <button
           className={`${styles.hamburger} ${isOpen ? styles.active : ''}`}
@@ -79,14 +89,6 @@ export default function Navbar() {
           <span className={styles.bar}></span>
         </button>
 
-        <div className={`${styles.links} ${isOpen ? styles.open : ''}`}>
-          <Link href="/" className={styles.link} onClick={closeMenu}>Home</Link>
-          <Link href="/announcements" className={styles.link} onClick={closeMenu}>Announcements</Link>
-          <Link href="/posters" className={styles.link} onClick={closeMenu}>Poster Work</Link>
-          <Link href="/music" className={styles.link} onClick={closeMenu}>TPF Music</Link>
-          <Link href="/cast-crew" className={styles.link} onClick={closeMenu}>Cast &amp; Crew</Link>
-          <Link href="/work-with-tpf" className={`${styles.link} ${styles.cta}`} onClick={closeMenu}>Work with TPF</Link>
-        </div>
       </div>
     </nav>
   );
