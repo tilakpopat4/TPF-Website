@@ -35,7 +35,7 @@
 }
 
 .brandName {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-serif);
   font-size: 1.6rem;
   font-weight: 700;
   color: var(--accent);
