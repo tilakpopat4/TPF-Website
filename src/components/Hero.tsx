@@ -130,7 +130,6 @@ export default function Hero({ projects = [] }: HeroProps) {
                   gridArea: '1 / 1',
                   opacity: mounted && theme === 'light' ? 1 : 0,
                   transition: 'opacity 0.4s ease',
-                  transform: 'scale(1.33)',
                   pointerEvents: mounted && theme === 'light' ? 'auto' : 'none'
                 }}
               />
