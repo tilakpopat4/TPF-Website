@@ -16,7 +16,7 @@
   /* Theme transition */
   --theme-transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   
-  --navbar-height: 188px;
+  --navbar-height: 132px;
 }
 
 [data-theme="light"] {
@@ -142,7 +142,7 @@ button {
 @media (max-width: 1024px) {
   :root {
     --theme-transition: none !important;
-    --navbar-height: 144px;
+    --navbar-height: 112px;
   }
 
   h1 { font-size: 3rem; }
@@ -156,7 +156,7 @@ button {
 
 @media (max-width: 768px) {
   :root {
-    --navbar-height: 116px;
+    --navbar-height: 92px;
   }
   h1 { font-size: 2.5rem; }
   h2 { font-size: 2rem; }
