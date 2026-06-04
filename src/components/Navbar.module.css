@@ -98,7 +98,7 @@
 }
 
 .logoImg {
-  height: 78px;
+  height: 156px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.15));
@@ -199,13 +199,13 @@
 ────────────────────────────── */
 @media (max-width: 1024px) {
   .logoImg {
-    height: 56px;
+    height: 112px;
   }
 }
 
 @media (max-width: 768px) {
   .logoImg {
-    height: 42px;
+    height: 84px;
   }
 
   .hamburger {
