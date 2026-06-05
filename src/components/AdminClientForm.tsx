@@ -90,8 +90,17 @@ export default function AdminClientForm({ initialProjects = [] }: { initialProje
   const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to delete this project?")) {
       startDelete(async () => {
-        await deleteProject(id);
-        setItems((prev) => prev.filter((item) => item.id !== id));
+        try {
+          const res = await deleteProject(id);
+          if (res && !res.success) {
+            alert("Failed to delete project: " + res.error);
+          } else {
+            setItems((prev) => prev.filter((item) => item.id !== id));
+          }
+        } catch (err: any) {
+          console.error("Client delete error:", err);
+          alert("Failed to delete project: " + (err.message || String(err)));
+        }
       });
     }
   };
@@ -121,28 +130,32 @@ export default function AdminClientForm({ initialProjects = [] }: { initialProje
       if (editReleaseDate) submitData.append('releaseDate', editReleaseDate);
       if (editBannerUrl) submitData.append('bannerUrl', editBannerUrl);
 
-      await updateProject(id, submitData);
+      const res = await updateProject(id, submitData);
       
-      // Update local state
-      setItems((prev) =>
-        prev.map((item) =>
-          item.id === id
-            ? {
-                ...item,
-                title: editTitle,
-                description: editDescription,
-                youtubeUrl: editYoutubeUrl || null,
-                releaseDate: editReleaseDate || null,
-                bannerUrl: editBannerUrl,
-              }
-            : item
-        )
-      );
-      setEditingId(null);
-      alert("Project updated successfully!");
-    } catch (err) {
+      if (res && !res.success) {
+        alert("Failed to update project: " + res.error);
+      } else {
+        // Update local state
+        setItems((prev) =>
+          prev.map((item) =>
+            item.id === id
+              ? {
+                  ...item,
+                  title: editTitle,
+                  description: editDescription,
+                  youtubeUrl: editYoutubeUrl || null,
+                  releaseDate: editReleaseDate || null,
+                  bannerUrl: editBannerUrl,
+                }
+              : item
+          )
+        );
+        setEditingId(null);
+        alert("Project updated successfully!");
+      }
+    } catch (err: any) {
       console.error(err);
-      alert("Failed to update project.");
+      alert("Failed to update project: " + (err.message || String(err)));
     } finally {
       setIsPending(false);
     }

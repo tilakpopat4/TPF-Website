@@ -59,9 +59,15 @@ export async function deleteBTS(id: string) {
 }
 
 export async function deleteProject(id: string) {
-  await prisma.project.delete({ where: { id } })
-  revalidatePath('/')
-  revalidatePath('/admin')
+  try {
+    await prisma.project.delete({ where: { id } })
+    revalidatePath('/')
+    revalidatePath('/admin')
+    return { success: true }
+  } catch (error: any) {
+    console.error("deleteProject error:", error)
+    return { success: false, error: error.message || String(error) }
+  }
 }
 
 // Music
@@ -212,20 +218,27 @@ export async function updateProject(id: string, formData: FormData) {
   const releaseDateStr = formData.get('releaseDate') as string | null
 
   if (title && description) {
-    await prisma.project.update({
-      where: { id },
-      data: {
-        title,
-        description,
-        bannerUrl: bannerUrl || null,
-        youtubeUrl: youtubeUrl || null,
-        releaseDate: releaseDateStr ? new Date(releaseDateStr) : null
-      }
-    })
-    revalidatePath('/')
-    revalidatePath('/admin')
-    revalidatePath('/announcements')
+    try {
+      await prisma.project.update({
+        where: { id },
+        data: {
+          title,
+          description,
+          bannerUrl: bannerUrl || null,
+          youtubeUrl: youtubeUrl || null,
+          releaseDate: releaseDateStr ? new Date(releaseDateStr) : null
+        }
+      })
+      revalidatePath('/')
+      revalidatePath('/admin')
+      revalidatePath('/announcements')
+      return { success: true }
+    } catch (error: any) {
+      console.error("updateProject error:", error)
+      return { success: false, error: error.message || String(error) }
+    }
   }
+  return { success: false, error: "Title and description are required." }
 }
 
 export async function updateBTS(id: string, formData: FormData) {

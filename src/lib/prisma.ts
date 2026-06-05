@@ -1,5 +1,9 @@
 import { PrismaClient } from '@prisma/client'
 
+if (!process.env.DATABASE_PRISMA_DATABASE_URL && process.env.DATABASE_URL) {
+  process.env.DATABASE_PRISMA_DATABASE_URL = process.env.DATABASE_URL;
+}
+
 const prismaClientSingleton = () => {
   return new PrismaClient()
 }
