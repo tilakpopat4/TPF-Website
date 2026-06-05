@@ -64,8 +64,12 @@ export const metadata: Metadata = {
     images: ["/tpf-logo-new.png"],
   },
   icons: {
-    icon: "/tpf-logo-new.png",
-    apple: "/tpf-logo-new.png",
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-48.png", sizes: "48x48", type: "image/png" },
+      { url: "/favicon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: "/favicon-192.png",
   },
   appleWebApp: {
     capable: true,
