@@ -36,22 +36,28 @@ export default async function Home() {
   let latestCreationTitle = '';
   let youtubeHandle = 'tilakpopatfilms';
   let youtubeApiKey = process.env.YOUTUBE_API_KEY;
+  let youtubeSubscribers = '';
+  let youtubeVideoCount = '';
 
   try {
     const urlSetting = await prisma.settings.findUnique({ where: { key: 'latestCreationUrl' } });
     const titleSetting = await prisma.settings.findUnique({ where: { key: 'latestCreationTitle' } });
     const ytHandleSetting = await prisma.settings.findUnique({ where: { key: 'youtubeHandle' } });
     const ytApiKeySetting = await prisma.settings.findUnique({ where: { key: 'youtubeApiKey' } });
+    const ytSubsSetting = await prisma.settings.findUnique({ where: { key: 'youtubeSubscribers' } });
+    const ytVidsSetting = await prisma.settings.findUnique({ where: { key: 'youtubeVideoCount' } });
 
     latestCreationUrl = urlSetting?.value || '';
     latestCreationTitle = titleSetting?.value || '';
     if (ytHandleSetting?.value) youtubeHandle = ytHandleSetting.value;
     if (ytApiKeySetting?.value) youtubeApiKey = ytApiKeySetting.value;
+    if (ytSubsSetting?.value) youtubeSubscribers = ytSubsSetting.value;
+    if (ytVidsSetting?.value) youtubeVideoCount = ytVidsSetting.value;
   } catch (e) {
     console.error('Settings table not yet available:', e);
   }
 
-  const channelData = await fetchYouTubeChannel(youtubeApiKey, youtubeHandle);
+  const channelData = await fetchYouTubeChannel(youtubeApiKey, youtubeHandle, youtubeSubscribers, youtubeVideoCount);
 
   return (
     <div className={styles.main}>

@@ -62,8 +62,12 @@ export default async function AdminPage() {
 
     const ytHandleS = await prisma.settings.findUnique({ where: { key: 'youtubeHandle' } });
     const ytApiKeyS = await prisma.settings.findUnique({ where: { key: 'youtubeApiKey' } });
+    const ytSubsS = await prisma.settings.findUnique({ where: { key: 'youtubeSubscribers' } });
+    const ytVidsS = await prisma.settings.findUnique({ where: { key: 'youtubeVideoCount' } });
     if (ytHandleS?.value) youtubeHandle = ytHandleS.value;
     if (ytApiKeyS?.value) youtubeApiKey = ytApiKeyS.value;
+    if (ytSubsS?.value) youtubeSubscribers = ytSubsS.value;
+    if (ytVidsS?.value) youtubeVideoCount = ytVidsS.value;
   } catch (e) {
     console.error('Settings table not yet available:', e);
   }
@@ -90,9 +94,14 @@ export default async function AdminPage() {
         <section className={`${styles.card} glass`}>
           <h2>🔴 Official YouTube Channel Settings</h2>
           <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-            Configure your YouTube channel handle and optional YouTube Data API key for live stats and video feeds.
+            Configure your YouTube channel handle, live stats, and optional YouTube Data API key.
           </p>
-          <AdminYouTubeChannelForm currentHandle={youtubeHandle} currentApiKey={youtubeApiKey} />
+          <AdminYouTubeChannelForm 
+            currentHandle={youtubeHandle} 
+            currentApiKey={youtubeApiKey}
+            currentSubscribers={youtubeSubscribers}
+            currentVideoCount={youtubeVideoCount}
+          />
         </section>
 
         {/* Latest Creation Section */}

@@ -25,8 +25,8 @@ const DEFAULT_CHANNEL: YouTubeChannelData = {
   handle: '@tilakpopatfilms',
   url: 'https://www.youtube.com/@tilakpopatfilms',
   avatar: 'https://yt3.googleusercontent.com/LbSHgHFyq4cNLoWRsXo3jZAeoTL3sC2wh-o7BNU-LC-aj6gUvMrdvmek2lbgjTINE34qn_0bjkQ=s900-c-k-c0x00ffffff-no-rj',
-  subscribers: '110+ subscribers',
-  videoCount: '24+ videos',
+  subscribers: '400 subscribers',
+  videoCount: '19 videos',
   description: 'Independent filmmaking, psychological short series, original storytelling, and cinematic experiments helmed by filmmaker Tilak Popat.',
   videos: [
     {
@@ -60,7 +60,12 @@ const DEFAULT_CHANNEL: YouTubeChannelData = {
   ]
 };
 
-export async function fetchYouTubeChannel(apiKey?: string, customHandle?: string): Promise<YouTubeChannelData> {
+export async function fetchYouTubeChannel(
+  apiKey?: string, 
+  customHandle?: string,
+  overrideSubs?: string,
+  overrideVideos?: string
+): Promise<YouTubeChannelData> {
   const handle = customHandle || 'tilakpopatfilms';
   const cleanHandle = handle.replace(/^@/, '');
 
@@ -69,7 +74,7 @@ export async function fetchYouTubeChannel(apiKey?: string, customHandle?: string
     try {
       const channelRes = await fetch(
         `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&forHandle=${cleanHandle}&key=${apiKey}`,
-        { next: { revalidate: 3600 } }
+        { next: { revalidate: 1800 } }
       );
       if (channelRes.ok) {
         const channelJson = await channelRes.json();
@@ -78,8 +83,10 @@ export async function fetchYouTubeChannel(apiKey?: string, customHandle?: string
           const channelId = item.id;
           const title = item.snippet?.title || DEFAULT_CHANNEL.title;
           const avatar = item.snippet?.thumbnails?.high?.url || item.snippet?.thumbnails?.default?.url || DEFAULT_CHANNEL.avatar;
-          const subscribers = item.statistics?.subscriberCount ? `${item.statistics.subscriberCount} subscribers` : DEFAULT_CHANNEL.subscribers;
-          const videoCount = item.statistics?.videoCount ? `${item.statistics.videoCount} videos` : DEFAULT_CHANNEL.videoCount;
+          const rawSubCount = item.statistics?.subscriberCount;
+          const subscribers = overrideSubs || (rawSubCount ? `${Number(rawSubCount).toLocaleString()} subscribers` : DEFAULT_CHANNEL.subscribers);
+          const rawVidCount = item.statistics?.videoCount;
+          const videoCount = overrideVideos || (rawVidCount ? `${Number(rawVidCount).toLocaleString()} videos` : DEFAULT_CHANNEL.videoCount);
           const description = item.snippet?.description || DEFAULT_CHANNEL.description;
 
           // Fetch recent uploads
@@ -87,7 +94,7 @@ export async function fetchYouTubeChannel(apiKey?: string, customHandle?: string
           try {
             const searchRes = await fetch(
               `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&type=video&maxResults=6&key=${apiKey}`,
-              { next: { revalidate: 3600 } }
+              { next: { revalidate: 1800 } }
             );
             if (searchRes.ok) {
               const searchJson = await searchRes.json();
@@ -120,14 +127,15 @@ export async function fetchYouTubeChannel(apiKey?: string, customHandle?: string
     }
   }
 
-  // 2. Fetch directly from YouTube public channel page
+  // 2. Live fetch directly from YouTube channel header
   try {
-    const res = await fetch(`https://www.youtube.com/@${cleanHandle}/videos`, {
+    const res = await fetch(`https://www.youtube.com/@${cleanHandle}`, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept-Language': 'en-US,en;q=0.9'
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Cache-Control': 'no-cache'
       },
-      next: { revalidate: 3600 }
+      next: { revalidate: 1800 }
     });
 
     if (res.ok) {
@@ -137,33 +145,49 @@ export async function fetchYouTubeChannel(apiKey?: string, customHandle?: string
       let title = DEFAULT_CHANNEL.title;
       let channelId = DEFAULT_CHANNEL.channelId;
       let avatar = DEFAULT_CHANNEL.avatar;
-      let subscribers = DEFAULT_CHANNEL.subscribers;
-      let videoCount = DEFAULT_CHANNEL.videoCount;
+      let subscribers = overrideSubs || '';
+      let videoCount = overrideVideos || '';
       let description = DEFAULT_CHANNEL.description;
-      const videos: YouTubeVideoItem[] = [];
-
-      const titleMatch = html.match(/<meta property="og:title" content="([^"]+)"/);
-      if (titleMatch?.[1]) title = titleMatch[1];
-
-      const imageMatch = html.match(/<meta property="og:image" content="([^"]+)"/);
-      if (imageMatch?.[1]) avatar = imageMatch[1];
-
-      const channelIdMatch = html.match(/"channelId":"([^"]+)"/) || html.match(/itemprop="channelId" content="([^"]+)"/);
-      if (channelIdMatch?.[1]) channelId = channelIdMatch[1];
-
-      const subsMatch = html.match(/"subscriberCountText":\{"accessibility":\{"accessibilityData":\{"label":"([^"]+)"/);
-      const subCountSimple = html.match(/"subscriberCountText":\{"simpleText":"([^"]+)"/);
-      if (subsMatch?.[1]) subscribers = subsMatch[1];
-      else if (subCountSimple?.[1]) subscribers = subCountSimple[1];
-
-      const videoCountMatch = html.match(/"videoCountText":\{"accessibility":\{"accessibilityData":\{"label":"([^"]+)"/);
-      const videoCountSimple = html.match(/"videoCountText":\{"runs":\[\{"text":"([^"]+)"/);
-      if (videoCountMatch?.[1]) videoCount = videoCountMatch[1];
-      else if (videoCountSimple?.[1]) videoCount = `${videoCountSimple[1]} videos`;
+      let videos: YouTubeVideoItem[] = [];
 
       if (match?.[1]) {
         try {
           const data = JSON.parse(match[1]);
+          
+          // Accurate extraction from channel page header
+          const pageHeader = data.header?.pageHeaderRenderer?.content?.pageHeaderViewModel;
+          const headerRows = pageHeader?.metadata?.contentMetadataViewModel?.metadataRows || [];
+
+          if (pageHeader?.title?.dynamicTextViewModel?.text?.content) {
+            title = pageHeader.title.dynamicTextViewModel.text.content;
+          }
+
+          const headerAvatar = pageHeader?.image?.decoratedAvatarViewModel?.avatar?.avatarViewModel?.image?.sources?.slice(-1)[0]?.url;
+          if (headerAvatar) avatar = headerAvatar;
+
+          if (!subscribers || !videoCount) {
+            for (const row of headerRows) {
+              for (const part of row.metadataParts || []) {
+                const text = part.text?.content || '';
+                if (!subscribers && /subscribers?/i.test(text)) {
+                  subscribers = text;
+                } else if (!videoCount && /videos?/i.test(text)) {
+                  videoCount = text;
+                }
+              }
+            }
+          }
+
+          // Legacy header fallback
+          if (!subscribers) {
+            const legacyHeader = data.header?.c4TabbedHeaderRenderer;
+            subscribers = legacyHeader?.subscriberCountText?.simpleText || '';
+            if (!videoCount) {
+              videoCount = legacyHeader?.videosCountText?.runs?.[0]?.text || '';
+            }
+          }
+
+          // Also extract videos from channel tab
           const tabs = data.contents?.twoColumnBrowseResultsRenderer?.tabs || [];
           const videoTab = tabs.find((t: any) => t.tabRenderer?.title === 'Videos' || t.tabRenderer?.selected);
           const items = videoTab?.tabRenderer?.content?.richGridRenderer?.contents || [];
@@ -202,16 +226,20 @@ export async function fetchYouTubeChannel(apiKey?: string, customHandle?: string
         title,
         handle: `@${cleanHandle}`,
         url: `https://www.youtube.com/@${cleanHandle}`,
-        avatar,
-        subscribers,
-        videoCount,
+        avatar: avatar || DEFAULT_CHANNEL.avatar,
+        subscribers: subscribers || DEFAULT_CHANNEL.subscribers,
+        videoCount: videoCount || DEFAULT_CHANNEL.videoCount,
         description,
         videos: videos.length > 0 ? videos.slice(0, 6) : DEFAULT_CHANNEL.videos
       };
     }
   } catch (err) {
-    console.error('Error scraping YouTube channel:', err);
+    console.error('Error scraping YouTube channel live stats:', err);
   }
 
-  return DEFAULT_CHANNEL;
+  return {
+    ...DEFAULT_CHANNEL,
+    subscribers: overrideSubs || DEFAULT_CHANNEL.subscribers,
+    videoCount: overrideVideos || DEFAULT_CHANNEL.videoCount
+  };
 }

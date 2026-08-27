@@ -6,11 +6,20 @@ import { updateSetting } from '@/app/admin/actions';
 interface Props {
   currentHandle?: string;
   currentApiKey?: string;
+  currentSubscribers?: string;
+  currentVideoCount?: string;
 }
 
-export default function AdminYouTubeChannelForm({ currentHandle = 'tilakpopatfilms', currentApiKey = '' }: Props) {
+export default function AdminYouTubeChannelForm({ 
+  currentHandle = 'tilakpopatfilms', 
+  currentApiKey = '',
+  currentSubscribers = '',
+  currentVideoCount = ''
+}: Props) {
   const [handle, setHandle] = useState(currentHandle);
   const [apiKey, setApiKey] = useState(currentApiKey);
+  const [subscribers, setSubscribers] = useState(currentSubscribers);
+  const [videoCount, setVideoCount] = useState(currentVideoCount);
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -19,6 +28,8 @@ export default function AdminYouTubeChannelForm({ currentHandle = 'tilakpopatfil
     try {
       await updateSetting('youtubeHandle', handle.trim().replace(/^@/, ''));
       await updateSetting('youtubeApiKey', apiKey.trim());
+      await updateSetting('youtubeSubscribers', subscribers.trim());
+      await updateSetting('youtubeVideoCount', videoCount.trim());
       setStatus('saved');
       setTimeout(() => setStatus('idle'), 3000);
     } catch (err) {
@@ -53,6 +64,50 @@ export default function AdminYouTubeChannelForm({ currentHandle = 'tilakpopatfil
         </div>
       </div>
 
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+        <div>
+          <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>
+            Custom Subscriber Count (Optional)
+          </label>
+          <input
+            type="text"
+            value={subscribers}
+            onChange={(e) => setSubscribers(e.target.value)}
+            placeholder="e.g. 400 subscribers (leave blank for live)"
+            style={{
+              width: '100%',
+              padding: '0.65rem 0.9rem',
+              borderRadius: '6px',
+              border: '1px solid var(--glass-border)',
+              background: 'rgba(255,255,255,0.04)',
+              color: 'var(--text)',
+              fontSize: '0.9rem'
+            }}
+          />
+        </div>
+
+        <div>
+          <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>
+            Custom Video Count (Optional)
+          </label>
+          <input
+            type="text"
+            value={videoCount}
+            onChange={(e) => setVideoCount(e.target.value)}
+            placeholder="e.g. 19 videos (leave blank for live)"
+            style={{
+              width: '100%',
+              padding: '0.65rem 0.9rem',
+              borderRadius: '6px',
+              border: '1px solid var(--glass-border)',
+              background: 'rgba(255,255,255,0.04)',
+              color: 'var(--text)',
+              fontSize: '0.9rem'
+            }}
+          />
+        </div>
+      </div>
+
       <div>
         <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>
           YouTube Data API v3 Key (Optional)
@@ -73,7 +128,7 @@ export default function AdminYouTubeChannelForm({ currentHandle = 'tilakpopatfil
           }}
         />
         <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.3rem' }}>
-          Live channel metadata and videos are fetched automatically. Adding a Google YouTube API key is optional.
+          Live channel metadata and videos are fetched automatically from YouTube header. Adding a Google YouTube API key is optional.
         </p>
       </div>
 
