@@ -1,8 +1,10 @@
 import prisma from "@/lib/prisma";
 import Hero from "@/components/Hero";
+import YouTubeChannel from "@/components/YouTubeChannel";
 import ProjectsGrid from "@/components/ProjectsGrid";
 import TrailerSection from "@/components/TrailerSection";
 import LatestCreation from "@/components/LatestCreation";
+import { fetchYouTubeChannel } from "@/lib/youtube";
 import styles from "./page.module.css";
 
 export const dynamic = 'force-dynamic';
@@ -32,19 +34,32 @@ export default async function Home() {
 
   let latestCreationUrl = '';
   let latestCreationTitle = '';
+  let youtubeHandle = 'tilakpopatfilms';
+  let youtubeApiKey = process.env.YOUTUBE_API_KEY;
+
   try {
     const urlSetting = await prisma.settings.findUnique({ where: { key: 'latestCreationUrl' } });
     const titleSetting = await prisma.settings.findUnique({ where: { key: 'latestCreationTitle' } });
+    const ytHandleSetting = await prisma.settings.findUnique({ where: { key: 'youtubeHandle' } });
+    const ytApiKeySetting = await prisma.settings.findUnique({ where: { key: 'youtubeApiKey' } });
+
     latestCreationUrl = urlSetting?.value || '';
     latestCreationTitle = titleSetting?.value || '';
+    if (ytHandleSetting?.value) youtubeHandle = ytHandleSetting.value;
+    if (ytApiKeySetting?.value) youtubeApiKey = ytApiKeySetting.value;
   } catch (e) {
     console.error('Settings table not yet available:', e);
   }
+
+  const channelData = await fetchYouTubeChannel(youtubeApiKey, youtubeHandle);
 
   return (
     <div className={styles.main}>
       {/* Dynamic Animated Widescreen Hero Section with filmstrip background */}
       <Hero projects={projects} />
+
+      {/* Official YouTube Channel Section (Live Stats & Videos) */}
+      <YouTubeChannel channelData={channelData} />
 
       {/* Latest Creation — big YouTube player (shown only when set) */}
       {latestCreationUrl && (

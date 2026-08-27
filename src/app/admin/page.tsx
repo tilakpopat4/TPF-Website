@@ -10,6 +10,7 @@ import AdminBTSClientForm from "@/components/AdminBTSClientForm"
 import AdminSpotifyForm from "@/components/AdminSpotifyForm"
 import AdminLatestCreationForm from "@/components/AdminLatestCreationForm"
 import AdminVisionForm from "@/components/AdminVisionForm"
+import AdminYouTubeChannelForm from "@/components/AdminYouTubeChannelForm"
 
 export const dynamic = 'force-dynamic';
 
@@ -38,6 +39,8 @@ export default async function AdminPage() {
   let visionTagline = 'Screening Beginner Dreams.';
   let latestCreationUrl = '';
   let latestCreationTitle = '';
+  let youtubeHandle = 'tilakpopatfilms';
+  let youtubeApiKey = '';
 
   try {
     const spotifySetting = await prisma.settings.findUnique({ where: { key: 'spotifyUrl' } });
@@ -56,6 +59,11 @@ export default async function AdminPage() {
     const titleS = await prisma.settings.findUnique({ where: { key: 'latestCreationTitle' } });
     latestCreationUrl = urlS?.value || '';
     latestCreationTitle = titleS?.value || '';
+
+    const ytHandleS = await prisma.settings.findUnique({ where: { key: 'youtubeHandle' } });
+    const ytApiKeyS = await prisma.settings.findUnique({ where: { key: 'youtubeApiKey' } });
+    if (ytHandleS?.value) youtubeHandle = ytHandleS.value;
+    if (ytApiKeyS?.value) youtubeApiKey = ytApiKeyS.value;
   } catch (e) {
     console.error('Settings table not yet available:', e);
   }
@@ -76,6 +84,15 @@ export default async function AdminPage() {
             Upload or set the dark and light mode logos and tagline for the TPF Cinemas &ldquo;An OTT For Beginners&rdquo; vision page.
           </p>
           <AdminVisionForm currentLogoUrl={visionLogoUrl} currentLogoLightUrl={visionLogoLightUrl} currentTagline={visionTagline} />
+        </section>
+
+        {/* YouTube Channel Settings Section */}
+        <section className={`${styles.card} glass`}>
+          <h2>🔴 Official YouTube Channel Settings</h2>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+            Configure your YouTube channel handle and optional YouTube Data API key for live stats and video feeds.
+          </p>
+          <AdminYouTubeChannelForm currentHandle={youtubeHandle} currentApiKey={youtubeApiKey} />
         </section>
 
         {/* Latest Creation Section */}
