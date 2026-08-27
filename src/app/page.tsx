@@ -8,11 +8,11 @@ import styles from "./page.module.css";
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  let projects = [
-    { id: '1', title: 'Mahkatara Projects', description: 'A gripping thriller by TPF.', trailerUrl: '', bannerUrl: '' },
-    { id: '2', title: 'The Wakation', description: 'Cyberpunk short film.', trailerUrl: '', bannerUrl: '' },
-    { id: '3', title: 'Sanidanoial Movies', description: 'A classic cinematic journey.', trailerUrl: '', bannerUrl: '' },
-    { id: '4', title: 'Thkfilm Projects', description: 'Visual narrative showcase.', trailerUrl: '', bannerUrl: '' }
+  let projects: any[] = [
+    { id: '1', title: 'Mahkatara Projects', description: 'A gripping thriller by TPF.', youtubeUrl: '', bannerUrl: '' },
+    { id: '2', title: 'The Wakation', description: 'Cyberpunk short film.', youtubeUrl: '', bannerUrl: '' },
+    { id: '3', title: 'Sanidanoial Movies', description: 'A classic cinematic journey.', youtubeUrl: '', bannerUrl: '' },
+    { id: '4', title: 'Thkfilm Projects', description: 'Visual narrative showcase.', youtubeUrl: '', bannerUrl: '' }
   ];
   try {
     const projectsCount = await prisma.project.count();
