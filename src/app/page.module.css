@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at 70% 30%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+  background: radial-gradient(circle at 70% 30%, rgba(242, 242, 242, 0.1) 0%, transparent 50%),
               radial-gradient(circle at 30% 70%, rgba(45, 45, 85, 0.2) 0%, transparent 50%);
   filter: blur(60px);
   z-index: -1;
@@ -45,7 +45,7 @@
   background: conic-gradient(
     from 180deg at 50% 50%,
     transparent 0deg,
-    rgba(212, 175, 55, 0.1) 20deg,
+    rgba(242, 242, 242, 0.1) 20deg,
     transparent 40deg,
     rgba(45, 45, 85, 0.1) 160deg,
     transparent 180deg
@@ -61,7 +61,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.15) 0%, transparent 60%);
+  background: radial-gradient(circle at 10% 10%, rgba(242, 242, 242, 0.15) 0%, transparent 60%);
   filter: blur(80px);
   animation: leakMotion 15s infinite alternate ease-in-out;
   pointer-events: none;
@@ -133,7 +133,7 @@
 .orb1 {
   width: 50vw;
   height: 50vw;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(242, 242, 242, 0.3) 0%, transparent 70%);
   top: -20%;
   left: -10%;
 }
@@ -190,104 +190,7 @@
   100% { transform: translate(20%, 20%) scale(1.1); }
 }
 
-/* Viewfinder Elements */
-.viewfinder {
-  position: absolute;
-  top: calc(8vh + 25px);
-  bottom: calc(8vh + 25px);
-  left: 40px;
-  right: 40px;
-  pointer-events: none;
-  z-index: 20;
-  border: 1px solid rgba(255, 255, 255, 0.03);
-}
 
-:global([data-theme="light"]) .viewfinder {
-  border-color: rgba(0, 0, 0, 0.03);
-}
-
-.bracket {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  border: 2px solid rgba(212, 175, 55, 0.4);
-}
-
-:global([data-theme="light"]) .bracket {
-  border-color: rgba(0, 0, 0, 0.2);
-}
-
-.topLeft { top: 0; left: 0; border-right: 0; border-bottom: 0; }
-.topRight { top: 0; right: 0; border-left: 0; border-bottom: 0; }
-.bottomLeft { bottom: 0; left: 0; border-right: 0; border-top: 0; }
-.bottomRight { bottom: 0; right: 0; border-left: 0; border-top: 0; }
-
-.recIndicator {
-  position: absolute;
-  top: calc(8vh + 2rem);
-  right: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #ff3e3e;
-  font-family: var(--font-sans);
-  font-weight: 600;
-  letter-spacing: 2px;
-  font-size: 0.9rem;
-  z-index: 21;
-}
-
-.recDot {
-  width: 12px;
-  height: 12px;
-  background: #ff3e3e;
-  border-radius: 50%;
-  box-shadow: 0 0 10px #ff3e3e;
-  animation: blink 1s infinite alternate;
-}
-
-@keyframes blink {
-  from { opacity: 0.2; }
-  to { opacity: 1; }
-}
-
-.timecode {
-  position: absolute;
-  bottom: calc(8vh + 2rem);
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Courier New', Courier, monospace;
-  color: var(--text-muted);
-  opacity: 0.5;
-  font-size: 0.9rem;
-  letter-spacing: 4px;
-  z-index: 21;
-}
-
-/* Widescreen Cinematic Letterbox */
-.letterboxTop, .letterboxBottom {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 8vh;
-  background: rgba(0, 0, 0, 0.95);
-  z-index: 25;
-  pointer-events: none;
-  transition: all 0.5s ease;
-}
-.letterboxTop {
-  top: 0;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
-}
-.letterboxBottom {
-  bottom: 0;
-  border-top: 1px solid rgba(212, 175, 55, 0.15);
-}
-:global([data-theme="light"]) .letterboxTop,
-:global([data-theme="light"]) .letterboxBottom {
-  background: rgba(247, 244, 239, 0.96);
-  border-color: rgba(0, 0, 0, 0.05);
-}
 
 .heroContent {
   position: relative;
@@ -311,7 +214,7 @@
   max-width: 850px;
   max-height: 450px;
   object-fit: contain;
-  filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.2));
+  filter: drop-shadow(0 0 30px rgba(242, 242, 242, 0.2));
   transition: filter 0.5s ease;
 }
 
@@ -328,7 +231,7 @@
   transform: translate(-50%, -50%);
   width: 250px;
   height: 250px;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(242, 242, 242, 0.12) 0%, transparent 70%);
   filter: blur(60px);
   z-index: -1;
   animation: pulseGlow 5s infinite ease-in-out;
@@ -373,7 +276,7 @@
   letter-spacing: 3px;
   color: #fff;
   background: transparent;
-  border: 1px solid rgba(212, 175, 55, 0.5);
+  border: 1px solid rgba(242, 242, 242, 0.5);
   border-radius: 4px;
   position: relative;
   overflow: hidden;
@@ -397,7 +300,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(212, 175, 55, 0.2),
+    rgba(242, 242, 242, 0.2),
     transparent
   );
   transition: all 0.6s ease;
@@ -412,7 +315,7 @@
   color: #000;
   background-color: var(--accent);
   border-color: var(--accent);
-  box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 0 30px rgba(242, 242, 242, 0.4);
   transform: translateY(-2px);
 }
 
@@ -523,7 +426,7 @@
 }
 
 .homeAnnCard:hover {
-  border-color: rgba(212, 175, 55, 0.3);
+  border-color: rgba(242, 242, 242, 0.3);
   background: rgba(20, 20, 20, 0.5);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
   transform: translateY(-3px);
@@ -611,8 +514,8 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  background: rgba(212, 175, 55, 0.06);
+  border: 1px solid rgba(242, 242, 242, 0.3);
+  background: rgba(242, 242, 242, 0.06);
   color: var(--accent);
   display: flex;
   align-items: center;
@@ -623,7 +526,7 @@
 }
 
 .carouselArrow:hover:not(:disabled) {
-  background: rgba(212, 175, 55, 0.18);
+  background: rgba(242, 242, 242, 0.18);
   border-color: var(--accent);
   transform: scale(1.08);
 }
@@ -655,7 +558,7 @@
   background: var(--accent);
   width: 24px;
   border-radius: 4px;
-  box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+  box-shadow: 0 0 8px rgba(242, 242, 242, 0.5);
 }
 
 .projectCard {
@@ -679,8 +582,8 @@
 
 .projectCard:hover {
   transform: translateY(-10px) scale(1.01);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(212, 175, 55, 0.3);
-  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(242, 242, 242, 0.3);
+  border-color: rgba(242, 242, 242, 0.4);
 }
 
 :global([data-theme="light"]) .projectCard:hover {
@@ -741,8 +644,8 @@
 .playIconBox {
   width: 80px;
   height: 80px;
-  background: rgba(212, 175, 55, 0.2);
-  border: 1px solid rgba(212, 175, 55, 0.5);
+  background: rgba(242, 242, 242, 0.2);
+  border: 1px solid rgba(242, 242, 242, 0.5);
   backdrop-filter: blur(4px);
   border-radius: 50%;
   display: flex;
@@ -827,7 +730,7 @@
   border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9),
-              0 0 80px rgba(212, 175, 55, 0.06),
+              0 0 80px rgba(242, 242, 242, 0.06),
               0 0 0 1px rgba(255, 255, 255, 0.05);
   background: #000;
   transition: all 0.5s ease;
@@ -909,7 +812,7 @@
 
 .activeMini .miniImg {
   border-color: var(--accent);
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 0 20px rgba(242, 242, 242, 0.3);
 }
 
 .miniTitle {
@@ -989,13 +892,13 @@
   z-index: 2;
   width: 80px;
   height: 80px;
-  background: rgba(212, 175, 55, 0.9);
+  background: rgba(242, 242, 242, 0.95);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #000;
-  box-shadow: 0 0 40px rgba(212, 175, 55, 0.5),
+  box-shadow: 0 0 40px rgba(242, 242, 242, 0.5),
               0 8px 32px rgba(0, 0, 0, 0.6);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
@@ -1006,7 +909,7 @@
 }
 
 .btsThumbOverlay:hover .bigPlayBtn {
-  box-shadow: 0 0 60px rgba(212, 175, 55, 0.7),
+  box-shadow: 0 0 60px rgba(242, 242, 242, 0.7),
               0 8px 40px rgba(0, 0, 0, 0.8);
 }
 
@@ -1195,13 +1098,13 @@
 
 .filmstripFrame {
   flex-shrink: 0;
-  width: 480px;
-  height: 270px;
-  border-radius: 16px;
+  width: 720px;
+  height: 405px;
+  border-radius: 20px;
   background-size: cover;
   background-position: center;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
   position: relative;
   overflow: hidden;
 }
@@ -1216,8 +1119,8 @@
 
 @media (max-width: 768px) {
   .filmstripFrame {
-    width: 320px;
-    height: 180px;
+    width: 480px;
+    height: 270px;
   }
   .filmstripTrack {
     gap: 1.5rem;
@@ -1227,8 +1130,8 @@
 
 @media (max-width: 480px) {
   .filmstripFrame {
-    width: 260px;
-    height: 146px;
+    width: 390px;
+    height: 220px;
   }
   .filmstripTrack {
     gap: 1rem;
@@ -1278,7 +1181,7 @@
 
 .projectCardHorizontal:hover .projectCardHorizontalFrame {
   border-color: var(--accent);
-  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 15px 40px rgba(242, 242, 242, 0.25);
 }
 
 .projectCardHorizontalTitle {

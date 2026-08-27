@@ -9,3 +9,8 @@ build/
 *.db-journal
 .DS_Store
 public/uploads/
+*.tsbuildinfo
+*.log
+out.txt
+ts_error.txt
+prisma_docs.html

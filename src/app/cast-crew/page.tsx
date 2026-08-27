@@ -11,15 +11,20 @@ export const metadata: Metadata = {
 };
 
 export default async function CastCrewPage() {
-  const crewCount = await prisma.castCrew.count();
-  const teamMembers = crewCount === 0
-    ? [
-        { id: '1', name: 'Tilak Popat', role: 'Director / Founder', imageUrl: 'https://images.unsplash.com/photo-1544168190-79c15427015f?auto=format&fit=crop&q=80&w=400' },
-        { id: '2', name: 'John Doe', role: 'Cinematographer', imageUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=400' },
-        { id: '3', name: 'Jane Smith', role: 'Lead Actress', imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400' },
-        { id: '4', name: 'Alex Johnson', role: 'Music Composer', imageUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=400' }
-      ]
-    : await prisma.castCrew.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
+  let teamMembers: any[] = [
+    { id: '1', name: 'Tilak Popat', role: 'Director / Founder', imageUrl: 'https://images.unsplash.com/photo-1544168190-79c15427015f?auto=format&fit=crop&q=80&w=400' },
+    { id: '2', name: 'John Doe', role: 'Cinematographer', imageUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=400' },
+    { id: '3', name: 'Jane Smith', role: 'Lead Actress', imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400' },
+    { id: '4', name: 'Alex Johnson', role: 'Music Composer', imageUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=400' }
+  ];
+  try {
+    const crewCount = await prisma.castCrew.count();
+    if (crewCount > 0) {
+      teamMembers = await prisma.castCrew.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
+    }
+  } catch (e) {
+    console.error('CastCrew table or DB not available:', e);
+  }
 
   return (
     <div className={styles.main}>

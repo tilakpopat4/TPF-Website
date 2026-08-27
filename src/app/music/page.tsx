@@ -18,7 +18,12 @@ function getSpotifyEmbedUrl(rawUrl: string | null): string | null {
 }
 
 export default async function MusicPage() {
-  const musicTracks = await prisma.music.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
+  let musicTracks: any[] = [];
+  try {
+    musicTracks = await prisma.music.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
+  } catch (e) {
+    console.error('Music table or DB not available:', e);
+  }
 
   let spotifyUrl = 'https://open.spotify.com/episode/5H3x5h6Vxghl6VA0Dcu3uN'; // fallback
   try {

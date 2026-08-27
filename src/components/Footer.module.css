@@ -15,7 +15,7 @@
   width: 160px;
   height: 2px;
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 0 16px rgba(242, 242, 242, 0.4);
   border-radius: 2px;
 }
 
@@ -75,7 +75,7 @@
 .socialLink:hover {
   color: var(--accent);
   border-color: var(--accent);
-  background: rgba(212, 175, 55, 0.07);
+  background: rgba(242, 242, 242, 0.07);
   transform: translateY(-2px);
 }
 

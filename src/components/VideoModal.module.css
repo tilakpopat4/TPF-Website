@@ -101,9 +101,9 @@
 .dot {
   width: 6px;
   height: 6px;
-  background: #d4af37;
+  background: #F2F2F2;
   border-radius: 50%;
-  box-shadow: 0 0 5px #d4af37;
+  box-shadow: 0 0 5px #F2F2F2;
 }
 
 @media (max-width: 768px) {

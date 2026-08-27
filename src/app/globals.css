@@ -5,8 +5,8 @@
   --bg-secondary: #0a0a0a;
   --surface: rgba(20, 20, 20, 0.7);
   --glass-border: rgba(255, 255, 255, 0.08);
-  --accent: #d4af37; /* Cinematic Gold */
-  --accent-hover: #f1c40f;
+  --accent: #F2F2F2;
+  --accent-hover: #FFFFFF;
   --text: #ffffff;
   --text-muted: #999999;
   
@@ -24,8 +24,8 @@
   --bg-secondary: #ede9e1;
   --surface: rgba(255, 252, 246, 0.85);
   --glass-border: rgba(100, 80, 30, 0.15);
-  --accent: #a07828;
-  --accent-hover: #c49a30;
+  --accent: #222222;
+  --accent-hover: #000000;
   --text: #18150e;
   --text-muted: #6b6050;
 }
@@ -103,12 +103,12 @@ button {
 }
 
 .cinematic-glow {
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 20px rgba(242, 242, 242, 0.15);
   transition: box-shadow 0.3s ease;
 }
 
 .cinematic-glow:hover {
-  box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 0 30px rgba(242, 242, 242, 0.3);
 }
 
 .container {

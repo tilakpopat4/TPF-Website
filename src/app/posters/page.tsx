@@ -9,7 +9,12 @@ export const metadata: Metadata = {
 }
 
 export default async function PostersPage() {
-  const posters = await prisma.poster.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] })
+  let posters: any[] = [];
+  try {
+    posters = await prisma.poster.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
+  } catch (e) {
+    console.error('Posters table or DB not available:', e);
+  }
 
   return (
     <main className={styles.main}>

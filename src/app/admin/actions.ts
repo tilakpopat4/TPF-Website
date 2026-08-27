@@ -204,6 +204,7 @@ export async function updateSetting(key: string, value: string) {
     create: { key, value },
   })
   revalidatePath('/')
+  revalidatePath('/vision')
   revalidatePath('/music')
   revalidatePath('/admin')
 }

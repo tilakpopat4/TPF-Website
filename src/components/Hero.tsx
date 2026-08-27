@@ -66,21 +66,9 @@ export default function Hero({ projects = [] }: HeroProps) {
         <div className={styles.vignette}></div>
         <div className={styles.grain}></div>
         
-        {/* Viewfinder Elements */}
-        <div className={styles.viewfinder}>
-          <div className={`${styles.bracket} ${styles.topLeft}`}></div>
-          <div className={`${styles.bracket} ${styles.topRight}`}></div>
-          <div className={`${styles.bracket} ${styles.bottomLeft}`}></div>
-          <div className={`${styles.bracket} ${styles.bottomRight}`}></div>
-        </div>
-
         <div className={styles.orb1}></div>
         <div className={styles.orb2}></div>
         <div className={styles.filmStripAnim}></div>
-        
-        {/* Widescreen borders */}
-        <div className={styles.letterboxTop}></div>
-        <div className={styles.letterboxBottom}></div>
       </motion.div>
       
       {/* Foreground Content with Parallax & Motion */}
@@ -150,7 +138,7 @@ export default function Hero({ projects = [] }: HeroProps) {
         <motion.a 
           href="#projects" 
           className={styles.ctaButton + " cinematic-glow"}
-          whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(212, 175, 55, 0.4)" }}
+          whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(242, 242, 242, 0.4)" }}
           whileTap={{ scale: 0.95 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

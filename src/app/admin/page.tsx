@@ -9,35 +9,49 @@ import AdminAnnouncementClientForm from "@/components/AdminAnnouncementClientFor
 import AdminBTSClientForm from "@/components/AdminBTSClientForm"
 import AdminSpotifyForm from "@/components/AdminSpotifyForm"
 import AdminLatestCreationForm from "@/components/AdminLatestCreationForm"
+import AdminVisionForm from "@/components/AdminVisionForm"
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminPage() {
-  const projects = await prisma.project.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] })
-  const music = await prisma.music.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] })
-  const crew = await prisma.castCrew.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] })
-  const posters = await prisma.poster.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] })
-  const announcements = await prisma.announcement.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] })
-  
-  // Wrapped in try-catch: table may not exist yet on first deploy
+  let projects: any[] = [];
+  let music: any[] = [];
+  let crew: any[] = [];
+  let posters: any[] = [];
+  let announcements: any[] = [];
   let bts: any[] = [];
+
   try {
+    projects = await prisma.project.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
+    music = await prisma.music.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
+    crew = await prisma.castCrew.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
+    posters = await prisma.poster.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
+    announcements = await prisma.announcement.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
     bts = await prisma.behindTheScene.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
   } catch (e) {
-    console.error('BehindTheScene table not yet created:', e);
+    console.error('Database query error in admin:', e);
   }
 
   let spotifyUrl = '';
-  try {
-    const setting = await prisma.settings.findUnique({ where: { key: 'spotifyUrl' } });
-    spotifyUrl = setting?.value || '';
-  } catch (e) {
-    console.error('Settings table not yet available:', e);
-  }
-
+  let visionLogoUrl = '';
+  let visionLogoLightUrl = '';
+  let visionTagline = 'Screening Beginner Dreams.';
   let latestCreationUrl = '';
   let latestCreationTitle = '';
+
   try {
+    const spotifySetting = await prisma.settings.findUnique({ where: { key: 'spotifyUrl' } });
+    spotifyUrl = spotifySetting?.value || '';
+
+    const visionLogoSetting = await prisma.settings.findUnique({ where: { key: 'visionLogoUrl' } });
+    visionLogoUrl = visionLogoSetting?.value || '';
+
+    const visionLogoLightSetting = await prisma.settings.findUnique({ where: { key: 'visionLogoLightUrl' } });
+    visionLogoLightUrl = visionLogoLightSetting?.value || '';
+
+    const visionTaglineSetting = await prisma.settings.findUnique({ where: { key: 'visionTagline' } });
+    if (visionTaglineSetting?.value) visionTagline = visionTaglineSetting.value;
+
     const urlS = await prisma.settings.findUnique({ where: { key: 'latestCreationUrl' } });
     const titleS = await prisma.settings.findUnique({ where: { key: 'latestCreationTitle' } });
     latestCreationUrl = urlS?.value || '';
@@ -50,10 +64,19 @@ export default async function AdminPage() {
     <div className={`container ${styles.adminPanel}`}>
       <div className={styles.header}>
         <h1 className="text-gradient">Admin Dashboard</h1>
-        <p>Manage TPF Website Content & Sequences</p>
+        <p>Manage TPF Website Content &amp; Sequences</p>
       </div>
 
       <div className={styles.grid}>
+
+        {/* Vision / TPF Cinemas Section */}
+        <section className={`${styles.card} glass`}>
+          <h2>🎥 TPF Cinemas — Vision &amp; Logo</h2>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+            Upload or set the dark and light mode logos and tagline for the TPF Cinemas &ldquo;An OTT For Beginners&rdquo; vision page.
+          </p>
+          <AdminVisionForm currentLogoUrl={visionLogoUrl} currentLogoLightUrl={visionLogoLightUrl} currentTagline={visionTagline} />
+        </section>
 
         {/* Latest Creation Section */}
         <section className={`${styles.card} glass`}>

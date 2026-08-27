@@ -8,15 +8,20 @@ import styles from "./page.module.css";
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const projectsCount = await prisma.project.count();
-  const projects = projectsCount === 0 
-    ? [
-        { id: '1', title: 'Mahkatara Projects', description: 'A gripping thriller by TPF.', trailerUrl: '', bannerUrl: '' },
-        { id: '2', title: 'The Wakation', description: 'Cyberpunk short film.', trailerUrl: '', bannerUrl: '' },
-        { id: '3', title: 'Sanidanoial Movies', description: 'A classic cinematic journey.', trailerUrl: '', bannerUrl: '' },
-        { id: '4', title: 'Thkfilm Projects', description: 'Visual narrative showcase.', trailerUrl: '', bannerUrl: '' }
-      ]
-    : await prisma.project.findMany({ take: 4, orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
+  let projects = [
+    { id: '1', title: 'Mahkatara Projects', description: 'A gripping thriller by TPF.', trailerUrl: '', bannerUrl: '' },
+    { id: '2', title: 'The Wakation', description: 'Cyberpunk short film.', trailerUrl: '', bannerUrl: '' },
+    { id: '3', title: 'Sanidanoial Movies', description: 'A classic cinematic journey.', trailerUrl: '', bannerUrl: '' },
+    { id: '4', title: 'Thkfilm Projects', description: 'Visual narrative showcase.', trailerUrl: '', bannerUrl: '' }
+  ];
+  try {
+    const projectsCount = await prisma.project.count();
+    if (projectsCount > 0) {
+      projects = await prisma.project.findMany({ take: 4, orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
+    }
+  } catch (e) {
+    console.error('Projects table or DB not available:', e);
+  }
 
   let btsItems: any[] = [];
   try {

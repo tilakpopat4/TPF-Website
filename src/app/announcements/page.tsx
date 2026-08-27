@@ -8,11 +8,17 @@ export const metadata: Metadata = {
 }
 
 export default async function AnnouncementsPage() {
-  const announcements = await prisma.announcement.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] })
-  const upcomingProjects = await prisma.project.findMany({
-    where: { releaseDate: { gte: new Date() } },
-    orderBy: { releaseDate: 'asc' }
-  })
+  let announcements: any[] = [];
+  let upcomingProjects: any[] = [];
+  try {
+    announcements = await prisma.announcement.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] });
+    upcomingProjects = await prisma.project.findMany({
+      where: { releaseDate: { gte: new Date() } },
+      orderBy: { releaseDate: 'asc' }
+    });
+  } catch (e) {
+    console.error('Announcements or DB not available:', e);
+  }
 
   return (
     <main className={styles.main}>
