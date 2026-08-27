@@ -41,6 +41,8 @@ export default async function AdminPage() {
   let latestCreationTitle = '';
   let youtubeHandle = 'tilakpopatfilms';
   let youtubeApiKey = '';
+  let youtubeSubscribers = '';
+  let youtubeVideoCount = '';
 
   try {
     const spotifySetting = await prisma.settings.findUnique({ where: { key: 'spotifyUrl' } });
