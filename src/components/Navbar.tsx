@@ -24,23 +24,23 @@ export default function Navbar() {
             <Image 
               src="/tpf-logo-new.webp" 
               alt="TPF Logo" 
-              width={160}
-              height={50}
+              width={240}
+              height={72}
               priority
-              quality={90}
+              quality={95}
               className={styles.logoImg}
-              style={{ display: theme === 'dark' ? 'block' : 'none', width: 'auto', height: '50px' }}
+              style={{ display: theme === 'dark' ? 'block' : 'none' }}
             />
             {/* Light mode logo (Black) */}
             <Image 
               src="/tpf-logo-light.webp" 
               alt="TPF Logo" 
-              width={160}
-              height={50}
+              width={240}
+              height={72}
               priority
-              quality={90}
+              quality={95}
               className={styles.logoImg}
-              style={{ display: theme === 'light' ? 'block' : 'none', width: 'auto', height: '50px' }}
+              style={{ display: theme === 'light' ? 'block' : 'none' }}
             />
           </Link>
         </div>

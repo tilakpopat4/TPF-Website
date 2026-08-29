@@ -22,6 +22,24 @@
   gap: 1.5rem;
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logoImg {
+  height: 72px;
+  width: auto;
+  max-height: 72px;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.25s ease;
+}
+
+.logo:hover .logoImg {
+  transform: scale(1.03);
+}
+
 /* ──────────────────────────────
    Theme Toggle — pill/track style
 ────────────────────────────── */
