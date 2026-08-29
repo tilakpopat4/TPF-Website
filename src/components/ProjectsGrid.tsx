@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import styles from '@/app/page.module.css';
 import VideoModal from './VideoModal';
@@ -31,10 +32,18 @@ export default function ProjectsGrid({ projects }: ProjectsGridProps) {
             onClick={() => handleProjectClick(project)}
             style={{ cursor: hasVideo ? 'pointer' : 'default' }}
           >
-            <div
-              className={styles.projectCardHorizontalFrame}
-              style={project.bannerUrl ? { backgroundImage: `url(${project.bannerUrl})` } : {}}
-            >
+            <div className={styles.projectCardHorizontalFrame}>
+              {project.bannerUrl && (
+                <Image 
+                  src={project.bannerUrl}
+                  alt={project.title}
+                  fill
+                  sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  style={{ objectFit: 'cover' }}
+                  quality={85}
+                  loading="lazy"
+                />
+              )}
               {hasVideo && (
                 <div className={styles.playOverlay}>
                   <div className={styles.playIconBox}>

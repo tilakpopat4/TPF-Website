@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import styles from '@/app/page.module.css';
@@ -99,27 +100,39 @@ export default function Hero({ projects = [] }: HeroProps) {
             {/* Stacked Logos for instant zero-delay theme switching */}
             <div style={{ display: 'grid', placeItems: 'center', position: 'relative' }}>
               {/* Dark Theme Logo (White) */}
-              <img 
-                src="/tpf-logo-new.png" 
+              <Image 
+                src="/tpf-logo-new.webp" 
                 alt="TPF Logo" 
+                width={850}
+                height={450}
+                priority
+                quality={90}
                 className={styles.mainLogo}
                 style={{ 
                   gridArea: '1 / 1',
                   opacity: mounted && theme === 'light' ? 0 : 1,
                   transition: 'opacity 0.4s ease',
-                  pointerEvents: mounted && theme === 'light' ? 'none' : 'auto'
+                  pointerEvents: mounted && theme === 'light' ? 'none' : 'auto',
+                  height: 'auto',
+                  width: '100%'
                 }}
               />
               {/* Light Theme Logo (Black) */}
-              <img 
-                src="/tpf-logo-light.png" 
+              <Image 
+                src="/tpf-logo-light.webp" 
                 alt="TPF Logo Light" 
+                width={850}
+                height={450}
+                priority
+                quality={90}
                 className={styles.mainLogo}
                 style={{ 
                   gridArea: '1 / 1',
                   opacity: mounted && theme === 'light' ? 1 : 0,
                   transition: 'opacity 0.4s ease',
-                  pointerEvents: mounted && theme === 'light' ? 'auto' : 'none'
+                  pointerEvents: mounted && theme === 'light' ? 'auto' : 'none',
+                  height: 'auto',
+                  width: '100%'
                 }}
               />
             </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import styles from '@/app/page.module.css';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -117,20 +118,20 @@ export default function TrailerSection({ btsItems }: { btsItems: any[] }) {
                   onClick={() => setIsPlaying(true)}
                 >
                   {currentThumb && (
-                    <img
+                    <Image
                       key={currentThumb}
                       src={currentThumb}
                       alt={activeItem.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 900px"
+                      quality={85}
+                      loading="lazy"
                       onError={() => {
                         if (thumbFallbackIdx < thumbFallbacks.length - 1) {
                           setThumbFallbackIdx(thumbFallbackIdx + 1);
                         }
                       }}
                       style={{
-                        position: 'absolute',
-                        inset: 0,
-                        width: '100%',
-                        height: '100%',
                         objectFit: 'cover',
                         borderRadius: '24px',
                       }}

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import styles from './YouTubeChannel.module.css';
@@ -56,11 +57,14 @@ export default function YouTubeChannel({ channelData }: Props) {
           <div className={styles.channelInfoLeft}>
             <div className={styles.avatarWrapper}>
               <div className={styles.avatarRing} />
-              <img 
+              <Image 
                 src={channelData.avatar} 
                 alt={channelData.title}
+                width={88}
+                height={88}
                 className={styles.avatarImg}
-                loading="eager"
+                priority
+                quality={90}
               />
             </div>
 
@@ -146,10 +150,13 @@ export default function YouTubeChannel({ channelData }: Props) {
                   transition={{ duration: 0.5, delay: idx * 0.08 }}
                 >
                   <div className={styles.thumbContainer}>
-                    <img 
+                    <Image 
                       src={video.thumbnail} 
                       alt={video.title}
+                      fill
+                      sizes="(max-width: 500px) 100vw, (max-width: 768px) 50vw, (max-width: 1100px) 33vw, 25vw"
                       className={styles.thumbImg}
+                      quality={85}
                       loading="lazy"
                     />
                     <div className={styles.playBadge}>

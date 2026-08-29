@@ -39,10 +39,14 @@ export default async function CastCrewPage() {
           {teamMembers.map((member: any) => (
             <div key={member.id} className={`${styles.profileCard} glass`}>
               <div className={styles.imageWrapper}>
-                <img 
+                <Image 
                   src={member.imageUrl || 'https://images.unsplash.com/photo-1544168190-79c15427015f?auto=format&fit=crop&q=80&w=400'} 
                   alt={member.name} 
+                  fill
+                  sizes="(max-width: 480px) 50vw, (max-width: 768px) 33vw, 280px"
                   className={styles.profileImage}
+                  quality={85}
+                  loading="lazy"
                 />
                 <div className={styles.overlay}>
                   <div className={styles.socials}>

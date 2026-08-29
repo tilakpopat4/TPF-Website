@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma"
+import Image from "next/image"
 import styles from "./page.module.css"
 import { Metadata } from 'next'
 
@@ -41,7 +42,17 @@ export default async function AnnouncementsPage() {
                 <article key={ann.id} className={`${styles.card} glass`}>
                   {ann.imageUrl && (
                     <div className={styles.imageWrapper}>
-                      <img src={ann.imageUrl} alt={ann.title} className={styles.cardImage} />
+                      <Image 
+                        src={ann.imageUrl} 
+                        alt={ann.title} 
+                        width={800}
+                        height={420}
+                        sizes="(max-width: 800px) 100vw, 800px"
+                        className={styles.cardImage} 
+                        quality={85}
+                        loading="lazy"
+                        style={{ width: '100%', height: 'auto' }}
+                      />
                     </div>
                   )}
                   <div className={styles.cardBody}>

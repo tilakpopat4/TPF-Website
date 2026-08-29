@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { useUploadThing } from '@/utils/uploadthing'
+import { compressImageFile } from '@/utils/image-processing'
 import ImageCropper from './ImageCropper'
 import styles from '@/app/admin/page.module.css'
 
@@ -48,7 +49,12 @@ export default function CropUploadField({ onUploadComplete, label, aspectRatio }
     if (originalFile) {
       setIsCropping(false)
       setIsUploading(true)
-      await startUpload([originalFile])
+      try {
+        const compressed = await compressImageFile(originalFile, 1920, 1920, 0.85)
+        await startUpload([compressed])
+      } catch (err) {
+        await startUpload([originalFile])
+      }
       setSelectedImage(null)
       setOriginalFile(null)
     }
@@ -58,12 +64,16 @@ export default function CropUploadField({ onUploadComplete, label, aspectRatio }
     setIsCropping(false)
     setIsUploading(true)
     
-    // Create a File object from the blob
-    const file = new File([croppedBlob], 'cropped-image.jpg', { type: 'image/jpeg' })
+    // Create a File object from the WebP/JPEG blob
+    const mimeType = croppedBlob.type || 'image/webp'
+    const ext = mimeType.includes('webp') ? '.webp' : '.jpg'
+    const fileName = originalFile ? originalFile.name.replace(/\.[^/.]+$/, '') + ext : `cropped-image${ext}`
+    const file = new File([croppedBlob], fileName, { type: mimeType })
     
     // Start the upload
     await startUpload([file])
     setSelectedImage(null)
+    setOriginalFile(null)
   }
 
   return (

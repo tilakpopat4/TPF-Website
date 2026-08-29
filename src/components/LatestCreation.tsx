@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import styles from './LatestCreation.module.css';
@@ -66,11 +67,15 @@ export default function LatestCreation({ youtubeUrl, title }: Props) {
             ) : (
               <div className={styles.thumbOverlay} onClick={() => setPlaying(true)}>
                 {/* Thumbnail with fallback */}
-                <img
+                <Image
                   key={thumbFallbacks[thumbIdx]}
                   src={thumbFallbacks[thumbIdx]}
                   alt={title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 1200px"
                   className={styles.thumbImg}
+                  quality={85}
+                  priority
                   onError={() => {
                     if (thumbIdx < thumbFallbacks.length - 1) setThumbIdx(thumbIdx + 1);
                   }}

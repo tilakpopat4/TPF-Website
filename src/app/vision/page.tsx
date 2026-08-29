@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import prisma from '@/lib/prisma';
 import styles from './page.module.css';
 import { Metadata } from 'next';
@@ -11,8 +12,8 @@ export const metadata: Metadata = {
 };
 
 export default async function VisionPage() {
-  let visionLogoUrl = '/tpf-cinemas-logo-white.png';
-  let visionLogoLightUrl = '/tpf-cinemas-logo-light.png';
+  let visionLogoUrl = '/tpf-cinemas-logo-white.webp';
+  let visionLogoLightUrl = '/tpf-cinemas-logo-light.webp';
   let visionTagline = 'Screening Beginner Dreams.';
 
   try {
@@ -33,21 +34,23 @@ export default async function VisionPage() {
         {/* ─── Centric Brand Logo (Dark & Light Theme Adaptive) ─── */}
         <div className={styles.logoWrapper}>
           {/* Dark Mode Logo (White version) */}
-          <img 
+          <Image 
             src={visionLogoUrl} 
             alt="TPF Cinemas" 
-            width={2000}
-            height={500}
-            loading="eager"
+            width={880}
+            height={220}
+            priority
+            quality={90}
             className={styles.brandLogoDark}
           />
           {/* Light Mode Logo (Black version) */}
-          <img 
+          <Image 
             src={visionLogoLightUrl} 
             alt="TPF Cinemas" 
-            width={2000}
-            height={500}
-            loading="eager"
+            width={880}
+            height={220}
+            priority
+            quality={90}
             className={styles.brandLogoLight}
           />
           <h1 className="sr-only">TPF Cinemas</h1>

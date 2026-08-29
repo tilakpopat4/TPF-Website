@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import styles from '@/app/page.module.css';
 import Link from 'next/link';
@@ -23,63 +24,70 @@ export default function HomeTabs({ initialProjects, announcements }: any) {
     }
   };
 
-  // Split projects into slides of 2
-  const slides: any[][] = [];
+  // Group projects into pairs of 2 for each slide
+  const slides = [];
   for (let i = 0; i < initialProjects.length; i += PROJECTS_PER_SLIDE) {
     slides.push(initialProjects.slice(i, i + PROJECTS_PER_SLIDE));
   }
   const totalSlides = slides.length;
 
-  const goNext = () => {
-    if (slideIndex < totalSlides - 1) {
-      setDirection(1);
-      setSlideIndex(slideIndex + 1);
-    }
-  };
-
   const goPrev = () => {
     if (slideIndex > 0) {
       setDirection(-1);
-      setSlideIndex(slideIndex - 1);
+      setSlideIndex(prev => prev - 1);
+    }
+  };
+
+  const goNext = () => {
+    if (slideIndex < totalSlides - 1) {
+      setDirection(1);
+      setSlideIndex(prev => prev + 1);
     }
   };
 
   const slideVariants = {
-    enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 80 : -80 }),
-    center: { opacity: 1, x: 0 },
-    exit: (dir: number) => ({ opacity: 0, x: dir > 0 ? -80 : 80 }),
+    enter: (dir: number) => ({
+      x: dir > 0 ? 80 : -80,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (dir: number) => ({
+      x: dir > 0 ? -80 : 80,
+      opacity: 0,
+    }),
   };
 
   return (
     <div className={styles.tabsContainer}>
-      {/* Tab Switcher */}
-      <div className={styles.tabSwitcher}>
+      <div className={styles.tabButtons}>
         <button 
-          className={`${styles.tabBtn} ${activeTab === 'projects' ? styles.tabActive : ''}`}
+          className={`${styles.tabBtn} ${activeTab === 'projects' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('projects')}
         >
           Featured Projects
         </button>
         <button 
-          className={`${styles.tabBtn} ${activeTab === 'announcements' ? styles.tabActive : ''}`}
+          className={`${styles.tabBtn} ${activeTab === 'announcements' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('announcements')}
         >
-          Latest Announcements
+          Announcements
         </button>
       </div>
 
       <AnimatePresence mode="wait">
         {activeTab === 'projects' ? (
-          <motion.div
+          <motion.div 
             key="projects"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4 }}
-            className={styles.projectsCarouselWrapper}
+            className={styles.carouselOuter}
           >
-            {/* Carousel viewport */}
-            <div className={styles.projectsCarousel}>
+            <div className={styles.carouselTrack}>
               {/* Prev button */}
               <button
                 className={`${styles.carouselArrow} ${styles.carouselArrowLeft}`}
@@ -116,8 +124,19 @@ export default function HomeTabs({ initialProjects, announcements }: any) {
                         >
                           <div
                             className={styles.projectImagePlaceholder}
-                            style={project.bannerUrl ? { backgroundImage: `url(${project.bannerUrl})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: 'transparent' } : {}}
+                            style={{ position: 'relative', overflow: 'hidden' }}
                           >
+                            {project.bannerUrl && (
+                              <Image 
+                                src={project.bannerUrl}
+                                alt={project.title}
+                                fill
+                                sizes="(max-width: 768px) 100vw, 500px"
+                                style={{ objectFit: 'cover' }}
+                                quality={85}
+                                loading="lazy"
+                              />
+                            )}
                             {!project.bannerUrl && <span className={styles.projectNumber}>0{globalIdx + 1}</span>}
                             {(project.youtubeUrl || project.trailerUrl) && (
                               <div className={styles.playOverlay}>
@@ -184,7 +203,20 @@ export default function HomeTabs({ initialProjects, announcements }: any) {
                 <div className={styles.homeAnnGrid}>
                     {announcements.map((ann: any) => (
                         <div key={ann.id} className={`${styles.homeAnnCard} glass`}>
-                            {ann.imageUrl && <img src={ann.imageUrl} alt={ann.title} className={styles.homeAnnImg} />}
+                            {ann.imageUrl && (
+                              <div style={{ position: 'relative', width: '100%', height: '180px' }}>
+                                <Image 
+                                  src={ann.imageUrl} 
+                                  alt={ann.title} 
+                                  fill
+                                  sizes="(max-width: 768px) 100vw, 400px"
+                                  className={styles.homeAnnImg} 
+                                  quality={85}
+                                  loading="lazy"
+                                  style={{ objectFit: 'cover' }}
+                                />
+                              </div>
+                            )}
                             <div className={styles.homeAnnContent}>
                                 <span>{new Date(ann.createdAt).toLocaleDateString()}</span>
                                 <h4>{ann.title}</h4>

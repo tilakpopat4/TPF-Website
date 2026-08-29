@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "./page.module.css";
 import prisma from "@/lib/prisma";
 import { Metadata } from 'next';
@@ -81,10 +82,15 @@ export default async function MusicPage() {
               {musicTracks.map((track) => (
                 <div key={track.id} className={`${styles.posterCard} glass`}>
                   <div className={styles.posterImageOuter}>
-                    <img
+                    <Image
                       src={track.posterUrl || "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?auto=format&fit=crop&q=80&w=400"}
                       alt={track.title}
+                      width={300}
+                      height={300}
+                      sizes="(max-width: 768px) 50vw, 200px"
                       className={styles.posterImage}
+                      quality={85}
+                      loading="lazy"
                     />
                   </div>
                   <div className={styles.posterInfo}>

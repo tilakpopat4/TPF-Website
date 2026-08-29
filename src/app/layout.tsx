@@ -86,6 +86,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Preconnect and DNS Prefetch for Image CDNs */}
+        <link rel="preconnect" href="https://utfs.io" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://utfs.io" />
+        <link rel="preconnect" href="https://ufs.sh" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://ufs.sh" />
+        <link rel="preconnect" href="https://img.youtube.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://img.youtube.com" />
+        <link rel="preconnect" href="https://i.ytimg.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://i.ytimg.com" />
+        <link rel="preconnect" href="https://yt3.ggpht.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://yt3.ggpht.com" />
+        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+
         {/* Google AdSense Verification */}
         <script
           async

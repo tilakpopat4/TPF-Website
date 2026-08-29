@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { useTheme } from './ThemeProvider';
 import styles from './Navbar.module.css';
@@ -20,18 +21,26 @@ export default function Navbar() {
         <div className={styles.logo}>
           <Link href="/" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center' }}>
             {/* Dark mode logo (White) */}
-            <img 
-              src="/tpf-logo-new.png" 
+            <Image 
+              src="/tpf-logo-new.webp" 
               alt="TPF Logo" 
+              width={160}
+              height={50}
+              priority
+              quality={90}
               className={styles.logoImg}
-              style={{ display: theme === 'dark' ? 'block' : 'none' }}
+              style={{ display: theme === 'dark' ? 'block' : 'none', width: 'auto', height: '50px' }}
             />
             {/* Light mode logo (Black) */}
-            <img 
-              src="/tpf-logo-light.png" 
+            <Image 
+              src="/tpf-logo-light.webp" 
               alt="TPF Logo" 
+              width={160}
+              height={50}
+              priority
+              quality={90}
               className={styles.logoImg}
-              style={{ display: theme === 'light' ? 'block' : 'none' }}
+              style={{ display: theme === 'light' ? 'block' : 'none', width: 'auto', height: '50px' }}
             />
           </Link>
         </div>

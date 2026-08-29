@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma"
+import Image from "next/image"
 import styles from "./page.module.css"
 import DownloadButton from "@/components/DownloadButton"
 import { Metadata } from 'next'
@@ -30,7 +31,17 @@ export default async function PostersPage() {
           <div className={styles.posterGrid}>
             {posters.map((post) => (
               <div key={post.id} className={styles.posterCard}>
-                <img src={post.imageUrl} alt={post.title} className={styles.posterImage} />
+                <Image 
+                  src={post.imageUrl} 
+                  alt={post.title} 
+                  width={600} 
+                  height={900}
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  className={styles.posterImage}
+                  quality={85}
+                  loading="lazy"
+                  style={{ width: '100%', height: 'auto' }}
+                />
                 <div className={styles.posterOverlay}>
                   <h3>{post.title}</h3>
                   <DownloadButton 
