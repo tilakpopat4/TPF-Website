@@ -1,16 +1,6 @@
-// UPDATED ADMIN PORTAL - REFRESH BROWSER (CTRL+F5)
 import prisma from "@/lib/prisma"
 import styles from "./page.module.css"
-import AdminClientForm from "@/components/AdminClientForm"
-import AdminMusicClientForm from "@/components/AdminMusicClientForm"
-import AdminCastCrewClientForm from "@/components/AdminCastCrewClientForm"
-import AdminPosterClientForm from "@/components/AdminPosterClientForm"
-import AdminAnnouncementClientForm from "@/components/AdminAnnouncementClientForm"
-import AdminBTSClientForm from "@/components/AdminBTSClientForm"
-import AdminSpotifyForm from "@/components/AdminSpotifyForm"
-import AdminLatestCreationForm from "@/components/AdminLatestCreationForm"
-import AdminVisionForm from "@/components/AdminVisionForm"
-import AdminYouTubeChannelForm from "@/components/AdminYouTubeChannelForm"
+import AdminDashboardView from "@/components/AdminDashboardView"
 
 export const dynamic = 'force-dynamic';
 
@@ -75,89 +65,33 @@ export default async function AdminPage() {
   }
 
   return (
-    <div className={`container ${styles.adminPanel}`}>
-      <div className={styles.header}>
-        <h1 className="text-gradient">Admin Dashboard</h1>
-        <p>Manage TPF Website Content &amp; Sequences</p>
+    <main className={styles.adminPanel}>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <div className={styles.headerBadge}>TPF Studio Management Console</div>
+          <h1 className="text-gradient">Admin Dashboard</h1>
+          <p>Manage high-fidelity productions, media channels, crew rosters, and live website sequences.</p>
+        </div>
+
+        <AdminDashboardView
+          projects={projects}
+          music={music}
+          crew={crew}
+          posters={posters}
+          announcements={announcements}
+          bts={bts}
+          spotifyUrl={spotifyUrl}
+          visionLogoUrl={visionLogoUrl}
+          visionLogoLightUrl={visionLogoLightUrl}
+          visionTagline={visionTagline}
+          latestCreationUrl={latestCreationUrl}
+          latestCreationTitle={latestCreationTitle}
+          youtubeHandle={youtubeHandle}
+          youtubeApiKey={youtubeApiKey}
+          youtubeSubscribers={youtubeSubscribers}
+          youtubeVideoCount={youtubeVideoCount}
+        />
       </div>
-
-      <div className={styles.grid}>
-
-        {/* Vision / TPF Cinemas Section */}
-        <section className={`${styles.card} glass`}>
-          <h2>🎥 TPF Cinemas — Vision &amp; Logo</h2>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-            Upload or set the dark and light mode logos and tagline for the TPF Cinemas &ldquo;An OTT For Beginners&rdquo; vision page.
-          </p>
-          <AdminVisionForm currentLogoUrl={visionLogoUrl} currentLogoLightUrl={visionLogoLightUrl} currentTagline={visionTagline} />
-        </section>
-
-        {/* YouTube Channel Settings Section */}
-        <section className={`${styles.card} glass`}>
-          <h2>🔴 Official YouTube Channel Settings</h2>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-            Configure your YouTube channel handle, live stats, and optional YouTube Data API key.
-          </p>
-          <AdminYouTubeChannelForm 
-            currentHandle={youtubeHandle} 
-            currentApiKey={youtubeApiKey}
-            currentSubscribers={youtubeSubscribers}
-            currentVideoCount={youtubeVideoCount}
-          />
-        </section>
-
-        {/* Latest Creation Section */}
-        <section className={`${styles.card} glass`}>
-          <h2>🎬 Latest Creation (Homepage Feature)</h2>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-            Set a YouTube video to show as a big featured player on the homepage, right below the logo.
-          </p>
-          <AdminLatestCreationForm currentUrl={latestCreationUrl} currentTitle={latestCreationTitle} />
-        </section>
-
-        {/* Projects Section */}
-        <section className={`${styles.card} glass`}>
-          <h2>Manage Projects</h2>
-          <AdminClientForm initialProjects={projects} />
-        </section>
-
-        {/* Spotify Settings Section */}
-        <section className={`${styles.card} glass`}>
-          <h2>🎵 Spotify Player</h2>
-          <AdminSpotifyForm currentUrl={spotifyUrl} />
-        </section>
-
-        {/* Behind The Scenes Section */}
-        <section className={`${styles.card} glass`}>
-          <h2>Manage Behind The Scenes</h2>
-          <AdminBTSClientForm btsItems={bts} />
-        </section>
-
-        {/* Music Section */}
-        <section className={`${styles.card} glass`}>
-          <h2>Manage Music</h2>
-          <AdminMusicClientForm initialMusic={music} />
-        </section>
-
-        {/* Cast & Crew Section */}
-        <section className={`${styles.card} glass`}>
-          <h2>Manage Cast & Crew</h2>
-          <AdminCastCrewClientForm initialCrew={crew} />
-        </section>
-
-        {/* Poster Section */}
-        <section className={`${styles.card} glass`}>
-          <h2>Manage Poster Work</h2>
-          <AdminPosterClientForm initialPosters={posters} />
-        </section>
-
-        {/* Announcements Section */}
-        <section className={`${styles.card} glass`}>
-          <h2>Manage Announcements</h2>
-          <AdminAnnouncementClientForm initialAnnouncements={announcements} />
-        </section>
-
-      </div>
-    </div>
+    </main>
   )
 }
