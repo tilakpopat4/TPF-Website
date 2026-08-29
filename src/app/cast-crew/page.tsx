@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import prisma from "@/lib/prisma";
+import { shimmerBlurDataUrl } from "@/utils/image-shimmer";
 import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -36,17 +37,19 @@ export default async function CastCrewPage() {
         </div>
 
         <div className={styles.grid}>
-          {teamMembers.map((member: any) => (
+          {teamMembers.map((member: any, idx: number) => (
             <div key={member.id} className={`${styles.profileCard} glass`}>
               <div className={styles.imageWrapper}>
                 <Image 
                   src={member.imageUrl || 'https://images.unsplash.com/photo-1544168190-79c15427015f?auto=format&fit=crop&q=80&w=400'} 
                   alt={member.name} 
                   fill
-                  sizes="(max-width: 480px) 50vw, (max-width: 768px) 33vw, 280px"
+                  priority={idx < 6}
+                  placeholder="blur"
+                  blurDataURL={shimmerBlurDataUrl}
+                  sizes="(max-width: 480px) 50vw, (max-width: 768px) 33vw, 350px"
                   className={styles.profileImage}
-                  quality={85}
-                  loading="lazy"
+                  quality={80}
                 />
                 <div className={styles.overlay}>
                   <div className={styles.socials}>

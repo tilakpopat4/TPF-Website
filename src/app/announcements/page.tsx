@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma"
 import Image from "next/image"
 import styles from "./page.module.css"
+import { widescreenBlurDataUrl } from "@/utils/image-shimmer"
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -38,7 +39,7 @@ export default async function AnnouncementsPage() {
             <p className={styles.emptyMsg}>Nothing here yet — check back soon!</p>
           ) : (
             <>
-              {announcements.map((ann) => (
+              {announcements.map((ann, idx) => (
                 <article key={ann.id} className={`${styles.card} glass`}>
                   {ann.imageUrl && (
                     <div className={styles.imageWrapper}>
@@ -47,10 +48,12 @@ export default async function AnnouncementsPage() {
                         alt={ann.title} 
                         width={800}
                         height={420}
+                        priority={idx < 3}
+                        placeholder="blur"
+                        blurDataURL={widescreenBlurDataUrl}
                         sizes="(max-width: 800px) 100vw, 800px"
                         className={styles.cardImage} 
-                        quality={85}
-                        loading="lazy"
+                        quality={80}
                         style={{ width: '100%', height: 'auto' }}
                       />
                     </div>

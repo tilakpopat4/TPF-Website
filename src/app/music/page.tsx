@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import prisma from "@/lib/prisma";
+import { shimmerBlurDataUrl } from "@/utils/image-shimmer";
 import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -79,7 +80,7 @@ export default async function MusicPage() {
           <div className={styles.tracksSection}>
             <h3 className={styles.sectionSubtitle}>More Tracks</h3>
             <div className={styles.posterGrid}>
-              {musicTracks.map((track) => (
+              {musicTracks.map((track, idx) => (
                 <div key={track.id} className={`${styles.posterCard} glass`}>
                   <div className={styles.posterImageOuter}>
                     <Image
@@ -87,10 +88,12 @@ export default async function MusicPage() {
                       alt={track.title}
                       width={300}
                       height={300}
+                      priority={idx < 4}
+                      placeholder="blur"
+                      blurDataURL={shimmerBlurDataUrl}
                       sizes="(max-width: 768px) 50vw, 200px"
                       className={styles.posterImage}
-                      quality={85}
-                      loading="lazy"
+                      quality={80}
                     />
                   </div>
                   <div className={styles.posterInfo}>

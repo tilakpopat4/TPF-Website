@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma"
 import Image from "next/image"
 import styles from "./page.module.css"
 import DownloadButton from "@/components/DownloadButton"
+import { posterBlurDataUrl } from "@/utils/image-shimmer"
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -29,17 +30,19 @@ export default async function PostersPage() {
           <p style={{ textAlign: 'center', marginTop: '4rem' }}>No posters added yet.</p>
         ) : (
           <div className={styles.posterGrid}>
-            {posters.map((post) => (
+            {posters.map((post, idx) => (
               <div key={post.id} className={styles.posterCard}>
                 <Image 
                   src={post.imageUrl} 
                   alt={post.title} 
                   width={600} 
                   height={900}
+                  priority={idx < 4}
+                  placeholder="blur"
+                  blurDataURL={posterBlurDataUrl}
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   className={styles.posterImage}
-                  quality={85}
-                  loading="lazy"
+                  quality={80}
                   style={{ width: '100%', height: 'auto' }}
                 />
                 <div className={styles.posterOverlay}>
