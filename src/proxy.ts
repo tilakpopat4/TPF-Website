@@ -12,7 +12,7 @@ export function proxy(req: NextRequest) {
 
         // Secure admin credentials (configured via env or fallback)
         const expectedUser = process.env.ADMIN_USERNAME || 'tpfadmin'
-        const expectedPassword = process.env.ADMIN_PASSWORD || 'adminuser'
+        const expectedPassword = process.env.ADMIN_PASSWORD || 'tilak2952'
 
         if (user === expectedUser && pwd === expectedPassword) {
           return NextResponse.next()
