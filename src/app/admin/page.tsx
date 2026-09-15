@@ -1,10 +1,18 @@
 import prisma from "@/lib/prisma"
 import styles from "./page.module.css"
 import AdminDashboardView from "@/components/AdminDashboardView"
+import LogoutButton from "@/components/LogoutButton"
+import { redirect } from "next/navigation"
+import { getAdminSession } from "@/lib/auth"
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminPage() {
+  const session = await getAdminSession();
+  if (!session) {
+    redirect('/admin/login');
+  }
+
   let projects: any[] = [];
   let music: any[] = [];
   let crew: any[] = [];
@@ -68,7 +76,10 @@ export default async function AdminPage() {
     <main className={styles.adminPanel}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <div className={styles.headerBadge}>TPF Studio Management Console</div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', width: '100%' }}>
+            <div className={styles.headerBadge}>TPF Studio Management Console</div>
+            <LogoutButton />
+          </div>
           <h1 className="text-gradient">Admin Dashboard</h1>
           <p>Manage high-fidelity productions, media channels, crew rosters, and live website sequences.</p>
         </div>

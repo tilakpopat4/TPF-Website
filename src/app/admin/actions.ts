@@ -2,11 +2,42 @@
 
 import prisma from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
+import {
+  requireAdmin,
+  validateAdminCredentials,
+  setAdminSessionCookie,
+  destroyAdminSession,
+} from "@/lib/auth"
 
-import path from "path"
+// ─── Authentication Actions ──────────────────────────────────────────────────
 
-// Projects
+export async function loginAdminAction(formData: FormData) {
+  const username = (formData.get('username') as string) || ''
+  const password = (formData.get('password') as string) || ''
+
+  if (!username.trim() || !password) {
+    return { success: false, error: 'Username and password are required.' }
+  }
+
+  const isValid = validateAdminCredentials(username, password)
+  if (!isValid) {
+    return { success: false, error: 'Invalid credentials. Please verify username and password.' }
+  }
+
+  await setAdminSessionCookie(username.trim())
+  return { success: true }
+}
+
+export async function logoutAdminAction() {
+  await destroyAdminSession()
+  redirect('/admin/login')
+}
+
+// ─── Projects ────────────────────────────────────────────────────────────────
+
 export async function addProject(formData: FormData) {
+  await requireAdmin()
   const title = formData.get('title') as string
   const description = formData.get('description') as string
   const bannerUrl = formData.get('bannerUrl') as string | null
@@ -31,187 +62,8 @@ export async function addProject(formData: FormData) {
   }
 }
 
-// Behind The Scenes
-export async function addBTS(formData: FormData) {
-  const title = formData.get('title') as string
-  const videoUrl = formData.get('videoUrl') as string | null
-  const thumbnail = formData.get('thumbnail') as string | null
-  
-  if (title && (videoUrl || thumbnail)) {
-    const count = await prisma.behindTheScene.count()
-    await prisma.behindTheScene.create({
-      data: { 
-        title, 
-        order: count,
-        ...(videoUrl && { videoUrl }),
-        ...(thumbnail && { thumbnail })
-      }
-    })
-    revalidatePath('/')
-    revalidatePath('/admin')
-  }
-}
-
-export async function deleteBTS(id: string) {
-  await prisma.behindTheScene.delete({ where: { id } })
-  revalidatePath('/')
-  revalidatePath('/admin')
-}
-
-export async function deleteProject(id: string) {
-  try {
-    await prisma.project.delete({ where: { id } })
-    revalidatePath('/')
-    revalidatePath('/admin')
-    return { success: true }
-  } catch (error: any) {
-    console.error("deleteProject error:", error)
-    return { success: false, error: error.message || String(error) }
-  }
-}
-
-// Music
-export async function addMusic(formData: FormData) {
-  const title = formData.get('title') as string
-  const audioUrl = formData.get('audioUrl') as string | null
-  const posterUrl = formData.get('posterUrl') as string | null
-  
-  if (title && audioUrl) {
-    const count = await prisma.music.count()
-    await prisma.music.create({
-      data: { 
-        title, 
-        audioUrl, 
-        order: count,
-        ...(posterUrl && { posterUrl })
-      }
-    })
-    revalidatePath('/music')
-    revalidatePath('/admin')
-  }
-}
-
-export async function deleteMusic(id: string) {
-  await prisma.music.delete({ where: { id } })
-  revalidatePath('/music')
-  revalidatePath('/admin')
-}
-
-// Cast & Crew
-export async function addCastCrew(formData: FormData) {
-  const name = formData.get('name') as string
-  const role = formData.get('role') as string
-  const imageUrl = formData.get('imageUrl') as string | null
-  
-  if (name && role) {
-    const count = await prisma.castCrew.count()
-    await prisma.castCrew.create({
-      data: { 
-        name, 
-        role, 
-        order: count,
-        ...(imageUrl && { imageUrl }) 
-      }
-    })
-    revalidatePath('/cast-crew')
-    revalidatePath('/admin')
-  }
-}
-
-export async function deleteCastCrew(id: string) {
-  await prisma.castCrew.delete({ where: { id } })
-  revalidatePath('/cast-crew')
-  revalidatePath('/admin')
-}
-
-// Posters
-export async function addPoster(formData: FormData) {
-  const title = formData.get('title') as string
-  const imageUrl = formData.get('imageUrl') as string | null
-  
-  if (title && imageUrl) {
-    const count = await prisma.poster.count()
-    await prisma.poster.create({
-      data: { 
-        title, 
-        imageUrl,
-        order: count
-      }
-    })
-    revalidatePath('/posters')
-    revalidatePath('/admin')
-  }
-}
-
-export async function deletePoster(id: string) {
-  await prisma.poster.delete({ where: { id } })
-  revalidatePath('/posters')
-  revalidatePath('/admin')
-}
-
-// Announcements
-export async function addAnnouncement(formData: FormData) {
-  const title = formData.get('title') as string
-  const content = formData.get('content') as string
-  const imageUrl = formData.get('imageUrl') as string | null
-  
-  if (title && content) {
-    const count = await prisma.announcement.count()
-    await prisma.announcement.create({
-      data: { 
-        title, 
-        content, 
-        order: count,
-        ...(imageUrl && { imageUrl }) 
-      }
-    })
-    revalidatePath('/announcements')
-    revalidatePath('/admin')
-  }
-}
-
-export async function deleteAnnouncement(id: string) {
-  await prisma.announcement.delete({ where: { id } })
-  revalidatePath('/announcements')
-  revalidatePath('/admin')
-}
-
-// YouTube Metadata Fetcher
-export async function fetchYouTubeInfo(url: string) {
-  try {
-    const response = await fetch(url);
-    const html = await response.text();
-    
-    const titleMatch = html.match(/<title>(.*?)<\/title>/);
-    const ogDescMatch = html.match(/property="og:description" content="(.*?)"/);
-    const descMatch = html.match(/meta name="description" content="(.*?)"/);
-    
-    let title = titleMatch ? titleMatch[1].replace(" - YouTube", "") : "";
-    let description = (ogDescMatch ? ogDescMatch[1] : (descMatch ? descMatch[1] : ""));
-    
-    return { title, description };
-  } catch (error) {
-    console.error("Fetch YouTube Error:", error);
-    return null;
-  }
-}
-
-// Site Settings
-export async function updateSetting(key: string, value: string) {
-  await prisma.settings.upsert({
-    where: { key },
-    update: { value, updatedAt: new Date() },
-    create: { key, value },
-  })
-  revalidatePath('/')
-  revalidatePath('/vision')
-  revalidatePath('/music')
-  revalidatePath('/admin')
-}
-
-// Update Actions
-
 export async function updateProject(id: string, formData: FormData) {
+  await requireAdmin()
   const title = formData.get('title') as string
   const description = formData.get('description') as string
   const bannerUrl = formData.get('bannerUrl') as string | null
@@ -242,7 +94,57 @@ export async function updateProject(id: string, formData: FormData) {
   return { success: false, error: "Title and description are required." }
 }
 
+export async function deleteProject(id: string) {
+  await requireAdmin()
+  try {
+    await prisma.project.delete({ where: { id } })
+    revalidatePath('/')
+    revalidatePath('/admin')
+    return { success: true }
+  } catch (error: any) {
+    console.error("deleteProject error:", error)
+    return { success: false, error: error.message || String(error) }
+  }
+}
+
+export async function reorderProjects(ids: string[]) {
+  await requireAdmin()
+  for (let i = 0; i < ids.length; i++) {
+    await prisma.project.update({
+      where: { id: ids[i] },
+      data: { order: i }
+    })
+  }
+  revalidatePath('/')
+  revalidatePath('/admin')
+  revalidatePath('/announcements')
+}
+
+// ─── Behind The Scenes ───────────────────────────────────────────────────────
+
+export async function addBTS(formData: FormData) {
+  await requireAdmin()
+  const title = formData.get('title') as string
+  const videoUrl = formData.get('videoUrl') as string | null
+  const thumbnail = formData.get('thumbnail') as string | null
+  
+  if (title && (videoUrl || thumbnail)) {
+    const count = await prisma.behindTheScene.count()
+    await prisma.behindTheScene.create({
+      data: { 
+        title, 
+        order: count,
+        ...(videoUrl && { videoUrl }),
+        ...(thumbnail && { thumbnail })
+      }
+    })
+    revalidatePath('/')
+    revalidatePath('/admin')
+  }
+}
+
 export async function updateBTS(id: string, formData: FormData) {
+  await requireAdmin()
   const title = formData.get('title') as string
   const videoUrl = formData.get('videoUrl') as string | null
   const thumbnail = formData.get('thumbnail') as string | null
@@ -261,7 +163,50 @@ export async function updateBTS(id: string, formData: FormData) {
   }
 }
 
+export async function deleteBTS(id: string) {
+  await requireAdmin()
+  await prisma.behindTheScene.delete({ where: { id } })
+  revalidatePath('/')
+  revalidatePath('/admin')
+}
+
+export async function reorderBTS(ids: string[]) {
+  await requireAdmin()
+  for (let i = 0; i < ids.length; i++) {
+    await prisma.behindTheScene.update({
+      where: { id: ids[i] },
+      data: { order: i }
+    })
+  }
+  revalidatePath('/')
+  revalidatePath('/admin')
+}
+
+// ─── Music ───────────────────────────────────────────────────────────────────
+
+export async function addMusic(formData: FormData) {
+  await requireAdmin()
+  const title = formData.get('title') as string
+  const audioUrl = formData.get('audioUrl') as string | null
+  const posterUrl = formData.get('posterUrl') as string | null
+  
+  if (title && audioUrl) {
+    const count = await prisma.music.count()
+    await prisma.music.create({
+      data: { 
+        title, 
+        audioUrl, 
+        order: count,
+        ...(posterUrl && { posterUrl })
+      }
+    })
+    revalidatePath('/music')
+    revalidatePath('/admin')
+  }
+}
+
 export async function updateMusic(id: string, formData: FormData) {
+  await requireAdmin()
   const title = formData.get('title') as string
   const audioUrl = formData.get('audioUrl') as string | null
   const posterUrl = formData.get('posterUrl') as string | null
@@ -280,7 +225,50 @@ export async function updateMusic(id: string, formData: FormData) {
   }
 }
 
+export async function deleteMusic(id: string) {
+  await requireAdmin()
+  await prisma.music.delete({ where: { id } })
+  revalidatePath('/music')
+  revalidatePath('/admin')
+}
+
+export async function reorderMusic(ids: string[]) {
+  await requireAdmin()
+  for (let i = 0; i < ids.length; i++) {
+    await prisma.music.update({
+      where: { id: ids[i] },
+      data: { order: i }
+    })
+  }
+  revalidatePath('/music')
+  revalidatePath('/admin')
+}
+
+// ─── Cast & Crew ─────────────────────────────────────────────────────────────
+
+export async function addCastCrew(formData: FormData) {
+  await requireAdmin()
+  const name = formData.get('name') as string
+  const role = formData.get('role') as string
+  const imageUrl = formData.get('imageUrl') as string | null
+  
+  if (name && role) {
+    const count = await prisma.castCrew.count()
+    await prisma.castCrew.create({
+      data: { 
+        name, 
+        role, 
+        order: count,
+        ...(imageUrl && { imageUrl }) 
+      }
+    })
+    revalidatePath('/cast-crew')
+    revalidatePath('/admin')
+  }
+}
+
 export async function updateCastCrew(id: string, formData: FormData) {
+  await requireAdmin()
   const name = formData.get('name') as string
   const role = formData.get('role') as string
   const imageUrl = formData.get('imageUrl') as string | null
@@ -299,7 +287,48 @@ export async function updateCastCrew(id: string, formData: FormData) {
   }
 }
 
+export async function deleteCastCrew(id: string) {
+  await requireAdmin()
+  await prisma.castCrew.delete({ where: { id } })
+  revalidatePath('/cast-crew')
+  revalidatePath('/admin')
+}
+
+export async function reorderCastCrew(ids: string[]) {
+  await requireAdmin()
+  for (let i = 0; i < ids.length; i++) {
+    await prisma.castCrew.update({
+      where: { id: ids[i] },
+      data: { order: i }
+    })
+  }
+  revalidatePath('/cast-crew')
+  revalidatePath('/admin')
+}
+
+// ─── Posters ─────────────────────────────────────────────────────────────────
+
+export async function addPoster(formData: FormData) {
+  await requireAdmin()
+  const title = formData.get('title') as string
+  const imageUrl = formData.get('imageUrl') as string | null
+  
+  if (title && imageUrl) {
+    const count = await prisma.poster.count()
+    await prisma.poster.create({
+      data: { 
+        title, 
+        imageUrl,
+        order: count
+      }
+    })
+    revalidatePath('/posters')
+    revalidatePath('/admin')
+  }
+}
+
 export async function updatePoster(id: string, formData: FormData) {
+  await requireAdmin()
   const title = formData.get('title') as string
   const imageUrl = formData.get('imageUrl') as string | null
 
@@ -316,7 +345,50 @@ export async function updatePoster(id: string, formData: FormData) {
   }
 }
 
+export async function deletePoster(id: string) {
+  await requireAdmin()
+  await prisma.poster.delete({ where: { id } })
+  revalidatePath('/posters')
+  revalidatePath('/admin')
+}
+
+export async function reorderPoster(ids: string[]) {
+  await requireAdmin()
+  for (let i = 0; i < ids.length; i++) {
+    await prisma.poster.update({
+      where: { id: ids[i] },
+      data: { order: i }
+    })
+  }
+  revalidatePath('/posters')
+  revalidatePath('/admin')
+}
+
+// ─── Announcements ───────────────────────────────────────────────────────────
+
+export async function addAnnouncement(formData: FormData) {
+  await requireAdmin()
+  const title = formData.get('title') as string
+  const content = formData.get('content') as string
+  const imageUrl = formData.get('imageUrl') as string | null
+  
+  if (title && content) {
+    const count = await prisma.announcement.count()
+    await prisma.announcement.create({
+      data: { 
+        title, 
+        content, 
+        order: count,
+        ...(imageUrl && { imageUrl }) 
+      }
+    })
+    revalidatePath('/announcements')
+    revalidatePath('/admin')
+  }
+}
+
 export async function updateAnnouncement(id: string, formData: FormData) {
+  await requireAdmin()
   const title = formData.get('title') as string
   const content = formData.get('content') as string
   const imageUrl = formData.get('imageUrl') as string | null
@@ -335,65 +407,15 @@ export async function updateAnnouncement(id: string, formData: FormData) {
   }
 }
 
-// Reorder Actions
-
-export async function reorderProjects(ids: string[]) {
-  for (let i = 0; i < ids.length; i++) {
-    await prisma.project.update({
-      where: { id: ids[i] },
-      data: { order: i }
-    })
-  }
-  revalidatePath('/')
-  revalidatePath('/admin')
+export async function deleteAnnouncement(id: string) {
+  await requireAdmin()
+  await prisma.announcement.delete({ where: { id } })
   revalidatePath('/announcements')
-}
-
-export async function reorderBTS(ids: string[]) {
-  for (let i = 0; i < ids.length; i++) {
-    await prisma.behindTheScene.update({
-      where: { id: ids[i] },
-      data: { order: i }
-    })
-  }
-  revalidatePath('/')
-  revalidatePath('/admin')
-}
-
-export async function reorderMusic(ids: string[]) {
-  for (let i = 0; i < ids.length; i++) {
-    await prisma.music.update({
-      where: { id: ids[i] },
-      data: { order: i }
-    })
-  }
-  revalidatePath('/music')
-  revalidatePath('/admin')
-}
-
-export async function reorderCastCrew(ids: string[]) {
-  for (let i = 0; i < ids.length; i++) {
-    await prisma.castCrew.update({
-      where: { id: ids[i] },
-      data: { order: i }
-    })
-  }
-  revalidatePath('/cast-crew')
-  revalidatePath('/admin')
-}
-
-export async function reorderPoster(ids: string[]) {
-  for (let i = 0; i < ids.length; i++) {
-    await prisma.poster.update({
-      where: { id: ids[i] },
-      data: { order: i }
-    })
-  }
-  revalidatePath('/posters')
   revalidatePath('/admin')
 }
 
 export async function reorderAnnouncement(ids: string[]) {
+  await requireAdmin()
   for (let i = 0; i < ids.length; i++) {
     await prisma.announcement.update({
       where: { id: ids[i] },
@@ -401,5 +423,82 @@ export async function reorderAnnouncement(ids: string[]) {
     })
   }
   revalidatePath('/announcements')
+  revalidatePath('/admin')
+}
+
+// ─── YouTube Metadata Fetcher (SSRF-Protected) ───────────────────────────────
+
+export async function fetchYouTubeInfo(url: string) {
+  await requireAdmin()
+  try {
+    const parsed = new URL(url)
+    const allowedHosts = ['www.youtube.com', 'youtube.com', 'm.youtube.com', 'youtu.be']
+    if (!['http:', 'https:'].includes(parsed.protocol) || !allowedHosts.includes(parsed.hostname.toLowerCase())) {
+      console.warn("fetchYouTubeInfo rejected disallowed host/protocol:", url)
+      return null
+    }
+
+    const response = await fetch(parsed.toString(), {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      },
+    })
+
+    if (!response.ok) {
+      return null
+    }
+
+    const html = await response.text()
+    
+    const titleMatch = html.match(/<title>(.*?)<\/title>/)
+    const ogDescMatch = html.match(/property="og:description" content="(.*?)"/)
+    const descMatch = html.match(/meta name="description" content="(.*?)"/)
+    
+    let title = titleMatch ? titleMatch[1].replace(" - YouTube", "") : ""
+    let description = (ogDescMatch ? ogDescMatch[1] : (descMatch ? descMatch[1] : ""))
+    
+    return { title, description }
+  } catch (error) {
+    console.error("Fetch YouTube Error:", error)
+    return null
+  }
+}
+
+// ─── Site Settings (Whitelist-Protected) ──────────────────────────────────────
+
+const ALLOWED_SETTING_KEYS = new Set([
+  'spotifyUrl',
+  'visionLogoUrl',
+  'visionLogoLightUrl',
+  'visionTagline',
+  'latestCreationUrl',
+  'latestCreationTitle',
+  'youtubeHandle',
+  'youtubeApiKey',
+  'youtubeSubscribers',
+  'youtubeVideoCount',
+])
+
+export async function updateSetting(key: string, value: string) {
+  await requireAdmin()
+
+  if (!ALLOWED_SETTING_KEYS.has(key)) {
+    throw new Error(`Security Violation: Setting key '${key}' is not permitted.`)
+  }
+
+  // Validate values for specific keys
+  if (key === 'youtubeHandle') {
+    // Sanitize handle to safe characters
+    value = value.replace(/[^a-zA-Z0-9_.-]/g, '')
+  }
+
+  await prisma.settings.upsert({
+    where: { key },
+    update: { value, updatedAt: new Date() },
+    create: { key, value },
+  })
+  revalidatePath('/')
+  revalidatePath('/vision')
+  revalidatePath('/music')
   revalidatePath('/admin')
 }

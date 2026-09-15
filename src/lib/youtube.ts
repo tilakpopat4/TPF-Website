@@ -67,7 +67,7 @@ export async function fetchYouTubeChannel(
   overrideVideos?: string
 ): Promise<YouTubeChannelData> {
   const handle = customHandle || 'tilakpopatfilms';
-  const cleanHandle = handle.replace(/^@/, '');
+  const cleanHandle = encodeURIComponent(handle.replace(/^@/, '').replace(/[^a-zA-Z0-9_.-]/g, ''));
 
   // 1. If API Key provided, try YouTube Data API v3
   if (apiKey) {
