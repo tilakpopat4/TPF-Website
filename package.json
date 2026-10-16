@@ -6,10 +6,7 @@
     "dev": "next dev",
     "build": "npx prisma generate && npx prisma db push --accept-data-loss && next build",
     "start": "next start",
-    "lint": "eslint",
-    "vault:status": "node scripts/vault.mjs status",
-    "vault:encrypt": "node scripts/vault.mjs encrypt",
-    "vault:decrypt": "node scripts/vault.mjs decrypt"
+    "lint": "eslint"
   },
   "dependencies": {
     "@ducanh2912/next-pwa": "^10.2.9",

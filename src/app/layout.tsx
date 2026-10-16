@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 
 export const viewport: Viewport = {
   themeColor: '#000000',
@@ -100,11 +101,13 @@ export default function RootLayout({
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
 
-        {/* Google AdSense Verification */}
-        <script
+        {/* Google AdSense */}
+        <Script
+          id="google-adsense"
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3956092062491313"
           crossOrigin="anonymous"
+          strategy="afterInteractive"
         />
         {/* Prevent flash of wrong theme on initial load */}
         <script

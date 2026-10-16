@@ -38,11 +38,8 @@ Vercel is the official platform for hosting Next.js projects. It offers a free *
 4. In the configuration page, expand the **Environment Variables** section and add the following keys from your local `.env`:
    - `DATABASE_URL`: *[Your Neon/Supabase Direct Connection URL]*
    - `DATABASE_PRISMA_DATABASE_URL`: *[Your Neon/Supabase Connection URL]*
-   - `UPLOADTHING_TOKEN`: *[Your UploadThing Token - Keep Secret!]*
-   - `RESEND_API_KEY`: *[Your Resend API Key - Keep Secret!]*
-   - `ADMIN_USERNAME`: *[Admin Username, e.g. tpfadmin]*
-   - `ADMIN_PASSWORD`: *[Strong Secret Password]*
-   - `ADMIN_SESSION_SECRET`: *[Random 32+ character hex string for signing sessions]*
+   - `UPLOADTHING_TOKEN`: `eyJhcGlLZXkiOiJza19saXZlX2FiNjcxMzg4OTJlNTM3NDkxNGU0YmRjNjBiNjIyMGQyMDNjZjZiMWFkZGU1YTJkNTA1MTk5YzMwNTU3MGEwYTAiLCJhcHBJZCI6ImxqYmQ3ODNxY2siLCJyZWdpb25zIjpbInNlYTEiXX0=`
+   - `RESEND_API_KEY`: `re_7Yrarz9W_KwHqaZN2bkVPa8vNm7L32Zad`
 5. Click **Deploy**.
    - Vercel will build the project. The build process runs `npx prisma generate && npx prisma db push --accept-data-loss && next build`, which will automatically set up your database tables!
 
@@ -66,18 +63,14 @@ Once the site is deployed:
 
 ---
 
-## 5. Security & Authentication Configuration
-> [!IMPORTANT]
-> **Admin Portal Security**:
-> The `/admin` portal is protected with HMAC-SHA256 encrypted session tokens, timing-safe authentication, and server-side action guards.
+## 5. Security Warning: Admin Dashboard Authorization
+> [!WARNING]
+> Currently, the `/admin` dashboard has no password validation (anyone visiting `tilakpopatfilms.online/admin` can edit or delete projects).
 >
-> **Configuring Admin Credentials in Vercel / Environment**:
-> 1. `ADMIN_USERNAME`: Desired administrator username (defaults to `tpfadmin` if unset).
-> 2. `ADMIN_PASSWORD`: Strong administrator password (set this in your Vercel Project Settings > Environment Variables).
-> 3. `ADMIN_SESSION_SECRET`: A random 32+ character hex string used to sign session cookies.
->
-> **Secret Key Rotation Warning**:
-> If you previously deployed keys publicly, make sure to rotate both your `UPLOADTHING_TOKEN` (in UploadThing Dashboard) and `RESEND_API_KEY` (in Resend Dashboard).
+> We strongly recommend adding a password lock to the `/admin` route before making it live. If you would like, we can implement:
+> 1. A simple admin password check (via a `ADMIN_PASSWORD` environment variable set in Vercel).
+> 2. Full authentication using a modern library.
+> Let me know if you would like me to set this up for you!
 
 ---
 

@@ -1,42 +1,30 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
-import { getAdminSession } from "@/lib/auth";
 
 const f = createUploadthing();
 
-// Security guard: Ensure only authenticated admin can initiate uploads
-async function requireAdminUploadAuth() {
-  const session = await getAdminSession();
-  if (!session) {
-    throw new UploadThingError("Unauthorized: Admin authentication required to upload media files.");
-  }
-  return { uploadedBy: session.u };
-}
-
-// FileRouter for your app, protected with admin session verification
+// FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
+  // Define as many FileRoutes as you like, each with a unique routeSlug
   imageUploader: f({ image: { maxFileSize: "128MB" } })
-    .middleware(async () => {
-      return await requireAdminUploadAuth();
-    })
     .onUploadComplete(async ({ metadata, file }) => {
-      return { uploadedBy: metadata.uploadedBy, fileUrl: file.url };
+      console.log("Upload complete for image");
+      console.log("file url", file.url);
+      return { uploadedBy: "admin" };
     }),
     
   videoUploader: f({ video: { maxFileSize: "2GB" } })
-    .middleware(async () => {
-      return await requireAdminUploadAuth();
-    })
     .onUploadComplete(async ({ metadata, file }) => {
-      return { uploadedBy: metadata.uploadedBy, fileUrl: file.url };
+      console.log("Upload complete for video");
+      console.log("file url", file.url);
+      return { uploadedBy: "admin" };
     }),
     
   audioUploader: f({ audio: { maxFileSize: "128MB" } })
-    .middleware(async () => {
-      return await requireAdminUploadAuth();
-    })
     .onUploadComplete(async ({ metadata, file }) => {
-      return { uploadedBy: metadata.uploadedBy, fileUrl: file.url };
+      console.log("Upload complete for audio");
+      console.log("file url", file.url);
+      return { uploadedBy: "admin" };
     }),
 } satisfies FileRouter;
 

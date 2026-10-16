@@ -1,65 +1,37 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import {
-  COOKIE_NAME,
-  SESSION_MAX_AGE_SECONDS,
-  verifySessionToken,
-  validateAdminCredentials,
-  createSessionToken,
-} from '@/lib/auth-token';
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 export function proxy(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-
-  // Protect admin routes
-  if (pathname.startsWith('/admin')) {
-    // Whitelist login route and assets
-    if (pathname === '/admin/login' || pathname.startsWith('/admin/login/')) {
-      return NextResponse.next();
-    }
-
-    // 1. Verify encrypted session cookie
-    const sessionToken = req.cookies.get(COOKIE_NAME)?.value;
-    const validSession = verifySessionToken(sessionToken);
-
-    if (validSession) {
-      return NextResponse.next();
-    }
-
-    // 2. Backward compatibility: Support Basic Auth header if present
-    const authHeader = req.headers.get('authorization');
-    if (authHeader && authHeader.startsWith('Basic ')) {
+  const basicAuth = req.headers.get('authorization')
+  
+  if (req.nextUrl.pathname.startsWith('/admin')) {
+    if (basicAuth) {
       try {
-        const base64Credentials = authHeader.split(' ')[1];
-        const [user, pwd] = atob(base64Credentials).split(':');
+        const authValue = basicAuth.split(' ')[1]
+        const [user, pwd] = atob(authValue).split(':')
 
-        if (user && pwd && validateAdminCredentials(user, pwd)) {
-          const res = NextResponse.next();
-          // Issue session cookie so subsequent requests don't need repeated Basic auth
-          res.cookies.set({
-            name: COOKIE_NAME,
-            value: createSessionToken(user),
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-            path: '/',
-            maxAge: SESSION_MAX_AGE_SECONDS,
-          });
-          return res;
+        // Secure admin credentials (configured via env or fallback)
+        const expectedUser = process.env.ADMIN_USERNAME || 'tpfadmin'
+        const expectedPassword = process.env.ADMIN_PASSWORD || 'adminuser'
+
+        if (user === expectedUser && pwd === expectedPassword) {
+          return NextResponse.next()
         }
       } catch (e) {
-        console.error('Basic auth parsing error in proxy:', e);
+        console.error('Basic auth parsing error:', e)
       }
     }
 
-    // If unauthenticated, redirect to dedicated login portal
-    const loginUrl = new URL('/admin/login', req.url);
-    return NextResponse.redirect(loginUrl);
+    // Force prompt on unauthorized
+    return new NextResponse('Authentication required.', {
+      status: 401,
+      headers: {
+        'WWW-Authenticate': 'Basic realm="TPF Admin Secure Area"',
+      },
+    })
   }
-
-  return NextResponse.next();
 }
 
 export const config = {
   matcher: ['/admin', '/admin/:path*'],
-};
+}

@@ -24,3 +24,4 @@ credentials*
 secrets*
 *.enc
 *.enc.key
+.agent/

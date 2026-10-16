@@ -13,14 +13,13 @@ export default function RecruitmentForm() {
     setIsPending(true);
     setMessage(null);
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
+    const formData = new FormData(e.currentTarget);
     
     try {
       const result = await sendRecruitmentEmail(formData);
       if (result.success) {
         setMessage({ type: 'success', text: "Application sent successfully! We'll be in touch." });
-        form.reset();
+        (e.target as HTMLFormElement).reset();
       } else {
         setMessage({ type: 'error', text: result.error || "Failed to send application. Please try again." });
       }
@@ -34,55 +33,19 @@ export default function RecruitmentForm() {
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      {/* Anti-spam honeypot (hidden from human users) */}
-      <div style={{ display: 'none', opacity: 0, position: 'absolute', left: '-9999px' }} aria-hidden="true">
-        <label htmlFor="website">Website</label>
-        <input
-          type="text"
-          id="website"
-          name="website"
-          tabIndex={-1}
-          autoComplete="off"
-        />
-      </div>
-
       <div className={styles.formGroup}>
         <label htmlFor="name">Name</label>
-        <input 
-          type="text" 
-          id="name" 
-          name="name" 
-          required 
-          maxLength={100}
-          placeholder="Your Name" 
-          className={styles.input} 
-        />
+        <input type="text" id="name" name="name" required placeholder="Your Name" className={styles.input} />
       </div>
 
       <div className={styles.formGroup}>
         <label htmlFor="email">Email</label>
-        <input 
-          type="email" 
-          id="email" 
-          name="email" 
-          required 
-          maxLength={254}
-          placeholder="your.email@example.com" 
-          className={styles.input} 
-        />
+        <input type="email" id="email" name="email" required placeholder="your.email@example.com" className={styles.input} />
       </div>
 
       <div className={styles.formGroup}>
         <label htmlFor="phone">Mobile No</label>
-        <input 
-          type="tel" 
-          id="phone" 
-          name="phone" 
-          required 
-          maxLength={30}
-          placeholder="+91 ..." 
-          className={styles.input} 
-        />
+        <input type="tel" id="phone" name="phone" required placeholder="+91 ..." className={styles.input} />
       </div>
 
       <div className={styles.formGroup}>
@@ -101,28 +64,13 @@ export default function RecruitmentForm() {
       </div>
 
       <div className={styles.formGroup}>
-        <label htmlFor="portfolio">Portfolio Link (Google Drive / Behance / YouTube)</label>
-        <input 
-          type="url" 
-          id="portfolio" 
-          name="portfolio" 
-          required 
-          maxLength={500}
-          placeholder="https://..." 
-          className={styles.input} 
-        />
+          <label htmlFor="portfolio">Portfolio Link (Google Drive / Behance / YouTube)</label>
+          <input type="url" id="portfolio" name="portfolio" required placeholder="https://..." className={styles.input} />
       </div>
 
       <div className={styles.formGroup}>
         <label htmlFor="message">Message</label>
-        <textarea 
-          id="message" 
-          name="message" 
-          rows={4} 
-          maxLength={5000}
-          placeholder="Tell us about yourself and why you'd like to work with TPF." 
-          className={styles.textarea}
-        ></textarea>
+        <textarea id="message" name="message" rows={4} placeholder="Tell us about yourself and why you'd like to work with TPF." className={styles.textarea}></textarea>
       </div>
 
       {message && (
